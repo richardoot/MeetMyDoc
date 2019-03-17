@@ -28,6 +28,15 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout()
+    {
+
+    }
+
+
+    /**
      * @Route("/inscription", name="app_inscription")
      */
     public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
