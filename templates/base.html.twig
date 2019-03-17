@@ -20,15 +20,70 @@
 </head>
 
 <body>
-  {% block navigation %}
+
+  <!-- NAV BAR-->
   <nav class="navbar navbar-light navbar-expand-md">
-    <div class="container"><a class="navbar-brand" href="#">MeetMyDoc</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><i class="fa fa-bars burgerMenu" style="font-size: 25px;"></i><span class="sr-only">Toggle navigation</span></button>
-      <div
-      class="collapse navbar-collapse float-right" id="navcol-1">
-      <ul class="nav navbar-nav ml-auto"></ul><a href="{{path('app_login')}}" class="linkConnexion">S'inscrire</a><button class="btn btn-primary" type="button">Se connecter</button></div>
+    <a class="navbar-brand" href="{{path('accueil')}}">MeetMyDoc</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
+      <i class="fa fa-bars burgerMenu" style="font-size: 25px;"></i>
+      <span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <div class="collapse navbar-collapse float-right" id="navcol-1">
+
+      <!--Partie gauche du menu-->
+      <ul class="nav navbar-nav mr-auto">
+        {% if is_granted('ROLE_PATIENT') %}
+        <li class="nav-item dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
+          <div class="dropdown-menu dropdown-menu-right" role="menu">
+            <a class="dropdown-item" role="presentation" href="#">Voir Profil</a>
+            <a class="dropdown-item" role="presentation" href="#">Mes Médecins favoris</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mes Rendez-vous</a>
+          <div class="dropdown-menu dropdown-menu-right" role="menu">
+            <a class="dropdown-item" role="presentation" href="#">Prendre Rendez-vous</a>
+            <a class="dropdown-item" role="presentation" href="#">Voir mes Rendez-vous</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Dossier</a>
+          <div class="dropdown-menu dropdown-menu-right" role="menu">
+            <a class="dropdown-item" role="presentation" href="#">Voir mon Dossier</a>
+            <a class="dropdown-item" role="presentation" href="#">Partager mon Dossier</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Autre</a>
+          <div class="dropdown-menu dropdown-menu-right" role="menu">
+            <a class="dropdown-item" role="presentation" href="#">Aide</a>
+            <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
+            <a class="dropdown-item" role="presentation" href="#" style="color: rgb(232,11,11);">Déconnexion</a>
+          </div>
+        </li>
+      {% else %}
+
+      {% endif %}
+      </ul>
+      <!--Partie droite du menu -->
+      <ul class="nav navbar-nav ml-auto">
+        {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %}
+        <li class="nav-item active">
+          <a class="nav-link" href="#" >Deconnexion</a>
+        </li>
+        {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="#" >S'inscrire</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{{path('app_login')}}" >Connexion</a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
   </nav>
-  {% endblock %}
 
   {% block body %}{% endblock %}
   <script src="assets/js/jquery.min.js"></script>

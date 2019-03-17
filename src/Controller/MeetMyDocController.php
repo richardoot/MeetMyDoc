@@ -12,7 +12,7 @@ class MeetMyDocController extends AbstractController
      */
     public function index()
     {
-        return $this->render('meet_my_doc/index.html.twig', [
+        return $this->render('meet_my_doc/rechercheMedecinAnonyme.html.twig', [
             'controller_name' => 'MeetMyDocController',
         ]);
     }
