@@ -16,6 +16,9 @@ security:
             security: false
         main:
             anonymous: true
+            guard:
+                authenticators:
+                    - App\Security\FormulaireLoginAuthenticator
 
             # activate different ways to authenticate
 
