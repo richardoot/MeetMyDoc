@@ -25,14 +25,16 @@ class AppFixtures extends Fixture
         $manager->persist($user1);
 
         $user2 = new User();
-        $user2->setEmail("richard@user.com");
-        $user2->setRoles(['ROLE_PATIENT']);
+        $user2->setEmail("kesly@user.com");
+        $user2->setRoles(['ROLE_MEDECIN']);
         $user2->setPassword('$2y$10$qaHa4SF6o1ECaZoc6.xCluHRnlImOPwReLffIjagZhQzM8s59Lk7i'); //Password = User
-        $user2->setNom("Richard");
-        $user2->setPrenom("Boilley");
+        $user2->setNom("gassant");
+        $user2->setPrenom("kesly");
         $user2->setDateNaissance(new \dateTime());
         $user2->setSexe("Masculin");
         $manager->persist($user2);
+
         $manager->flush();
+
     }
 }
