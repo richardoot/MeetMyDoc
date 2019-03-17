@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
         $user2->setEmail("kesly@user.com");
         $user2->setRoles(['ROLE_MEDECIN']);
         $user2->setPassword('$2y$10$qaHa4SF6o1ECaZoc6.xCluHRnlImOPwReLffIjagZhQzM8s59Lk7i'); //Password = User
-        //$user2->setNom("Kesly");
+        $user2->setNom("Kesly");
         $user2->setPrenom("Gassant");
         $user2->setDateNaissance(new \dateTime());
         $user2->setSexe("Masculin");
