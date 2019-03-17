@@ -70,18 +70,15 @@
       {% endif %}
       </ul>
       <!--Partie droite du menu -->
-      <ul class="nav navbar-nav ml-auto"></ul>
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %}
         <div class="nav-item active">
           <a class="nav-link" href="#" >Deconnexion</a>
         </div>
         {% else %}
-          <div class="nav-item active">
-            <a class="linkConnexion" href="#" >S'inscrire</a>
-          </div>
-          <div>
-            <button class="btn btn-primary boutonInscription" href="{{path('app_login')}}" >Connexion</button>
-          </div>
+          
+            <a class="linkConnexion" href="#" >S'inscrire</a>   
+            <button class="btn btn-primary" href="{{path('app_login')}}" >Connexion</button>
+          
         {% endif %}
       </ul>
     </div>
