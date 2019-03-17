@@ -1,1 +1,30 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container" style="margin-top: 1rem;">
+  <div class="row">
+    <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+      <h1>Recherche de médecin</h1>
+      <form>
+        <div class="form-group">
+          <fieldset><label>Spécialité*</label>
+            <select class="form-control">
+              <optgroup label="choixSpecialiteMedecin">
+                <option value="12" selected="">Généraliste</option>
+                <option value="13">Cardiologue</option>
+                <option value="14">Kinésithérapeute</option>
+              </optgroup>
+            </select>
+            <label>Ville*</label>
+            <input class="form-control" type="text" name="champNomVille" placeholder="ex : Bayonne">
+            <label>Nom</label>
+            <input class="form-control" type="text" name="champNomMedecin" placeholder="ex : Richard">
+            <label style="font-size: 12px;">Les champs suivis d'un * sont obligatoires</label>
+          </fieldset>
+          <button class="btn btn-primary" type="submit">Rechercher</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
