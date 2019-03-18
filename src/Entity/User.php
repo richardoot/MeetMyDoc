@@ -53,6 +53,11 @@ class User implements UserInterface
      */
     private $sexe;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $medecin;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -175,6 +180,23 @@ class User implements UserInterface
     public function setSexe(string $sexe): self
     {
         $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    public function getMedecin(): ?Medecin
+    {
+        return $this->medecin;
+    }
+
+    public function setMedecin(Medecin $medecin): self
+    {
+        $this->medecin = $medecin;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $medecin->getUser()) {
+            $medecin->setUser($this);
+        }
 
         return $this;
     }
