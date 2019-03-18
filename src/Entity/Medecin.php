@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PatientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MedecinRepository")
  */
-class Patient
+class Medecin
 {
     /**
      * @ORM\Id()
@@ -17,12 +17,12 @@ class Patient
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $nbRDVannule;
+    private $idNational;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="patient", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="medecin", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -32,14 +32,14 @@ class Patient
         return $this->id;
     }
 
-    public function getNbRDVannule(): ?int
+    public function getIdNational(): ?string
     {
-        return $this->nbRDVannule;
+        return $this->idNational;
     }
 
-    public function setNbRDVannule(int $nbRDVannule): self
+    public function setIdNational(string $idNational): self
     {
-        $this->nbRDVannule = $nbRDVannule;
+        $this->idNational = $idNational;
 
         return $this;
     }
