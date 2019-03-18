@@ -25,9 +25,9 @@ class UserType extends AbstractType
                 'first_options'  => ['label' => 'Mot de Passe'],
                 'second_options' => ['label' => 'Confirmer Mot de Passe'],
             ])
-            //->add('sexe') //Temporaire faut l'ajouter !! 
+            //->add('sexe') //Temporaire faut l'ajouter !!
+            //->add('dateNaissance') //Temporaire faut l'ajouter !! 
             //->add('roles')
-            //->add('dateNaissance')
         ;
     }
 

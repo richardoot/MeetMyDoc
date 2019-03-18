@@ -22,15 +22,15 @@
 <body>
 
   <!-- NAV BAR-->
-  <nav class="navbar navbar-light navbar-expand-md">
+  <nav class="navbar navbar-expand-md navbar-light">
     <a class="navbar-brand" href="{{path('accueil')}}">MeetMyDoc</a>
 
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fa fa-bars burgerMenu" style="font-size: 25px;"></i>
       <span class="sr-only">Toggle navigation</span>
     </button>
 
-    <div class="collapse navbar-collapse float-right" id="navcol-1">
+    <div class="collapse navbar-collapse" id="navbarColor03">
 
       <!--Partie gauche du menu-->
       <ul class="nav navbar-nav mr-auto">
@@ -95,14 +95,14 @@
       <!--Partie droite du menu -->
       <ul class="nav navbar-nav ml-auto">
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{{path('app_logout')}}" style="color: rgb(232,11,11);">Deconnexion</a>
         </li>
         {% else %}
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="{{path('app_inscription')}}" >S'inscrire</a>
           </li>
-          <li>
+          <li class="nav-item">
             <a class="nav-link" href="{{path('app_login')}}" >Connexion</a>
           </li>
         {% endif %}
