@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Patient;
+use App\Entity\Medecin;
+
 
 class MeetMyDocController extends AbstractController
 {
@@ -33,6 +36,10 @@ class MeetMyDocController extends AbstractController
     /**
     *@Route("/medecin/profil{id}", nome=meet_my_doc_medecin_profil)
     */
+<<<<<<< HEAD
+=======
+
+>>>>>>> relation-patient-user
     public function showProfilMedecin(Medecin $medecin)
     {
 
