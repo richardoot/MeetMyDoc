@@ -36,10 +36,7 @@ class MeetMyDocController extends AbstractController
     /**
     *@Route("/medecin/profil{id}", nome=meet_my_doc_medecin_profil)
     */
-<<<<<<< HEAD
-=======
 
->>>>>>> relation-patient-user
     public function showProfilMedecin(Medecin $medecin)
     {
 
