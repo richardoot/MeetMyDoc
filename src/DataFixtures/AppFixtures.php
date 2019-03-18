@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\User;
+use App\Entity\Medecin;
 
 class AppFixtures extends Fixture
 {
@@ -24,6 +25,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($user1);
 
+
         $user2 = new User();
         $user2->setEmail("kesly@user.com");
         $user2->setRoles(['ROLE_MEDECIN']);
@@ -34,6 +36,20 @@ class AppFixtures extends Fixture
         $user2->setSexe("Masculin");
 
         $manager->persist($user2);
+
+
+        $medecin = new Medecin();
+        $medecin->setEmail("richard@medecin.com");
+        $medecin->setRoles(['ROLE_MEDECIN']);
+        $medecin->setPassword('$2y$10$qaHa4SF6o1ECaZoc6.xCluHRnlImOPwReLffIjagZhQzM8s59Lk7i'); //Password = User
+        $medecin->setNom("Boilley");
+        $medecin->setPrenom("Richard");
+        $medecin->setDateNaissance(new \dateTime());
+        $medecin->setSexe("Masculin");
+        $medecin->setIdNational("AZERTYUIOP");
+        $medecin->setSpecialite("Généraliste");
+
+        $manager->persist($medecin);
         $manager->flush();
     }
 }
