@@ -18,11 +18,11 @@ class AppFixtures extends Fixture
           // créer patient
 
         $patient1 = new Patient();
-        $patient->setNbRDVannule(0);
+        $patient1->setNbRDVannule(0);
 
         // créer Medecin
         $medecin1= new Medecin();
-        $medecin1->setIdMedecin("fghjhgfdfghjhgfezerty");
+        $medecin1->setIdNational("fghjhgfdfghjhgfezerty");
 
         $user1 = new User();
         $user1->setEmail("richard@user.com");
