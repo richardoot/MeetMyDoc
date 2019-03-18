@@ -22,7 +22,7 @@ class MeetMyDocController extends AbstractController
 
 
     /**
-    *@Route("/patient/profil{id}", nome=meet_my_doc_patient_profil)
+    *@Route("/patient/profil{id}", name="meet_my_doc_patient_profil")
     */
     public function showProfilPatient(Patient $patient)
     {
@@ -34,7 +34,7 @@ class MeetMyDocController extends AbstractController
 
 
     /**
-    *@Route("/medecin/profil{id}", nome=meet_my_doc_medecin_profil)
+    *@Route("/medecin/profil{id}", name="meet_my_doc_medecin_profil")
     */
 
     public function showProfilMedecin(Medecin $medecin)
