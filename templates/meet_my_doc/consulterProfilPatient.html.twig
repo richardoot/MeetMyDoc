@@ -1,0 +1,33 @@
+{% extends 'basePatient.html.twig' %}
+
+{% block title %} MeetMyDoc {% endblock %}
+
+{% block body %}
+
+  <div class="row">
+            <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+                <h1>Mon profil</h1>
+                <h2>NOM PRENOM</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Date de naissance</h4>
+                        <h6 class="text-muted card-subtitle mb-2">jj/mm/aaaa</h6>
+                        <h4 class="card-title">Email</h4>
+                        <h6 class="text-muted card-subtitle mb-2">exemple@user.com</h6>
+                        <h4 class="card-title">Telephone</h4>
+                        <h6 class="text-muted card-subtitle mb-2">01 02 03 04 05</h6>
+                        <h4 class="card-title">Adresse</h4>
+                        <h6 class="text-muted card-subtitle mb-2">1 rue de l'exemple</h6>
+                        <h4 class="card-title">Complément</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Bâtiment 2, appartement 7</h6>
+                        <h4 class="card-title">Code Postale</h4>
+                        <h6 class="text-muted card-subtitle mb-2">01100</h6>
+                        <h4 class="card-title">Ville</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Exemple</h6>
+                        <h4 class="card-title">Moyen de notification</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Par email</h6><button class="btn btn-primary" type="button">Modifier mon profil</button></div>
+                </div>
+            </div>
+        </div>
+
+  {% endblock %}
