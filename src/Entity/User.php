@@ -58,6 +58,11 @@ class User implements UserInterface
      */
     private $medecin;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Patient", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $patient;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -196,6 +201,23 @@ class User implements UserInterface
         // set the owning side of the relation if necessary
         if ($this !== $medecin->getUser()) {
             $medecin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(Patient $patient): self
+    {
+        $this->patient = $patient;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $patient->getUser()) {
+            $patient->setUser($this);
         }
 
         return $this;
