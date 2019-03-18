@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Patient;
+use App\Entity\Medecin;
 
 class MeetMyDocController extends AbstractController
 {
