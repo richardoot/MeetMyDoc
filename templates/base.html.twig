@@ -23,6 +23,8 @@
 
   <!-- NAV BAR-->
   <nav class="navbar navbar-light navbar-expand-md">
+  <!--Container pour la mise en forme du menu -->
+  <div class="container">
     <a class="navbar-brand" href="{{path('accueil')}}">MeetMyDoc</a>
 
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
@@ -110,7 +112,21 @@
     </div>
   </nav>
 
+  <div class="container">
   {% block body %}{% endblock %}
+  {# Affichage du menu de connexion sur les petits écrans #}
+  {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
+  {% else %} {# Affiche le petit menu de connexion si il n'est pas connecté #}
+  <div class="row">
+            <div class="col col-xs-12 col-sm-10 offset-sm-1">
+                <div class="corpsConnexionResponsive">
+                    <h1>Envie de vous Inscrire ou vous Connecter ?</h1>
+                    <a href="#" class="linkConnexion">Se connecter</a>
+                    <button class="btn btn-primary boutonInscription" type="button">S'inscrire</button></div>
+            </div>
+        </div>
+        {% endif %} {# Fin du code gérant l'affichage #}
+</div>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
