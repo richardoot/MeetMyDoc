@@ -22,27 +22,27 @@ class MeetMyDocController extends AbstractController
 
 
     /**
-    *@Route("/patient/profil{id}", name="meet_my_doc_patient_profil")
+    *@Route("/patient/profil", name="meet_my_doc_patient_profil")
     */
-    public function showProfilPatient(Patient $patient)
+    public function showProfilPatient(/*Patient $patient*/)
     {
 
-      return $this->render('meet_my_doc/profilPatient.html.twig', [
+      return $this->render('meet_my_doc/profilPatient.html.twig'/*, [
         'patient' => $patient
-      ]);
+      ]*/);
     }
 
 
     /**
-    *@Route("/medecin/profil{id}", name="meet_my_doc_medecin_profil")
+    *@Route("/medecin/profil", name="meet_my_doc_medecin_profil")
     */
 
-    public function showProfilMedecin(Medecin $medecin)
+    public function showProfilMedecin(/*Medecin $medecin*/)
     {
 
-      return $this->render('meet_my_doc/profilMedecin.html.twig', [
+      return $this->render('meet_my_doc/profilMedecin.html.twig'/*, [
         'medecin' => $medecin
-      ]);
+      ]*/);
     }
 
 

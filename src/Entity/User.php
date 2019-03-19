@@ -54,14 +54,40 @@ class User implements UserInterface
     private $sexe;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Patient", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $patient;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", inversedBy="user", cascade={"persist", "remove"})
      */
     private $medecin;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Patient", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
      */
-    private $patient;
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $complementAdresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
 
     public function getId(): ?int
     {
@@ -189,37 +215,88 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMedecin(): ?Medecin
-    {
-        return $this->medecin;
-    }
-
-    public function setMedecin(Medecin $medecin): self
-    {
-        $this->medecin = $medecin;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $medecin->getUser()) {
-            $medecin->setUser($this);
-        }
-
-        return $this;
-    }
-
     public function getPatient(): ?Patient
     {
         return $this->patient;
     }
 
-    public function setPatient(Patient $patient): self
+    public function setPatient(?Patient $patient): self
     {
         $this->patient = $patient;
 
-        // set the owning side of the relation if necessary
-        if ($this !== $patient->getUser()) {
-            $patient->setUser($this);
-        }
+        return $this;
+    }
+
+    public function getMedecin(): ?Medecin
+    {
+        return $this->medecin;
+    }
+
+    public function setMedecin(?Medecin $medecin): self
+    {
+        $this->medecin = $medecin;
 
         return $this;
     }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getComplementAdresse(): ?string
+    {
+        return $this->complementAdresse;
+    }
+
+    public function setComplementAdresse(?string $complementAdresse): self
+    {
+        $this->complementAdresse = $complementAdresse;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
 }
