@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
         //$user1->setPatient($patient1);
         $patient1->setUser($user2);
         $manager->persist($user1);
+        $manager->persist($patient1);
 
         $user2 = new User();
         $user2->setEmail("kesly@user.com");
@@ -56,10 +57,23 @@ class AppFixtures extends Fixture
         $user2->setCodePostal("64200");
         $user2->setVille("Anglet");
         $user2->setSexe("Masculin");
+        
         //---------------
         //$user2->setMedecin($medecin1);
-        $medecin1->setUser($user2);
-        $manager->persist($user2);
+        $medecin1->setUser($user1);
+        //$manager->persist($user2);
+        $manager->persist($medecin1);
+
+        $user3 = new User();
+        $user3->setEmail("alex@user.com");
+        $user3->setRoles(['ROLE_MEDECIN']);
+        $user3->setPassword('$2y$10$qaHa4SF6o1ECaZoc6.xCluHRnlImOPwReLffIjagZhQzM8s59Lk7i'); //Password = User
+        $user3->setNom("alex");
+        $user3->setPrenom("lemoine");
+        $user3->setDateNaissance(new \dateTime());
+        $user3->setSexe("Masculin");
+        $manager->persist($user3);
+
         $manager->flush();
     }
 }
