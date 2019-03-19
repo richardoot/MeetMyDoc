@@ -63,6 +63,31 @@ class User implements UserInterface
      */
     private $medecin;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $complementAdresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
 
     public function getId(): ?int
     {
@@ -210,6 +235,66 @@ class User implements UserInterface
     public function setMedecin(?Medecin $medecin): self
     {
         $this->medecin = $medecin;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getComplementAdresse(): ?string
+    {
+        return $this->complementAdresse;
+    }
+
+    public function setComplementAdresse(?string $complementAdresse): self
+    {
+        $this->complementAdresse = $complementAdresse;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }

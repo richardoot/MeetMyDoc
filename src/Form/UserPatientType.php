@@ -26,6 +26,11 @@ class UserPatientType extends AbstractType
                 'first_options'  => ['label' => 'Mot de Passe'],
                 'second_options' => ['label' => 'Confirmer Mot de Passe'],
             ])
+            ->add('telephone')
+            ->add('adresse')
+            ->add('complementAdresse')
+            ->add('codePostal')
+            ->add('ville')
             //->add('patient',PatientType::class) //A ajouter
             //->add('sexe')
             //->add('roles')
