@@ -40,7 +40,7 @@ class AppFixtures extends Fixture
         $user1->setSexe("Masculin");
         ///-------
         //$user1->setPatient($patient1);
-        $patient1->setUser($user2);
+        $patient1->setUser($user1);
         $manager->persist($user1);
 
         $user2 = new User();
