@@ -31,10 +31,16 @@ class AppFixtures extends Fixture
         $user1->setNom("Richard");
         $user1->setPrenom("Boilley");
         $user1->setDateNaissance(new \dateTime());
+        $user1->setTelephone("0619581248");
+        $user1->setAdresse("1 rue Balangue");
+        $user1->setComplementAdresse("Résidence du parc des sports Bât. A2");
+        $user1->setCodePostal("64100");
+        $user1->setVille("Bayonne");
+
         $user1->setSexe("Masculin");
         ///-------
-        $user1->setPatient($patient1);
-        $user1->setMedecin($medecin1);
+        //$user1->setPatient($patient1);
+        $patient1->setUser($user2);
         $manager->persist($user1);
 
         $user2 = new User();
@@ -44,8 +50,15 @@ class AppFixtures extends Fixture
         $user2->setNom("Kesly");
         $user2->setPrenom("Gassant");
         $user2->setDateNaissance(new \dateTime());
+        $user2->setTelephone("0638493640");
+        $user2->setAdresse("1 allée Paulmy");
+        $user2->setComplementAdresse("/");
+        $user2->setCodePostal("64200");
+        $user2->setVille("Anglet");
         $user2->setSexe("Masculin");
         //---------------
+        //$user2->setMedecin($medecin1);
+        $medecin1->setUser($user2);
         $manager->persist($user2);
         $manager->flush();
     }
