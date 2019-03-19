@@ -5,17 +5,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>{% block title %} MeetMyDoc {% endblock %}</title>
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
-  <link rel="stylesheet" href="assets/css/Header-Dark.css">
-  <link rel="stylesheet" href="assets/css/Highlight-Blue.css">
-  <link rel="stylesheet" href="assets/css/Highlight-Phone.css">
+  <link rel="stylesheet" href="/assets/css/Header-Dark.css">
+  <link rel="stylesheet" href="/assets/css/Highlight-Blue.css">
+  <link rel="stylesheet" href="/assets/css/Highlight-Phone.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
-  <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
-  <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
-  <link rel="stylesheet" href="assets/css/Simple-Slider.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/Login-Form-Clean.css">
+  <link rel="stylesheet" href="/assets/css/Login-Form-Dark.css">
+  <link rel="stylesheet" href="/assets/css/Simple-Slider.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
   {% block stylesheets %}{% endblock %}
 </head>
 
@@ -41,7 +41,7 @@
           <li class="nav-item dropdown">
             <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="#">Voir Profil</a>
+              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_profil')}}">Voir Profil</a>
               <a class="dropdown-item" role="presentation" href="#">Mes Médecins favoris</a>
             </div>
           </li>
@@ -73,7 +73,7 @@
           <li class="nav-item dropdown">
             <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="#">Voir Profil</a>
+              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_profil')}}">Voir Profil</a>
               <a class="dropdown-item" role="presentation" href="#">Mes Patients</a>
             </div>
           </li>
@@ -103,7 +103,10 @@
         </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{{path('app_inscription')}}" >S'inscrire</a>
+            <a class="nav-link" href="{{path('app_inscriptionPatient')}}" >S'inscrire patient</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('app_inscriptionMedecin')}}" >S'inscrire médecin</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('app_login')}}" >Connexion</a>

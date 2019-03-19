@@ -22,7 +22,7 @@ class AppFixtures extends Fixture
 
         // créer Medecin
         $medecin1= new Medecin();
-        $medecin1->setIdNational("fghjhgfdfghjhgfezerty");
+        $medecin1->setIdNational("HEnd8b2NelxiZ");
 
         $user1 = new User();
         $user1->setEmail("richard@user.com");
@@ -34,6 +34,7 @@ class AppFixtures extends Fixture
         $user1->setSexe("Masculin");
         ///-------
         $user1->setPatient($patient1);
+        $user1->setMedecin($medecin1);
         $manager->persist($user1);
 
         $user2 = new User();
@@ -45,7 +46,6 @@ class AppFixtures extends Fixture
         $user2->setDateNaissance(new \dateTime());
         $user2->setSexe("Masculin");
         //---------------
-        $user2->setMedecin($medecin1);
         $manager->persist($user2);
         $manager->flush();
     }
