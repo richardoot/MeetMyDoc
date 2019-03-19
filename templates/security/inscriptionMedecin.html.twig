@@ -4,23 +4,22 @@
 
 {% block body %}
 
+  <div class="row">
+        <div class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-3">
+        <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+        <h1>Veuillez vous connecter</h1>
 
-  <div class="card mb-3">
-    <h3 style="text-align: center;"> Inscrivez-vous: </h3>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-10 offset-1">
-           <h4>Veuillez saisir les données</h4>
-           {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
+              <div class="form-group">
+
+              <fieldset>
+
+              {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
               {{form_row(formulaire.medecin)}}
-        </div>
-        <div class="col-5 offset-1">
+        
               {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
-        </div>
-        <div class="col-5">
+        
               {{form_row(formulaire.nom,{'attr': {'placeholder': 'Nom'}})}}
-        </div>
-        <div class="col-10 offset-1">
+        
               {{form_row(formulaire.email,{'attr': {'placeholder': 'Email'}})}}
               {{form_row(formulaire.password.first,{'attr': {'placeholder': 'Mot de Passe'}})}}
               {{form_row(formulaire.password.second,{'attr': {'placeholder': 'Confirmer Mot de Passe'}})}}
@@ -31,11 +30,47 @@
               {{form_row(formulaire.codePostal,{'attr': {'placeholder': 'Code Postal'}})}}
               {{form_row(formulaire.ville,{'attr': {'placeholder': 'Ville'}})}}
               {#{form_row(formulaire.sexe)}#}
-              <button class="btn btn-primary btn-block" type="submit"> s'inscrire </button>
+
+              </fieldset>
+
+              <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">s'inscrire</button>
+              {{form_end(formulaire)}}
+              </div>
+              </form>
+              </div> <!-- FORM GROUP -->
+              </div> <!-- CADRE DU FORM -->
+        </div> <!--ROW-->
+
+  {# <div class="corpsFormulaireMedecin" style="margin-top: 1rem;">
+    
+    <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-2" style="border: solid 1px;border-color: #bdbdbd; border-radius: 3px;">
+      <h3> Inscrivez-vous: </h3>
+      <div class="row">
+      
+           <h4>Veuillez saisir les données</h4>
+              {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
+              {{form_row(formulaire.medecin)}}
+        
+              {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
+        
+              {{form_row(formulaire.nom,{'attr': {'placeholder': 'Nom'}})}}
+        
+              {{form_row(formulaire.email,{'attr': {'placeholder': 'Email'}})}}
+              {{form_row(formulaire.password.first,{'attr': {'placeholder': 'Mot de Passe'}})}}
+              {{form_row(formulaire.password.second,{'attr': {'placeholder': 'Confirmer Mot de Passe'}})}}
+              {{form_row(formulaire.telephone,{'attr': {'placeholder': 'Telephone'}})}}
+              {{form_row(formulaire.adresse,{'attr': {'placeholder': 'Adresse'}})}}
+              {{form_row(formulaire.complementAdresse,{'attr': {'placeholder': ''}})}}
+              {{form_row(formulaire.complementAdresse,{'attr': {'placeholder': 'Complément Adresse'}})}}
+              {{form_row(formulaire.codePostal,{'attr': {'placeholder': 'Code Postal'}})}}
+              {{form_row(formulaire.ville,{'attr': {'placeholder': 'Ville'}})}}
+              {#{form_row(formulaire.sexe)}#}
+              {#<button class="btn btn-primary btn-block" type="submit"> s'inscrire </button>
            {{form_end(formulaire)}}
         </div>
       </div>
     </div>
-  </div>
+  </div>#}
 
 {% endblock %}
+{% block footer %}{% endblock %}
