@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190318215428 extends AbstractMigration
+final class Version20190319074230 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,10 @@ final class Version20190318215428 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE patient ADD user_id INT NOT NULL');
-        $this->addSql('ALTER TABLE patient ADD CONSTRAINT FK_1ADAD7EBA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_1ADAD7EBA76ED395 ON patient (user_id)');
+        $this->addSql('CREATE TABLE medecin (id INT AUTO_INCREMENT NOT NULL, id_national VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user ADD medecin_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6494F31A84 FOREIGN KEY (medecin_id) REFERENCES medecin (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D6494F31A84 ON user (medecin_id)');
     }
 
     public function down(Schema $schema) : void
@@ -32,8 +33,9 @@ final class Version20190318215428 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE patient DROP FOREIGN KEY FK_1ADAD7EBA76ED395');
-        $this->addSql('DROP INDEX UNIQ_1ADAD7EBA76ED395 ON patient');
-        $this->addSql('ALTER TABLE patient DROP user_id');
+        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6494F31A84');
+        $this->addSql('DROP TABLE medecin');
+        $this->addSql('DROP INDEX UNIQ_8D93D6494F31A84 ON user');
+        $this->addSql('ALTER TABLE user DROP medecin_id');
     }
 }

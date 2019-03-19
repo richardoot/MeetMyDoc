@@ -54,14 +54,15 @@ class User implements UserInterface
     private $sexe;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Patient", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $patient;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", inversedBy="user", cascade={"persist", "remove"})
      */
     private $medecin;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Patient", mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $patient;
 
     public function getId(): ?int
     {
@@ -189,37 +190,28 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMedecin(): ?Medecin
-    {
-        return $this->medecin;
-    }
-
-    public function setMedecin(Medecin $medecin): self
-    {
-        $this->medecin = $medecin;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $medecin->getUser()) {
-            $medecin->setUser($this);
-        }
-
-        return $this;
-    }
-
     public function getPatient(): ?Patient
     {
         return $this->patient;
     }
 
-    public function setPatient(Patient $patient): self
+    public function setPatient(?Patient $patient): self
     {
         $this->patient = $patient;
 
-        // set the owning side of the relation if necessary
-        if ($this !== $patient->getUser()) {
-            $patient->setUser($this);
-        }
+        return $this;
+    }
+
+    public function getMedecin(): ?Medecin
+    {
+        return $this->medecin;
+    }
+
+    public function setMedecin(?Medecin $medecin): self
+    {
+        $this->medecin = $medecin;
 
         return $this;
     }
+
 }
