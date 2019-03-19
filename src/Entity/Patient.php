@@ -19,11 +19,10 @@ class Patient
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbRDVannule;
+    private $nbRDVAnnule;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="patient", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="patient", cascade={"persist", "remove"})
      */
     private $user;
 
@@ -32,14 +31,14 @@ class Patient
         return $this->id;
     }
 
-    public function getNbRDVannule(): ?int
+    public function getNbRDVAnnule(): ?int
     {
-        return $this->nbRDVannule;
+        return $this->nbRDVAnnule;
     }
 
-    public function setNbRDVannule(int $nbRDVannule): self
+    public function setNbRDVAnnule(int $nbRDVAnnule): self
     {
-        $this->nbRDVannule = $nbRDVannule;
+        $this->nbRDVAnnule = $nbRDVAnnule;
 
         return $this;
     }
@@ -49,9 +48,15 @@ class Patient
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPatient = $user === null ? null : $this;
+        if ($newPatient !== $user->getPatient()) {
+            $user->setPatient($newPatient);
+        }
 
         return $this;
     }

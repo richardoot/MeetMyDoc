@@ -22,8 +22,7 @@ class Medecin
     private $idNational;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="medecin", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="medecin", cascade={"persist", "remove"})
      */
     private $user;
 
@@ -49,9 +48,15 @@ class Medecin
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newMedecin = $user === null ? null : $this;
+        if ($newMedecin !== $user->getMedecin()) {
+            $user->setMedecin($newMedecin);
+        }
 
         return $this;
     }
