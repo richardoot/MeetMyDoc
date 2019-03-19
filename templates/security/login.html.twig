@@ -4,44 +4,72 @@
 
 {% block body %}
 
-<div class="container-fluid-width">
-  <div class="card mb-3">
-    <h3 style="text-align: center;"> Connectez-vous: </h3>
-    <div class="card-body">
+
+  
       <div class="row">
-        <div class="col-10 offset-1">
-          <h4> Veuillez saisir vos identifiants </h4>
+        <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+        <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+        <h1>Veuillez vous connecter</h1>
           <form method="post">
               {% if error %}
                   <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
               {% endif %}
-              <label for="inputEmail" class="sr-only">Email</label>
-              <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-              <label for="inputPassword" class="sr-only">Password</label>
-              <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+              <div class="form-group">
 
-              <input type="hidden" name="_csrf_token"
-                     value="{{ csrf_token('authenticate') }}"
-              >
+              <fieldset>
 
+                <label for="inputEmail">Email*</label>
+
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus></br>
+              
+                <label for="inputPassword">Mot de passe*</label>
+              
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required></br>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> 
+
+                <p class="obligationChamps">Les champs suivis d'un * sont obligatoires</p>
+
+              </fieldset>
               {#
                   Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
                   See https://symfony.com/doc/current/security/remember_me.html
-
               #}
-                  <div class="checkbox mb-3">
+                {#  <div class="checkbox mb-3">
                       <label>
-                          <input type="checkbox" name="_remember_me"> Remember me
+                          <input type="checkbox" name="_remember_me"> Se souvenir de moi
                       </label>
-                  </div>
+                  </div>#}
+                      <input type="checkbox"><label class="rememberME">Se souvenir de moi</label></br>
+                  
 
-              <button class="btn btn-lg btn-primary" type="submit">
-                  Sign in
-              </button>
-          </form>
+              <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Connexion</button>
+
+              </form>
+              </div> <!-- FORM GROUP -->
+              </div> <!-- CADRE DU FORM -->
         </div> <!--COL-->
       </div> <!--ROW-->
     </div>
   </div>
-</div> <!--CONTAINER-->
+
 {% endblock %}
+{#
+<div class="row">
+            <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+                <h1>Veuillez vous connecter</h1>
+                <form>
+                    <div class="form-group">
+                        <fieldset>
+                        <label>Email*</label>
+                        <input class="form-control" type="text" name="email" placeholder="exemple@exemple.com">
+                        <label>Mot de passe*</label>
+                        <input class="form-control" type="text" name="password" placeholder="votre mot de passe">
+                        <input type="checkbox"><label class="rememberME">Se souvenir de moi</label>
+                        <p class="obligationChamps">Les champs suivis d'un * sont obligatoires</p>
+                        </fieldset>
+                        <button class="btn btn-primary" type="submit">Connexion</button>
+                    </div>
+                </form>
+            </div>
+        </div>#}
