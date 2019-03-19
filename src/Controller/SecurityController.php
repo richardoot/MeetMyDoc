@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserPatientType;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class SecurityController extends AbstractController
@@ -37,9 +38,9 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/inscription", name="app_inscription")
+     * @Route("/inscriptionMedecin", name="app_inscriptionMedecin")
      */
-    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    public function inscriptionMedecin(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
       //Création d'un utilisateur vide qui sera rempli par le Formulaire
         $user = new User();
@@ -55,7 +56,7 @@ class SecurityController extends AbstractController
 
         //dump($entreprise);
       //Vérifier que le formulaire a été soumis
-    if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+      if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
               $user->setSexe("Masculin"); //Temporaire
               $user->setDateNaissance(new \dateTime()); //Temporaire
@@ -71,12 +72,57 @@ class SecurityController extends AbstractController
 
             //Redirection vers la page de connexion
               return $this->redirectToRoute('app_login');
-        }
+      }
 
       //Générer la représentation graphique du formulaire
         $vueFormulaire = $formulaireUser->createView();
 
       //Envoyer la page à la vue
-        return $this->render('security/inscription.html.twig',["formulaire" => $vueFormulaire,"action" => "ajout"]);
+        return $this->render('security/inscriptionMedecin.html.twig',["formulaire" => $vueFormulaire,"action" => "ajout"]);
+    }
+
+
+    /**
+     * @Route("/inscriptionPatient", name="app_inscriptionPatient")
+     */
+    public function inscriptionPatient(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    {
+      //Création d'un utilisateur vide qui sera rempli par le Formulaire
+        $user = new User();
+
+      //Création du Formulaire permettant de saisir un utilisateur
+      $formulaireUser = $this->createForm(UserPatientType::class, $user);
+
+
+      //Analyse la derniére requete html pour voir si le tableau post
+      // contient les variables qui ont été rentrées, si c'est le cas
+      // alors il hydrate l'objet user
+        $formulaireUser->handleRequest($request);
+
+        //dump($entreprise);
+      //Vérifier que le formulaire a été soumis
+        if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+            //Entrer le role et la date de naissance de l'utilisateur
+              $user->setSexe("Masculin"); //Temporaire
+              $user->setDateNaissance(new \dateTime()); //Temporaire
+              $user->setRoles(['ROLE_PATIENT']); //Temporaire
+
+            //Encoder le mot de passe
+              $encoded = $encoder->encodePassword($user, $user->getPassword());
+              $user->setPassword($encoded);
+
+            //Enregistrer les donnée en BD
+              $manager->persist($user);
+              $manager->flush();
+
+            //Redirection vers la page de connexion
+              return $this->redirectToRoute('app_login');
+            }
+
+      //Générer la représentation graphique du formulaire
+        $vueFormulaire = $formulaireUser->createView();
+
+      //Envoyer la page à la vue
+        return $this->render('security/inscriptionPatient.html.twig',["formulaire" => $vueFormulaire,"action" => "ajout"]);
     }
 }

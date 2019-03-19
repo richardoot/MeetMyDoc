@@ -8,14 +8,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use App\Form\MedecinType;
+use App\Form\PatientType;
 
-class UserType extends AbstractType
+class UserPatientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('medecin',MedecinType::class)
             ->add('nom')
             ->add('prenom')
             ->add('email')
@@ -27,9 +26,10 @@ class UserType extends AbstractType
                 'first_options'  => ['label' => 'Mot de Passe'],
                 'second_options' => ['label' => 'Confirmer Mot de Passe'],
             ])
-            //->add('sexe') //Temporaire faut l'ajouter !!
-            //->add('dateNaissance') //Temporaire faut l'ajouter !!
+            //->add('patient',PatientType::class) //A ajouter
+            //->add('sexe')
             //->add('roles')
+            //->add('dateNaissance')
         ;
     }
 
