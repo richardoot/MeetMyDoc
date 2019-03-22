@@ -19,6 +19,7 @@ security:
             guard:
                 authenticators:
                     - App\Security\FormulaireLoginAuthenticator
+                provider: app_user_provider
 
             logout:
                 path:   app_logout

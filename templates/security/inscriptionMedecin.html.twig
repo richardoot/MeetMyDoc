@@ -9,6 +9,7 @@
         <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
         <h1>Veuillez vous inscrire</h1>
 
+<<<<<<< HEAD
               <div class="form-group">
 
               <fieldset>
@@ -20,6 +21,18 @@
               <!-- On affiche le champ prenom et le champ nom sur la même ligne -->
               <div class="row">
               <div class="col col-xs-5">
+=======
+  <div class="card mb-3">
+    <h3 style="text-align: center;"> Inscrivez-vous: </h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-10 offset-1">
+           <h4>Veuillez saisir les données</h4>
+           {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
+              {{form_row(formulaire.idNational)}}
+        </div>
+        <div class="col-5 offset-1">
+>>>>>>> heritage-mongaburn
               {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
               </div>
 
