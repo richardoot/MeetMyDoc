@@ -16,16 +16,16 @@
               <fieldset>
               <h3 style="text-align: center;"> Inscrivez-vous: </h3>
               <div class="row">
-                <div class="col-10 offset-1">
+                <div class="col-12">
                   <h4>Veuillez saisir les données</h4>
                   {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
                       {{form_row(formulaire.idNational)}}
               </div>
-              <div class="col-5 offset-1">
+              <div class="col-6">
                 {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
               </div>
 
-              <div class="col col-xs-5 offset-xs-1">
+              <div class="col-6">
               {{form_row(formulaire.nom,{'attr': {'placeholder': 'Nom'}})}}
               </div>
               </div>
