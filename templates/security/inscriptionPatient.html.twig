@@ -4,22 +4,29 @@
 
 {% block body %}
 
+<div class="row">
+        <div class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-3">
+        <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+        <h1>Veuillez vous inscrire</h1>
 
-  <div class="card mb-3">
-    <h3 style="text-align: center;"> Inscrivez-vous: </h3>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-10 offset-1">
-           <h4>Veuillez saisir les données</h4>
-           {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
-        </div>
-        <div class="col-5 offset-1">
+              <div class="form-group">
+
+              <fieldset>
+
+              {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
+          
+              <!-- On affiche le champ prenom et le champ nom sur la même ligne -->
+              <div class="row">
+              <div class="col col-xs-5">
               {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
-        </div>
-        <div class="col-5">
+              </div>
+
+              <div class="col col-xs-5 offset-xs-1">
               {{form_row(formulaire.nom,{'attr': {'placeholder': 'Nom'}})}}
-        </div>
-        <div class="col-10 offset-1">
+              </div>
+              </div>
+              <!-- Fin de l'affichaque sur la même ligne -->
+              
               {{form_row(formulaire.email,{'attr': {'placeholder': 'Email'}})}}
               {{form_row(formulaire.password.first,{'attr': {'placeholder': 'Mot de Passe'}})}}
               {{form_row(formulaire.password.second,{'attr': {'placeholder': 'Confirmer Mot de Passe'}})}}
@@ -29,11 +36,16 @@
               {{form_row(formulaire.codePostal,{'attr': {'placeholder': 'Code Postal'}})}}
               {{form_row(formulaire.ville,{'attr': {'placeholder': 'Ville'}})}}
               {#{form_row(formulaire.sexe)}#}
-              <button class="btn btn-primary btn-block" type="submit"> s'inscrire </button>
-           {{form_end(formulaire)}}
-        </div>
-      </div>
-    </div>
-  </div>
+
+              </fieldset>
+
+              <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">s'inscrire</button>
+              {{form_end(formulaire)}}
+              </div>
+              </form>
+              </div> <!-- FORM GROUP -->
+              </div> <!-- CADRE DU FORM -->
+        </div> <!--ROW-->
 
 {% endblock %}
+{% block footer %}{% endblock %}
