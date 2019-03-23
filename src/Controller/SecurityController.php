@@ -107,19 +107,12 @@ class SecurityController extends AbstractController
       //Vérifier que le formulaire a été soumis
         if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
-<<<<<<< HEAD
 
               $patient->setSexe("Masculin"); //Temporaire
               $patient->setDateNaissance(new \dateTime()); //Temporaire
               $patient->setRoles(['ROLE_PATIENT']); //Temporaire
               $patient->setNbRDVannule(0);
 
-=======
-              $user->setSexe("Masculin"); //Temporaire
-              $user->setDateNaissance(new \dateTime()); //Temporaire
-              $user->setRoles(['ROLE_PATIENT']); //Temporaire
-              $user->setNbRDVAnnule(0);
->>>>>>> 201bf139ff211bb7191a4214deb1f0522bf85f4e
             //Encoder le mot de passe
               $encoded = $encoder->encodePassword($patient, $patient->getPassword());
               $patient->setPassword($encoded);
