@@ -58,7 +58,6 @@ class SecurityController extends AbstractController
       // alors il hydrate l'objet user
         $formulaireUser->handleRequest($request);
 
-        dump($user);
       //Vérifier que le formulaire a été soumis
       if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
