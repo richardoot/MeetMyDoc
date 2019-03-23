@@ -29,19 +29,17 @@
                     </div>
                     <!-- Fin de l'affichaque sur la même ligne -->
 
-                    {{form_row(formulaire.email,{'attr': {'placeholder': 'Email'}})}}
-                    {{form_row(formulaire.password.first,{'attr': {'placeholder': 'Mot de Passe'}})}}
-                    {{form_row(formulaire.password.second,{'attr': {'placeholder': 'Confirmer Mot de Passe'}})}}
-                    {{form_row(formulaire.telephone,{'attr': {'placeholder': 'Telephone'}})}}
-                    {{form_row(formulaire.adresse,{'attr': {'placeholder': 'Adresse'}})}}
-                    {{form_row(formulaire.complementAdresse,{'attr': {'placeholder': 'Complément Adresse'}})}}
-                    {{form_row(formulaire.codePostal,{'attr': {'placeholder': 'Code Postal'}})}}
-                    {{form_row(formulaire.ville,{'attr': {'placeholder': 'Ville'}})}}
+                    {{form_row(formulaire.email)}}
+                    {{form_row(formulaire.telephone)}}
+                    {{form_row(formulaire.adresse)}}
+                    {{form_row(formulaire.complementAdresse)}}
+                    {{form_row(formulaire.codePostal)}}
+                    {{form_row(formulaire.ville)}}
                     {#{form_row(formulaire.sexe)}#}
 
                   <!--/fieldset-->
 
-                  <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">s'inscrire</button>
+                  <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Valider</button>
 
                   {{form_end(formulaire)}}
                 </div>

@@ -13,6 +13,7 @@ use App\Entity\Patient;
 use App\Entity\Medecin;
 //use App\Form\UserType;
 use App\Form\PatientType;
+use App\Form\ProfilPatientType;
 use App\Form\MedecinType;
 use App\Form\UserPatientType;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -58,7 +59,6 @@ class SecurityController extends AbstractController
       // alors il hydrate l'objet user
         $formulaireUser->handleRequest($request);
 
-        dump($user);
       //Vérifier que le formulaire a été soumis
       if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
