@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Entity\User;
+//use App\Entity\User;
 use App\Entity\Patient;
 use App\Entity\Medecin;
-use App\Form\UserType;
+//use App\Form\UserType;
 use App\Form\PatientType;
 use App\Form\MedecinType;
 use App\Form\UserPatientType;
@@ -47,10 +47,10 @@ class SecurityController extends AbstractController
     public function inscriptionMedecin(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
       //Création d'un utilisateur vide qui sera rempli par le Formulaire
-        $user = new Medecin();
+        $medecin = new Medecin();
 
       //Création du Formulaire permettant de saisir un utilisateur
-      $formulaireUser = $this->createForm(MedecinType::class, $user);
+      $formulaireUser = $this->createForm(MedecinType::class, $medecin);
 
 
       //Analyse la derniére requete html pour voir si le tableau post
@@ -62,16 +62,16 @@ class SecurityController extends AbstractController
       //Vérifier que le formulaire a été soumis
       if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
-              $user->setSexe("Masculin"); //Temporaire
-              $user->setDateNaissance(new \dateTime()); //Temporaire
-              $user->setRoles(['ROLE_PATIENT']); //Temporaire
+              $medecin->setSexe("Masculin"); //Temporaire
+              $medecin->setDateNaissance(new \dateTime()); //Temporaire
+              $medecin->setRoles(['ROLE_MEDECIN']); //Temporaire
 
             //Encoder le mot de passe
-              $encoded = $encoder->encodePassword($user, $user->getPassword());
-              $user->setPassword($encoded);
+              $encoded = $encoder->encodePassword($medecin, $medecin->getPassword());
+              $medecin->setPassword($encoded);
 
             //Enregistrer les donnée en BD
-              $manager->persist($user);
+              $manager->persist($medecin);
               $manager->flush();
 
             //Redirection vers la page de connexion
@@ -92,10 +92,10 @@ class SecurityController extends AbstractController
     public function inscriptionPatient(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
       //Création d'un utilisateur vide qui sera rempli par le Formulaire
-        $user = new Patient();
+        $patient = new Patient();
 
       //Création du Formulaire permettant de saisir un utilisateur
-      $formulaireUser = $this->createForm(PatientType::class, $user);
+      $formulaireUser = $this->createForm(PatientType::class, $patient);
 
 
       //Analyse la derniére requete html pour voir si le tableau post
@@ -107,16 +107,18 @@ class SecurityController extends AbstractController
       //Vérifier que le formulaire a été soumis
         if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
-              $user->setSexe("Masculin"); //Temporaire
-              $user->setDateNaissance(new \dateTime()); //Temporaire
-              $user->setRoles(['ROLE_PATIENT']); //Temporaire
+
+              $patient->setSexe("Masculin"); //Temporaire
+              $patient->setDateNaissance(new \dateTime()); //Temporaire
+              $patient->setRoles(['ROLE_PATIENT']); //Temporaire
+              $patient->setNbRDVannule(0);
 
             //Encoder le mot de passe
-              $encoded = $encoder->encodePassword($user, $user->getPassword());
-              $user->setPassword($encoded);
+              $encoded = $encoder->encodePassword($patient, $patient->getPassword());
+              $patient->setPassword($encoded);
 
             //Enregistrer les donnée en BD
-              $manager->persist($user);
+              $manager->persist($patient);
               $manager->flush();
 
             //Redirection vers la page de connexion
