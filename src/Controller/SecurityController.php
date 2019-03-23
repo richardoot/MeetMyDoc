@@ -58,7 +58,7 @@ class SecurityController extends AbstractController
       // alors il hydrate l'objet user
         $formulaireUser->handleRequest($request);
 
-        //dump($entreprise);
+        dump($user);
       //Vérifier que le formulaire a été soumis
       if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
             //Entrer le role et la date de naissance de l'utilisateur
@@ -110,7 +110,7 @@ class SecurityController extends AbstractController
               $user->setSexe("Masculin"); //Temporaire
               $user->setDateNaissance(new \dateTime()); //Temporaire
               $user->setRoles(['ROLE_PATIENT']); //Temporaire
-
+              $user->setNbRDVAnnule(0);
             //Encoder le mot de passe
               $encoded = $encoder->encodePassword($user, $user->getPassword());
               $user->setPassword($encoded);
