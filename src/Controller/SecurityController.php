@@ -9,7 +9,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
+use App\Entity\Patient;
+use App\Entity\Medecin;
 use App\Form\UserType;
+use App\Form\PatientType;
+use App\Form\MedecinType;
 use App\Form\UserPatientType;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -43,10 +47,10 @@ class SecurityController extends AbstractController
     public function inscriptionMedecin(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
       //Création d'un utilisateur vide qui sera rempli par le Formulaire
-        $user = new User();
+        $user = new Medecin();
 
       //Création du Formulaire permettant de saisir un utilisateur
-      $formulaireUser = $this->createForm(UserType::class, $user);
+      $formulaireUser = $this->createForm(MedecinType::class, $user);
 
 
       //Analyse la derniére requete html pour voir si le tableau post
@@ -88,10 +92,10 @@ class SecurityController extends AbstractController
     public function inscriptionPatient(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
       //Création d'un utilisateur vide qui sera rempli par le Formulaire
-        $user = new User();
+        $user = new Patient();
 
       //Création du Formulaire permettant de saisir un utilisateur
-      $formulaireUser = $this->createForm(UserPatientType::class, $user);
+      $formulaireUser = $this->createForm(PatientType::class, $user);
 
 
       //Analyse la derniére requete html pour voir si le tableau post

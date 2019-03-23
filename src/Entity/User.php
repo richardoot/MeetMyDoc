@@ -7,8 +7,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"medecin" = "Medecin", "patient" = "Patient"})
  */
-class User implements UserInterface
+abstract class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -52,16 +55,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=8)
      */
     private $sexe;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Patient", inversedBy="user", cascade={"persist", "remove"})
-     */
-    private $patient;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", inversedBy="user", cascade={"persist", "remove"})
-     */
-    private $medecin;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -211,30 +204,6 @@ class User implements UserInterface
     public function setSexe(string $sexe): self
     {
         $this->sexe = $sexe;
-
-        return $this;
-    }
-
-    public function getPatient(): ?Patient
-    {
-        return $this->patient;
-    }
-
-    public function setPatient(?Patient $patient): self
-    {
-        $this->patient = $patient;
-
-        return $this;
-    }
-
-    public function getMedecin(): ?Medecin
-    {
-        return $this->medecin;
-    }
-
-    public function setMedecin(?Medecin $medecin): self
-    {
-        $this->medecin = $medecin;
 
         return $this;
     }
