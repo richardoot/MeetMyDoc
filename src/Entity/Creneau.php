@@ -36,6 +36,17 @@ class Creneau
      */
     private $duree;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Medecin", inversedBy="creneaux")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $medecin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Patient", inversedBy="creneaux")
+     */
+    private $patient;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +96,30 @@ class Creneau
     public function setDuree(int $duree): self
     {
         $this->duree = $duree;
+
+        return $this;
+    }
+
+    public function getMedecin(): ?Medecin
+    {
+        return $this->medecin;
+    }
+
+    public function setMedecin(?Medecin $medecin): self
+    {
+        $this->medecin = $medecin;
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
 
         return $this;
     }
