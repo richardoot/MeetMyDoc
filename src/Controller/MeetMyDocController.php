@@ -116,7 +116,7 @@ class MeetMyDocController extends AbstractController
     public function showRecapAjouterCreneau()
     {
 
-      return $this->render('meet_my_doc_medecin_recapitulatifCreneau.html.twig');
+      return $this->render('meet_my_doc/medecinRecapitulatifCreneau.html.twig');
     }
 
 
@@ -129,6 +129,28 @@ class MeetMyDocController extends AbstractController
 
       return $this->redirectToRoute('accueil');
 
+    }
+
+    /**
+    *@Route("/patient/afficherCreneau{}", name="meet_my_doc_afficher_creneaux_patient")
+    */
+    public function showCreneauPatient(CreneauRepository $repoCreneau)
+    {
+
+      $creneau->$repoCreneau=findAll();
+
+      return $this->render('meet_my_doc/patientAffciherCreneaux', ['creneaux'=> $creneaux]);
+
+    }
+
+    /*
+    *@Route("/medecin/afficherCreneau", name="meet_my_doc_afficher_creneaux_medecin")
+    */
+    public function showCreneauMedecin(CreneauRepository $repoCreneau)
+    {
+        $creneaux= $repoCreneau->findOneBy(['medecin'=>$this->getUser()]);
+
+        $return $this->render('meet_my_doc/medecinAfficherCreneaux')
     }
 
 }
