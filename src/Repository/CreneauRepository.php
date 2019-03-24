@@ -47,4 +47,36 @@ class CreneauRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public funtion findBySemaineQB($semaine)
+    {
+      return $this->createQueryBuilder('c')
+                  ->where('c.horaireDebut= :semaine')
+                  ->andWhere(c.horaireFin)
+                  ->setParameter('semaine', $semaine)
+                  ->getQuery()
+                  ->getResult()
+      ;
+    }
+
+    public function findBySemaineDQL($semaine)
+    {
+
+      // recuperer les gestionnaire d'entité
+
+      $entityManger->$this->getEntityManager();
+
+      // construction de la requete
+      $requete= $entityManger->createQuery(
+     'SELECT c
+      FROM App\Entity\Creneau c
+      WHERE c.horaireDebut= :'
+
+      );
+
+      // definir les valaeur injecté
+
+      //execuer la requete
+    }
 }
