@@ -58,7 +58,6 @@ class MeetMyDocController extends AbstractController
     public function addCreneau(Request $request, ObjectManager $manager)
     {
 
-
       $formulaireCreneau = $this->createForm(CreneauType::class);
 
       $formulaireCreneau->handleRequest($request);
@@ -72,9 +71,9 @@ class MeetMyDocController extends AbstractController
         $horaireFin=$data['horaireFin'];
         $duree=$data['duree'];
 
-        // definir l'interval
-        $interval= new \DateInterval('PT30M');
-
+        // definir l'interval des creneau à partir du duree entré par l'utilisateur
+        $interval= new \DateInterval('PT'.$duree.'M');
+        //dd($interval);
         // initialiser le tempsIntermediaire à l'horaire de debut + duree pou la création de 1 creneau
         $tempsIn1= clone $horaireDeb; // premier horaire (debut rendez vous)
         //dd($tempsIn1);
