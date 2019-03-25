@@ -7,8 +7,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"medecin" = "Medecin", "patient" = "Patient"})
  */
-class User implements UserInterface
+abstract class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -54,14 +57,30 @@ class User implements UserInterface
     private $sexe;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Medecin", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
      */
-    private $medecin;
+    private $telephone;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Patient", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
      */
-    private $patient;
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $complementAdresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
 
     public function getId(): ?int
     {
@@ -189,37 +208,64 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMedecin(): ?Medecin
+    public function getTelephone(): ?string
     {
-        return $this->medecin;
+        return $this->telephone;
     }
 
-    public function setMedecin(Medecin $medecin): self
+    public function setTelephone(string $telephone): self
     {
-        $this->medecin = $medecin;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $medecin->getUser()) {
-            $medecin->setUser($this);
-        }
+        $this->telephone = $telephone;
 
         return $this;
     }
 
-    public function getPatient(): ?Patient
+    public function getAdresse(): ?string
     {
-        return $this->patient;
+        return $this->adresse;
     }
 
-    public function setPatient(Patient $patient): self
+    public function setAdresse(string $adresse): self
     {
-        $this->patient = $patient;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $patient->getUser()) {
-            $patient->setUser($this);
-        }
+        $this->adresse = $adresse;
 
         return $this;
     }
+
+    public function getComplementAdresse(): ?string
+    {
+        return $this->complementAdresse;
+    }
+
+    public function setComplementAdresse(?string $complementAdresse): self
+    {
+        $this->complementAdresse = $complementAdresse;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
 }

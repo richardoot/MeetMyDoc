@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MedecinRepository")
  */
-class Medecin
+class Medecin extends User
 {
     /**
      * @ORM\Id()
@@ -21,11 +21,6 @@ class Medecin
      */
     private $idNational;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="medecin", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
 
     public function getId(): ?int
     {
@@ -44,15 +39,4 @@ class Medecin
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 }
