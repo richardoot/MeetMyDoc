@@ -11,7 +11,7 @@
                       <div class="form-group">
                         <form method="post">
                               <div class="card-body">
-                                  <fieldset>
+                                  <!-- fieldset -->
                                       <h3 style="text-align: center;"> Inscrivez-vous: </h3>
                                       <div class="row">
                                         <div class="col-12">
@@ -19,6 +19,7 @@
                                           {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
                                             {{form_row(formulaire.idNational,{'attr': {'placeholder': 'FRM-ezb8HRBp'}})}}
                                         </div>
+                                      <!-- Affichage du nom et du prénom sur la même ligne -->
                                         <div class="col-6">
                                             {{form_row(formulaire.prenom,{'attr': {'placeholder': 'Prénom'}})}}
                                         </div>
@@ -39,7 +40,7 @@
                                             {{form_row(formulaire.ville,{'attr': {'placeholder': 'Ville'}})}}
                                       {#{form_row(formulaire.sexe)}#}
 
-                                  </fieldset>
+                                  <!-- /fieldset -->
 
                                     <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">s'inscrire</button>
                                     {{form_end(formulaire)}}
