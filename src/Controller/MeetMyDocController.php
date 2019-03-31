@@ -12,18 +12,13 @@ use App\Repository\MedecinRepository;
 
 use App\Entity\Patient;
 use App\Entity\Medecin;
-<<<<<<< HEAD
 use App\Entity\Creneau;
 use App\Form\CreneauType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\CreneauRepository;
-=======
-
 use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
-
->>>>>>> 602a2439f0afeae106051e14fa3396db25e315ab
 
 class MeetMyDocController extends AbstractController
 {
