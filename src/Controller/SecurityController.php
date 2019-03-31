@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
         $formulaireUser->handleRequest($request);
 
       //Vérifier que le formulaire a été soumis
-      if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+      if($formulaireUser->isSubmitted() && $formulaireUser->isValid()){
             //Entrer le role et la date de naissance de l'utilisateur
               $medecin->setSexe("Masculin"); //Temporaire
               $medecin->setDateNaissance(new \dateTime()); //Temporaire
@@ -95,7 +95,7 @@ class SecurityController extends AbstractController
         $patient = new Patient();
 
       //Création du Formulaire permettant de saisir un utilisateur
-      $formulaireUser = $this->createForm(PatientType::class, $patient);
+        $formulaireUser = $this->createForm(PatientType::class, $patient);
 
 
       //Analyse la derniére requete html pour voir si le tableau post
@@ -105,7 +105,7 @@ class SecurityController extends AbstractController
 
         //dump($entreprise);
       //Vérifier que le formulaire a été soumis
-        if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+        if($formulaireUser->isSubmitted() && $formulaireUser->isValid()){
             //Entrer le role et la date de naissance de l'utilisateur
 
               $patient->setSexe("Masculin"); //Temporaire
@@ -123,7 +123,7 @@ class SecurityController extends AbstractController
 
             //Redirection vers la page de connexion
               return $this->redirectToRoute('app_login');
-            }
+        }
 
       //Générer la représentation graphique du formulaire
         $vueFormulaire = $formulaireUser->createView();

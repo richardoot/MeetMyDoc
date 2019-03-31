@@ -43,10 +43,11 @@ class MeetMyDocController extends AbstractController
     }
 
     /**
-     * @Route("/modifierPatient-{email}", name="app_modifier_patient")
+     * @Route("/modifierPatient", name="app_modifier_patient")
      */
-    public function modifierProfilPatient(Request $request, ObjectManager $manager, Patient $patient)
+    public function modifierProfilPatient(Request $request, ObjectManager $manager/*, Patient $patient*/)
     {
+      $patient=$this->getUser();
       //Création du Formulaire permettant de saisir un patient
         $formulaireUser = $this->createForm(ProfilPatientType::class, $patient);
 

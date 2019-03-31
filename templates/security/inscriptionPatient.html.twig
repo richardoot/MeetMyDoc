@@ -9,13 +9,11 @@
         <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
             <h1>Veuillez vous inscrire</h1>
 
-            <form method="post">
-                <div class="form-group">
+            {{form_start(formulaire)}}
+
+                <!--div class="form-group"-->
 
                   <!--fieldset-->
-
-                    {{form_start(formulaire)}}
-
                     <!-- On affiche le champ prenom et le champ nom sur la même ligne -->
                     <div class="row">
                       <div class="col col-xs-5">
@@ -43,9 +41,9 @@
 
                   <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">s'inscrire</button>
 
-                  {{form_end(formulaire)}}
-                </div>
-            </form>
+                <!--/div-->
+            {{form_end(formulaire)}}
+
         </div> <!-- FORM GROUP -->
     </div> <!-- CADRE DU FORM -->
 </div> <!--ROW-->
