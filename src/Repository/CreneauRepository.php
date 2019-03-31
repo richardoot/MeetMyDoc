@@ -48,7 +48,7 @@ class CreneauRepository extends ServiceEntityRepository
     }
     */
 
-
+/*
     public funtion findBySemaineQB($semaine)
     {
       return $this->createQueryBuilder('c')
@@ -59,7 +59,9 @@ class CreneauRepository extends ServiceEntityRepository
                   ->getResult()
       ;
     }
+*/
 
+/*
     public function findBySemaineDQL($semaine)
     {
 
@@ -79,4 +81,37 @@ class CreneauRepository extends ServiceEntityRepository
 
       //execuer la requete
     }
+
+    */
+
+
+/*
+    public function findBySemaineDQL1(String $critere)
+    {
+
+      // recuperer les gestionnaire d'entité
+
+      $entityManager=$this->getEntityManager();
+      $critereRecherche= explode("classementpar", $critere)[1];
+      dump($critereRecherche);
+    /*  $cre=$this->findby( [], [$critereRecherche=>'ASC']);
+      *
+
+      // construction de la requete
+      $requete= $entityManager->createQuery(
+     'SELECT c
+      FROM App\Entity\Creneau c
+      ORDER BY c.'.$critereRecherche.' ASC'
+
+      );
+
+      // definir les valaeur injecté
+      //$requete->setParameter('$critereRecherche', $critereRecherche);
+      //execuer la requete
+
+      $requete->execute();
+
+      //return $cre;
+    }
+    */
 }

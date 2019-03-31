@@ -10,17 +10,15 @@ use App\Entity\Creneau;
 use App\Form\CreneauType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-
+use App\Repository\CreneauRepository;
 
 class MeetMyDocController extends AbstractController
 {
     /**
      * @Route("/", name="accueil")
      */
-    public function index()
+    public function index(CreneauRepository $repo)
     {
-      $medecin=  new Medecin();
-      dump($this->getUser());
 
         return $this->render('meet_my_doc/rechercheMedecinAnonyme.html.twig', [
             'controller_name' => 'MeetMyDocController',
@@ -148,9 +146,9 @@ class MeetMyDocController extends AbstractController
     */
     public function showCreneauMedecin(CreneauRepository $repoCreneau)
     {
-        $creneaux= $repoCreneau->findOneBy(['medecin'=>$this->getUser()]);
+        //$creneaux= $repoCreneau->findOneBy(['medecin'=>$this->getUser()]);
 
-        $return $this->render('meet_my_doc/medecinAfficherCreneaux')
+        return $this->render('meet_my_doc/medecinAfficherCreneaux');
     }
 
 }
