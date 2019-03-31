@@ -13,6 +13,7 @@ use App\Entity\Patient;
 use App\Entity\Medecin;
 //use App\Form\UserType;
 use App\Form\PatientType;
+use App\Form\ProfilPatientType;
 use App\Form\MedecinType;
 use App\Form\UserPatientType;
 use Doctrine\Common\Persistence\ObjectManager;
