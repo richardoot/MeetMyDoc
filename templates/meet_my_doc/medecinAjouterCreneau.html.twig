@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+{{ form_start(vueFormulaire) }}
+
+{{form_row(vueFormulaire.horaireDebut)}}
+{{form_row(vueFormulaire.horaireFin)}}
+{{form_row(vueFormulaire.duree)}}
+<button type="submit" name="button">Valider</button>
+{{form_end(vueFormulaire)}}
+
+
+
+{% endblock %}
