@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -22,6 +23,10 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(
+     *     message = "l'Email renseigné n'est pas valide",
+     *     checkMX = false
+     * )
      */
     private $email;
 
@@ -33,16 +38,19 @@ abstract class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $prenom;
 
@@ -58,6 +66,13 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 15,
+     *      minMessage = "Le numéro de téléphone doit faire {{ limit }} caractères sans espaces entre les numéros",
+     *      maxMessage = "Le numéro de téléphone doit faire maximum {{ limit }} caractères avec des espaces entre les numéros"
+     * )
+     * 
      */
     private $telephone;
 

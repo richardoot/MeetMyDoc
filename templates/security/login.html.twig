@@ -5,50 +5,6 @@
 {% block body %}
 
 
-<<<<<<< HEAD
-  <div class="row">
-    <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <form method="post">
-      <div class="form-group">
-          {% if error %}
-              <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-          {% endif %}
-
-          <fieldset>
-
-          <!-- label de l'email -->
-          <label for="inputEmail" class="sr-only">Email</label> 
-          <!-- input de l'email -->
-          <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-          <!-- label du mot de passe -->
-          <label for="inputPassword" class="sr-only">Password</label>
-          <!-- input du mot de passe -->
-          <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-          <!-- input de la copie du mot de passe -->
-          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-         </div>
-         </fieldset>
-
-          {#
-              Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-              See https://symfony.com/doc/current/security/remember_me.html
-
-          #}
-              <div class="checkbox mb-3">
-                  <label>
-                      <input type="checkbox" name="_remember_me"> Remember me
-                  </label>
-              </div>
-
-          <button class="btn btn-lg btn-primary" type="submit">
-              Sign in
-          </button>
-      </form>
-    </div> <!--COL-->
-  </div> <!--ROW-->
-
-=======
 
       <div class="row">
         <div class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-3">
@@ -95,7 +51,6 @@
               </div> <!-- CADRE DU FORM -->
         </div> <!--ROW-->
         
->>>>>>> b5b095f8e742987469a4d278b86661356db7eb5d
 {% endblock %}
 
 {% block footer %}{% endblock %}

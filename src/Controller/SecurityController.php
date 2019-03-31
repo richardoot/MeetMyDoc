@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
         $formulaireUser->handleRequest($request);
 
       //Vérifier que le formulaire a été soumis
-      if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+      if($formulaireUser->isSubmitted() && $formulaireUser->isValid()){
             //Entrer le role et la date de naissance de l'utilisateur
               $medecin->setSexe("Masculin"); //Temporaire
               $medecin->setDateNaissance(new \dateTime()); //Temporaire
