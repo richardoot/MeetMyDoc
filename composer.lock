@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a296b09a72f40adc06bcb99812b6330a",
+    "content-hash": "9cc6e9cf882428fca9b1aa243f582c9f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3047,16 +3047,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v4.1.10",
+            "version": "v4.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "690d8919c2b2eb759cebb96328e0dc896c75815b"
+                "reference": "5c2ae34a651e818edca319e133f6b695bdaeea12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/690d8919c2b2eb759cebb96328e0dc896c75815b",
-                "reference": "690d8919c2b2eb759cebb96328e0dc896c75815b",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/5c2ae34a651e818edca319e133f6b695bdaeea12",
+                "reference": "5c2ae34a651e818edca319e133f6b695bdaeea12",
                 "shasum": ""
             },
             "require": {
@@ -3097,7 +3097,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-05T16:36:16+00:00"
+            "time": "2019-01-29T09:21:38+00:00"
         },
         {
             "name": "symfony/http-kernel",

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{#
+  {{ form_start(vueFormulaire) }}
+
+  {{form_row(vueFormulaire.horaireDebut)}}
+  {{form_row(vueFormulaire.horaireFin)}}
+  {{form_row(vueFormulaire.duree)}}
+  <button type="submit" name="button">Valider</button>
+  {{form_end(vueFormulaire)}} #}
+
+  <div class="row">
+    <div class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-3">
+      <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+        <h1>Veuillez rentrer les informations</h1>
+        {{ form_start(vueFormulaire) }}
+
+        <div class="form-group">
+
+          <fieldset>
+            <h5>Horaire de début</h5>
+            <label>Année</label>
+            {{form_widget(vueFormulaire.horaireDebut.date.year)}}
+
+            <label style="margin-top: 1rem;">Mois</label>
+            {{form_widget(vueFormulaire.horaireDebut.date.month)}}
+
+            <label style="margin-top: 1rem;">Jour</label>
+            {{form_widget(vueFormulaire.horaireDebut.date.day)}}
+
+            <div class="row">
+              <!-- Affichage du champ des heures et des minutes sur la même ligne -->
+              <div class="col col-xs-5">
+                <label style="margin-top: 1rem;">Heure</label>
+                {{form_widget(vueFormulaire.horaireDebut.time.hour)}}
+              </div>
+
+              <div class="col col-xs-5">
+                <label style="margin-top: 1rem;">Minute</label>
+                {{form_widget(vueFormulaire.horaireDebut.time.minute)}}
+              </div>
+            </div>
+            <!-- Fin de l'affichaque sur la même ligne -->
+
+
+
+
+            <h5 style="margin-top: 1rem;">Horaire de fin</h5>
+            <label>Année</label>
+            {{form_widget(vueFormulaire.horaireFin.date.year)}}
+
+            <label style="margin-top: 1rem;">Mois</label>
+            {{form_widget(vueFormulaire.horaireFin.date.month)}}
+
+            <label style="margin-top: 1rem;">Jour</label>
+            {{form_widget(vueFormulaire.horaireFin.date.day)}}
+
+            <div class="row">
+              <!-- Affichage du champ des heures et des minutes sur la même ligne -->
+              <div class="col col-xs-5">
+                <label style="margin-top: 1rem;">Heure</label>
+                {{form_widget(vueFormulaire.horaireFin.time.hour)}}
+              </div>
+
+              <div class="col col-xs-5">
+                <label style="margin-top: 1rem;">Minute</label>
+                {{form_widget(vueFormulaire.horaireFin.time.minute)}}
+              </div>
+            </div>
+
+            <label style="margin-top: 1rem;">Durée des créneaux</label>
+            {{form_widget(vueFormulaire.duree)}}
+
+          </fieldset>
+
+          <button type="submit" name="button" class="btn btn-primary" style="margin-top: 1rem;">Valider</button>
+
+          {{form_end(vueFormulaire)}}
+
+        </div> <!-- FROMGROUP -->
+      </div> <!-- CADREFORM -->
+    </div> <!-- COL -->
+  </div> <!--ROW-->
+
+  {% endblock %}
