@@ -10,24 +10,58 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                            <h4> Rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}}{{creneau.medecin.nom}} </h4>
+                            <h4> Rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}} {{creneau.medecin.nom}} </h4>
                         </fieldset>
                         <p> Adresse : {{ creneau.medecin.adresse }} {{ creneau.medecin.codePostal }} {{ creneau.medecin.ville }}</p>
                         <p> Date : {{creneau.dateRDV | date('d/m/Y')}} </p>
                         <p> Heure : {{creneau.heureDebut | date('H:i')}} </p>
-                        <a class="btn btn-primary" href="#"> Modifier </a> <!-- Faut supprimer l'ancien RDV et proposer le calendrier des RDV -->
-                        <a class="btn btn-danger" href="{{ path('accueil')}}"> Annuler </a>
+                        <a class="btn btn-primary" onclick="demanderConfirmationModifier('{{creneau.medecin.Prenom}} {{creneau.medecin.nom}}', '{{creneau.id}}')"> Modifier </a> <!-- Faut supprimer l'ancien RDV et proposer le calendrier des RDV -->
+                        <a class="btn btn-danger" onclick="demanderConfirmationAnnuler('{{creneau.medecin.Prenom}} {{creneau.medecin.nom}}', '{{creneau.id}}')"> Annuler </a>
                     </div>
                 </div>
               <div style="height: 5%"></div>
             {% else %}
                 <div class="alert alert-danger" role="alert" style="margin-top : 10%">
-                    Aucun rendez-vous trouvé</br>
+                    Vous n'avez pas de rendez-vous</br>
                     Cliquez <a href="{{ path('accueil')}}">ici<a> pour chercher un médecin et prendre rendez-vous !
                 </div>
 
             {% endfor %}
             </div>
         </div>
+
+  {% endblock %}
+
+  {% block javascripts %}
+
+    <script>
+      function demanderConfirmationAnnuler(nomMedecin, id){
+        //Traitements
+          if(confirm('Etes vous sûr de vouloir annuler le rendez-vous avec le Dr. ' + nomMedecin + '?')){
+            //Rediriger vers la page permettant de valider de le RDV et d'afficher le récapitulatif
+              let url = "{{path('meet_my_doc_patient_annuler_rdv')}}";
+              url += '-' + id;
+
+              document.location.href = url;
+          }
+          else {
+            alert('Demande d\'annulation du rendez-vous arrêté');
+          }
+      }
+
+      function demanderConfirmationModifier(nomMedecin, id){
+        //Traitements
+          if(confirm('Etes vous sûr de vouloir modifier le rendez-vous avec le Dr. ' + nomMedecin + '?')){
+            //Rediriger vers la page permettant de valider de le RDV et d'afficher le récapitulatif
+              let url = "{{path('meet_my_doc_patient_modifier_rdv')}}";
+              url += '-' + id;
+
+              document.location.href = url;
+          }
+          else {
+            alert('Demande de modification du rendez-vous annulé');
+          }
+      }
+    </script>
 
   {% endblock %}

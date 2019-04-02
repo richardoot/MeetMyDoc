@@ -37,6 +37,24 @@ class CreneauRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @return Creneau[] Returns an array of Creneau objects
+     */
+
+   public function findCreneauxByPatient($email)
+   {
+       return $this->createQueryBuilder('c')
+           ->join('c.patient', 'p')
+           ->andWhere('p.email = :email')
+           ->setParameter('email', $email)
+           //->orderBy('c.date', 'ASC')
+           //->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
     /*
     public function findOneBySomeField($value): ?Creneau
     {
