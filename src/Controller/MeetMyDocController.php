@@ -51,7 +51,7 @@ class MeetMyDocController extends AbstractController
 
       //Envoyer la page à la vue
       // Changer le nom de la vue renvoyée
-        return $this->render('meet_my_doc/rechercheMedecinAnonyme.html.twig',["formulaire" => $vueFormulaire]);
+        return $this->render('meet_my_doc/index.html.twig',["formulaire" => $vueFormulaire]);
       }
 
 

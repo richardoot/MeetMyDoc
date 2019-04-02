@@ -1,9 +1,29 @@
-{% extends 'basePatient.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %} MeetMyDoc {% endblock %}
 
 {% block body %}
 
+<div class="row">
+            <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+            {% for medecin in medecins %}
+                <div class="card" style="margin-top: 10%;">
+                    <div class="card-body">
+                        <fieldset>
+                            <h4><i class="fa fa-star"></i> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
+                        </fieldset>
+                        <p>{{ medecin.adresse }}</p>
+                        <p>{{ medecin.codePostal }} {{ medecin.ville }}</p><button class="btn btn-primary btnProfilMedecin" type="button">Voir profil</button><button class="btn btn-primary" type="button" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</button></div>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert" style="margin-top : 10%">
+                    Aucun médecin trouvé pour ces informations</br>
+                    Cliquez <a href="{{ path('accueil')}}">ici<a> pour chercher à nouveau !
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+{#
   <table class="table">
         <thead>
             <tr>
@@ -30,5 +50,5 @@
         {% endfor %}
         </tbody>
     </table>
-
+#}
   {% endblock %}
