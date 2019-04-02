@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="{{ asset('assets/css/Login-Form-Dark.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/Simple-Slider.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   {% block stylesheets %}{% endblock %}
 </head>
 
@@ -59,14 +60,6 @@
               <a class="dropdown-item" role="presentation" href="#">Partager mon Dossier</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Autre</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="#">Aide</a>
-              <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
-              <a class="dropdown-item" role="presentation" href="#" style="color: rgb(232,11,11);">Déconnexion</a>
-            </div>
-          </li>
 
         {% elseif is_granted('ROLE_MEDECIN') %} {# S'il s'agit d'un médecin #}
 
@@ -84,13 +77,6 @@
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_ajouter_creneau')}}">Ajouter Créneau</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Autre</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="#">Aide</a>
-              <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
-            </div>
-          </li>
         {% endif %}
       </ul>
 
@@ -98,9 +84,14 @@
       <!--Partie droite du menu -->
       <ul class="nav navbar-nav ml-auto">
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
-        <li class="nav-item">
-          <a class="nav-link" href="{{path('app_logout')}}" style="color: white;">Deconnexion</a>
-        </li>
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+              <a class="dropdown-item" role="presentation" href="#">Aide</a>
+              <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
+              <a class="dropdown-item" href="{{path('app_logout')}}" style="color: white;">Deconnexion</a>
+            </div>
+          </li>
         {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{{path('app_inscriptionPatient')}}" >S'inscrire patient</a>
