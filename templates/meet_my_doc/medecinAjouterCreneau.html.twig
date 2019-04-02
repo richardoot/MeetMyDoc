@@ -5,34 +5,55 @@
 <div class="row">
   <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
     {{form_start(vueFormulaire)}}
+      <div class="formAddCreneau" style="border: solid 1px; border-radius: 3px; border-color: #BDBDBD;">
+      <div class="date" style="padding: 10px;">
 
-      <label>Date des créneaux</label></br>
+        <h1>Date des créneaux</h1></br>
 
-      <label>Mois</label>
-      {{form_widget(vueFormulaire.dateRDV.month)}}
+        <label>Mois</label>
+        {{form_widget(vueFormulaire.dateRDV.month)}}
 
-      <label>Jour</label>
-      {{form_widget(vueFormulaire.dateRDV.day)}}
+        <label>Jour</label>
+        {{form_widget(vueFormulaire.dateRDV.day)}}
 
-      <label>Année</label>
-      {{form_widget(vueFormulaire.dateRDV.year)}}
+        <label>Année</label>
+        {{form_widget(vueFormulaire.dateRDV.year)}}
 
-      <label>Heure de début</label></br>
+      </div>
+
+      <div class="heureDebut" style="padding: 10px;">
+
+        <h1>Heure de début des créneaux</h1></br>
     
-      <label>Heure</label>
-      {{form_widget(vueFormulaire.heureDebut.hour)}}
+        <label>Heure</label>
+        {{form_widget(vueFormulaire.heureDebut.hour)}}
 
-      <label>Minutes</label>
-      {{form_widget(vueFormulaire.heureDebut.minute)}}
+        <label>Minutes</label>
+        {{form_widget(vueFormulaire.heureDebut.minute)}}
 
-      <label>Date des créneaux</label>
-      {{form_widget(vueFormulaire.heureFin)}}
+      </div>
 
-      <label>Date des créneaux</label>
-      {{form_widget(vueFormulaire.duree)}}
+      <div class="heureFin" style="padding: 10px;">
 
+        <h1>Heure de fin des créneaux</h1></br>
+
+        <label>Heure</label>
+        {{form_widget(vueFormulaire.heureFin.hour)}}
+
+        <label>Minutes</label>
+        {{form_widget(vueFormulaire.heureFin.minute)}}
+      </div>
+
+      <div class="duree" style="padding: 10px;">
+
+        <h1>Durée des créneaux</h1>
+        {{form_widget(vueFormulaire.duree)}}
+
+      </div>
+      <div class="submitBtnForm" style="padding: 10px;">
       <button type="submit" class="btn btn-primary" name="button">Valider</button>
-
+      </div>
+      </div>
       {{form_end(vueFormulaire)}}    
   </div>
 </div>
