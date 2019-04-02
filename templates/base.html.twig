@@ -121,7 +121,7 @@
   {% block body %}{% endblock %}
   {# Affichage du menu de connexion sur les petits écrans #}
   {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté ou sur la page de connexion #}
-  {% else %} {# Affiche le petit menu de connexion si il n'est pas connecté #}
+  {% else %} {# Affiche le petit menu de connexion si l'utilisateur n'est pas connecté #}
 
   {% block footer %}
     <div class="row">

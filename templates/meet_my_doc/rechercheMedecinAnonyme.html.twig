@@ -6,6 +6,7 @@
 
   <div class="row" style="margin-top: 1rem;">
     <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+    <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
       <h1>Recherche de médecin</h1>
       <form>
         <div class="form-group">
@@ -23,12 +24,12 @@
             <input class="form-control" type="text" name="champNomMedecin" placeholder="ex : Richard">
             <label style="font-size: 12px;">Les champs suivis d'un * sont obligatoires</label>
           </fieldset>
-          <a id="leLien" class="btn btn-primary" href="{{path('meet_my_doc_patient_afficher_medecins',{ville: 'Anglet'})}}">Rechercher</a>
+          <a id="leLien" class="btn btn-primary" >Rechercher</a>
           </div>
         </form>
       </div>
     </div>
-
+  </div>
   {% endblock %}
 
   {% block javascripts %}
