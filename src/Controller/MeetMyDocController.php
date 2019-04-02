@@ -375,4 +375,20 @@ class MeetMyDocController extends AbstractController
           return $this->render('meet_my_doc/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre]);
       }
 
+
+      /**
+      *@Route("/patient/afficherRDV", name="meet_my_doc_patient_afficher_rdv")
+      */
+      public function afficherLesRDV(CreneauRepository $repoCreneau)
+      {
+        //Récupérer le patient
+          $patient = $this->getUser();
+
+        //Récupérer les créneaux prix par le patient
+          $rdv = $patient->getCreneaux();
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv]);
+      }
+
 }

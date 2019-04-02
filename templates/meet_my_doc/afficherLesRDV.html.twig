@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} MeetMyDoc {% endblock %}
+
+{% block body %}
+
+<div class="row">
+            <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+            {% for creneau in creneaux %}
+                <div class="card">
+                    <div class="card-body">
+                        <fieldset>
+                            <h4> Rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}}{{creneau.medecin.nom}} </h4>
+                        </fieldset>
+                        <p> Adresse : {{ creneau.medecin.adresse }} {{ creneau.medecin.codePostal }} {{ creneau.medecin.ville }}</p>
+                        <p> Date : {{creneau.dateRDV | date('d/m/Y')}} </p>
+                        <p> Heure : {{creneau.heureDebut | date('H:i')}} </p>
+                        <a class="btn btn-primary" href="#"> Modifier </a> <!-- Faut supprimer l'ancien RDV et proposer le calendrier des RDV -->
+                        <a class="btn btn-danger" href="{{ path('accueil')}}"> Annuler </a>
+                    </div>
+                </div>
+              <div style="height: 5%"></div>
+            {% else %}
+                <div class="alert alert-danger" role="alert" style="margin-top : 10%">
+                    Aucun rendez-vous trouvé</br>
+                    Cliquez <a href="{{ path('accueil')}}">ici<a> pour chercher un médecin et prendre rendez-vous !
+                </div>
+
+            {% endfor %}
+            </div>
+        </div>
+
+  {% endblock %}
