@@ -273,7 +273,7 @@ class MeetMyDocController extends AbstractController
             }
 
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut]);
+        return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
     }
 
     /**
