@@ -19,6 +19,8 @@ use App\Repository\CreneauRepository;
 use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 class MeetMyDocController extends AbstractController
 {
     /**
@@ -111,10 +113,13 @@ class MeetMyDocController extends AbstractController
       {
         // Recuperer les données saisie par l'utilisateur
         $data=$formulaireCreneau->getData();
-        //dd($data);
-        $horaireDeb=$data['horaireDebut'];
-        $horaireFin=$data['horaireFin'];
-        $duree=$data['duree'];
+        dump($data);
+        $horaireDeb=$data->getHeureDebut();
+        $horaireFin=$data->getHeureFin();
+        $duree=$data->getDuree();
+        //$horaireDeb=$data['heureDebut'];
+        //$horaireFin=$data['heureFin'];
+        //$duree=$data['duree'];
 
         // definir l'interval des creneau à partir du duree entré par l'utilisateur
         $interval= new \DateInterval('PT'.$duree.'M');
@@ -126,12 +131,14 @@ class MeetMyDocController extends AbstractController
         $tempsIn2->add($interval); //deuxieme horaire (fin rendez vous)
         //dd($tempsIn2);
         //dd($tempsIn2<$horaireFin);
-        while($tempsIn2<=$horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
+
+        while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
         {
           // creer le creneau
           $creneau= new Creneau();
-          $creneau->setHoraireDebut($tempsIn1);
-          $creneau->setHoraireFin($tempsIn2);
+          $creneau->setDateRDV($data->getDateRDV());
+          $creneau->setHeureDebut($tempsIn1);
+          $creneau->setHeureFin($tempsIn2);
           $creneau->setDuree($duree);
           $creneau->setMedecin($this->getUser());
           $creneau->setEtat('NON PRISE');
@@ -143,8 +150,6 @@ class MeetMyDocController extends AbstractController
           $tempsIn1->add($interval);
           $tempsIn2->add($interval);
           //dd($creneau);
-
-
         }
 
         return $this->redirectToRoute('accueil');
@@ -231,5 +236,94 @@ class MeetMyDocController extends AbstractController
         return $this->render('meet_my_doc/modifierProfilMedecin.html.twig',["formulaire" => $vueFormulaire]);
     }
 
+
+    /**
+    *@Route("/medecin/afficherCreneau/semaine={debut}", name="meet_my_doc_medecin_afficher_creneau")
+    */
+    public function showCalendrierMedecin(CreneauRepository $repoCreneau,$debut)
+    {
+      //Récupérer le médecin connecter
+        $medecin = $this->getUser();
+
+      //Récupérer l'email du médecin
+        $email = $medecin->getEmail();
+      //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
+        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+        //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
+
+      //Récupérer uniquement les créneaux demandé
+          $fin = ($debut+1);
+          //définir date du début de l'interval
+            $intervalDebut = new \dateTime();
+            $interval1= new \DateInterval('P' . $debut . 'W');
+            $intervalDebut->add($interval1);
+            $intervalDebut = $intervalDebut->format('Y-m-d');
+
+          //definir date fin de l'interval
+            $intervalFin = new \dateTime();
+            $interval2= new \DateInterval('P' . $fin . 'W');
+            $intervalFin->add($interval2);
+            $intervalFin = $intervalFin->format('Y-m-d');
+
+          //Enlever les créneaux expirés
+            foreach ($tousLesCreneaux as $creneauCourant) {
+              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
+                $creneaux[] = $creneauCourant;
+              }
+            }
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut]);
+    }
+
+    /**
+    *@Route("/patient/afficherMedecins-{ville}", name="meet_my_doc_patient_afficher_medecins")
+    */
+    public function rechercherMedecin(MedecinRepository $repoMedecin, $ville=null)
+    {
+      //Récupérer tous les médecins de la ville spécifié
+        $medecins = $repoMedecin->findBy(['ville' => $ville]);
+
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
+    }
+
+
+    /**
+    *@Route("/patient/afficherCreneauMedecin-{email}/semaine={debut}", name="meet_my_doc_patient_afficher_creneaux")
+    */
+    public function showCreneauxMedecin(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau,$email,$debut)
+    {
+      //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
+        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+
+      //Récupérer le nom du médecins
+        $leMedecin = $repoMedecin->findOneBy(['email' => $email]);
+
+      //Récupérer uniquement les créneaux demandé
+          $fin = ($debut+1);
+          //définir date du début de l'interval
+            $intervalDebut = new \dateTime();
+            $interval1= new \DateInterval('P' . $debut . 'W');
+            $intervalDebut->add($interval1);
+            $intervalDebut = $intervalDebut->format('Y-m-d');
+
+          //definir date fin de l'interval
+            $intervalFin = new \dateTime();
+            $interval2= new \DateInterval('P' . $fin . 'W');
+            $intervalFin->add($interval2);
+            $intervalFin = $intervalFin->format('Y-m-d');
+
+          //Enlever les créneaux expirés
+            foreach ($tousLesCreneaux as $creneauCourant) {
+              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
+                $creneaux[] = $creneauCourant;
+              }
+            }
+
+        //Envoyer la page à la vue
+          return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+      }
 
 }

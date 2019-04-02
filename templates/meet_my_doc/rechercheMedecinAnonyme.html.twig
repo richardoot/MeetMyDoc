@@ -18,15 +18,27 @@
               </optgroup>
             </select>
             <label>Ville*</label>
-            <input class="form-control" type="text" name="champNomVille" placeholder="ex : Bayonne">
+            <input id="laVille" class="form-control" type="text" name="champNomVille" placeholder="ex : Bayonne" onkeyup="choisirVille()">
             <label>Nom</label>
             <input class="form-control" type="text" name="champNomMedecin" placeholder="ex : Richard">
             <label style="font-size: 12px;">Les champs suivis d'un * sont obligatoires</label>
           </fieldset>
-          <button class="btn btn-primary" type="submit">Rechercher</button>
+          <a id="leLien" class="btn btn-primary" href="{{path('meet_my_doc_patient_afficher_medecins',{ville: 'Anglet'})}}">Rechercher</a>
           </div>
         </form>
       </div>
     </div>
 
+  {% endblock %}
+
+  {% block javascripts %}
+  <script>
+    function choisirVille(){
+      let input = document.getElementById('laVille').value;
+      let bouton = document.getElementById('leLien');
+
+      bouton.setAttribute("href","{{path('meet_my_doc_patient_afficher_medecins',{ville: "" })}}" + "-"  + input);
+      //alert("{{path('meet_my_doc_patient_afficher_medecins',{ville: "" })}}" + "-" + input);
+    }
+  </script>
   {% endblock %}

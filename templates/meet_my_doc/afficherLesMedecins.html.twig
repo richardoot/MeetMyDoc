@@ -1,0 +1,34 @@
+{% extends 'basePatient.html.twig' %}
+
+{% block title %} MeetMyDoc {% endblock %}
+
+{% block body %}
+
+  <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Adresse</th>
+                <th>Consulter</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for medecinCourant in medecins %}
+            <tr>
+                <td>{{ medecinCourant.Nom }}</td>
+                <td>{{ medecinCourant.Prenom }}</td>
+                <td>{{ medecinCourant.adresse }}</td>
+                <td>
+                    <a href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecinCourant.email, 'debut': 0}) }}">Consulter</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun médecin trouvé dans cette ville</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+  {% endblock %}

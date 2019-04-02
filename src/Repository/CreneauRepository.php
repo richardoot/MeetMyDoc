@@ -19,22 +19,23 @@ class CreneauRepository extends ServiceEntityRepository
         parent::__construct($registry, Creneau::class);
     }
 
-    // /**
-    //  * @return Creneau[] Returns an array of Creneau objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Creneau[] Returns an array of Creneau objects
+      */
+
+    public function findCreneauxByMedecin($email)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('c.medecin', 'm')
+            ->andWhere('m.email = :email')
+            ->setParameter('email', $email)
+            //->orderBy('c.date', 'ASC')
+            //->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Creneau

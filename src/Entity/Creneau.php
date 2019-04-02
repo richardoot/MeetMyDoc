@@ -22,16 +22,6 @@ class Creneau
     private $etat;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $horaireDebut;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $horaireFin;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $duree;
@@ -47,6 +37,23 @@ class Creneau
      */
     private $patient;
 
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $heureDebut;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $heureFin;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateRDV;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,30 +67,6 @@ class Creneau
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
-
-        return $this;
-    }
-
-    public function getHoraireDebut(): ?\DateTimeInterface
-    {
-        return $this->horaireDebut;
-    }
-
-    public function setHoraireDebut(\DateTimeInterface $horaireDebut): self
-    {
-        $this->horaireDebut = $horaireDebut;
-
-        return $this;
-    }
-
-    public function getHoraireFin(): ?\DateTimeInterface
-    {
-        return $this->horaireFin;
-    }
-
-    public function setHoraireFin(\DateTimeInterface $horaireFin): self
-    {
-        $this->horaireFin = $horaireFin;
 
         return $this;
     }
@@ -123,4 +106,42 @@ class Creneau
 
         return $this;
     }
+
+
+    public function getHeureDebut(): ?\DateTimeInterface
+    {
+        return $this->heureDebut;
+    }
+
+    public function setHeureDebut(\DateTimeInterface $heureDebut): self
+    {
+        $this->heureDebut = $heureDebut;
+
+        return $this;
+    }
+
+    public function getHeureFin(): ?\DateTimeInterface
+    {
+        return $this->heureFin;
+    }
+
+    public function setHeureFin(\DateTimeInterface $heureFin): self
+    {
+        $this->heureFin = $heureFin;
+
+        return $this;
+    }
+
+    public function getDateRDV(): ?\DateTimeInterface
+    {
+        return $this->dateRDV;
+    }
+
+    public function setDateRDV(\DateTimeInterface $dateRDV): self
+    {
+        $this->dateRDV = $dateRDV;
+
+        return $this;
+    }
+
 }
