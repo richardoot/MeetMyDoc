@@ -2,15 +2,38 @@
 
 {% block body %}
 
+<div class="row">
+  <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+    {{form_start(vueFormulaire)}}
 
-{{form_start(vueFormulaire)}}
+      <label>Date des créneaux</label></br>
 
-    {{form_row(vueFormulaire.dateRDV)}}
-    {{form_row(vueFormulaire.heureDebut)}}
-    {{form_row(vueFormulaire.heureFin)}}
-    {{form_row(vueFormulaire.duree)}}
-    <button type="submit" name="button">Valider</button>
+      <label>Mois</label>
+      {{form_widget(vueFormulaire.dateRDV.month)}}
 
-{{form_end(vueFormulaire)}}
+      <label>Jour</label>
+      {{form_widget(vueFormulaire.dateRDV.day)}}
 
-  {% endblock %}
+      <label>Année</label>
+      {{form_widget(vueFormulaire.dateRDV.year)}}
+
+      <label>Heure de début</label></br>
+    
+      <label>Heure</label>
+      {{form_widget(vueFormulaire.heureDebut.hour)}}
+
+      <label>Minutes</label>
+      {{form_widget(vueFormulaire.heureDebut.minute)}}
+
+      <label>Date des créneaux</label>
+      {{form_widget(vueFormulaire.heureFin)}}
+
+      <label>Date des créneaux</label>
+      {{form_widget(vueFormulaire.duree)}}
+
+      <button type="submit" class="btn btn-primary" name="button">Valider</button>
+
+      {{form_end(vueFormulaire)}}    
+  </div>
+</div>
+{% endblock %}
