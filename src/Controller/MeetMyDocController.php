@@ -330,22 +330,41 @@ class MeetMyDocController extends AbstractController
               }
             }
 
-        //Envoyer la page à la vue
-          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patint).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+        //Envoyer les données à la vue
+          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
 
 
       /**
-      *@Route("/patient/prendreRDV-{email}/semaine={debut}", name="meet_my_doc_patient_prendre_rdv")
+      *@Route("/patient/prendreRDV-{id}", name="meet_my_doc_patient_prendre_rdv")
       */
-      public function prendreRdv(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau,$email,$debut)
+      public function prendreRdv(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau, ObjectManager $manager, $id=null)
       {
-        //
+        //Récupérer le patient
+          $patient = $this->getUser();
 
-        //
+        //Récupérer le créneau
+          $creneau_a_prendre = $repoCreneau->findOneBy(['id' => $id]);
 
-        //
 
+        //Modifier le créneau
+          //Changer état du créneau
+            $creneau_a_prendre->setEtat('PRIS');
+
+          //Définnir le patient qui a pris le créneau
+            $creneau_a_prendre->setPatient($patient);
+
+
+        //Enregistrer le créneau modifier en BD
+          //Poser l'etiquette dessus
+            $manager->persist($creneau_a_prendre);
+
+          //Modifier le créneau en BD
+            $manager->flush();
+
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre]);
       }
 
 }
