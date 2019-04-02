@@ -29,6 +29,13 @@ class MeetMyDocController extends AbstractController
        */
       public function index(MedecinRepository $repoMedecin,Request $request, ObjectManager $manager)
       {
+        if($this->isGranted('ROLE_MEDECIN') )
+        {
+          dump($this->getUser());
+          // c'est un medecin, donc rediriger vers la page pour ajouter creneau
+          return $this->RedirectToRoute('meet_my_doc_medecin_ajouter_creneau');
+        }
+
         $medecin = new Medecin();
         //Création du Formulaire permettant de chercher un médecin
         $formulaireMedecin = $this->createForm(Medecin1Type::class, $medecin);
