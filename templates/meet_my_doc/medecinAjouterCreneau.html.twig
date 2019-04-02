@@ -2,15 +2,98 @@
 
 {% block body %}
 
+<div class="row">
+  <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+    {{form_start(vueFormulaire)}}
+      <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+      <div class="date" >
+        <div class="row">
+            <div class="col-12">
+              <h1>Date des créneaux</h1>
+            </div>
+              <!-- AFFICHAGE DE L'ANNEE DU MOIS ET DU JOUR SUR LA MEME LIGNE -->
+            <div class="col col-xs-4">
+              <label>Mois</label>
+              {{form_widget(vueFormulaire.dateRDV.month)}}
+            </div>
 
-{{form_start(vueFormulaire)}}
+            <div class="col col-xs-4">
+              <label>Mois</label>
+              {{form_widget(vueFormulaire.dateRDV.day)}}
+            </div>
 
-    {{form_row(vueFormulaire.dateRDV)}}
-    {{form_row(vueFormulaire.heureDebut)}}
-    {{form_row(vueFormulaire.heureFin)}}
-    {{form_row(vueFormulaire.duree)}}
-    <button type="submit" name="button">Valider</button>
+            <div class="col col-xs-4">
+              <label>Mois</label>
+              {{form_widget(vueFormulaire.dateRDV.year)}}
+            </div>
+        </div>
+        <!-- <h1>Date des créneaux</h1></br>
+        
+        <label>Mois</label>
+        {{form_widget(vueFormulaire.dateRDV.month)}}
 
-{{form_end(vueFormulaire)}}
+        <label>Jour</label>
+        {{form_widget(vueFormulaire.dateRDV.day)}}
 
-  {% endblock %}
+        <label>Année</label>
+        {{form_widget(vueFormulaire.dateRDV.year)}} -->
+
+      </div>
+
+      <div class="heureDebut" style="margin-top: 1rem;">
+
+        <div class="row">
+            <div class="col-12">
+              <h1>Heure de début des créneaux</h1>
+            </div>
+              <!-- AFFICHAGE DE L'HEURE ET DE LA MINUTE SUR LA MEME LIGNE -->
+            <div class="col col-xs-5">
+              <label>Heure</label>
+              {{form_widget(vueFormulaire.heureDebut.hour)}}
+            </div>
+
+            <div class="col col-xs-5">
+              <label>Minute</label>
+              {{form_widget(vueFormulaire.heureDebut.minute)}}
+            </div>
+        </div>
+
+      </div> <!-- FERMETURE DE HEUREDEBUT -->
+
+      <div class="heureFin" style="margin-top: 1rem;">
+
+        <div class="row">
+            <div class="col-12">
+              <h1>Heure de fin des créneaux</h1>
+            </div>
+              <!-- AFFICHAGE DE L'HEURE ET DE LA MINUTE SUR LA MEME LIGNE -->
+            <div class="col col-xs-5">
+              <label>Heure</label>
+              {{form_widget(vueFormulaire.heureFin.hour)}}
+            </div>
+
+            <div class="col col-xs-5">
+              <label>Minute</label>
+              {{form_widget(vueFormulaire.heureFin.minute)}}
+            </div>
+        </div>
+      </div> <!-- FERMETURE DE HEUREFIN -->
+
+      <div class="duree" style="margin-top: 1rem;">
+
+        <h1>Durée des créneaux</h1>
+        {{form_widget(vueFormulaire.duree)}}
+
+      </div>
+
+        <div class="submitBtnForm" style="margin-top: 1rem;">
+          <button type="submit" class="btn btn-primary" name="button">Valider</button>
+        </div>
+
+      </div> <!-- FERMETURE DE FORMADDCRENEAU -->
+
+      {{form_end(vueFormulaire)}}    
+  
+  </div> <!-- FERMETURE DE LA COL -->
+</div> <!-- FERMETURE DE LA ROW -->
+{% endblock %}
