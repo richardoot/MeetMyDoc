@@ -9,13 +9,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use App\Repository\PatientRepository;
 use App\Repository\MedecinRepository;
+use App\Repository\CreneauRepository;
 
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
-use App\Form\CreneauType;
 
-use App\Repository\CreneauRepository;
+use App\Form\CreneauType;
 use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
 use App\Form\Medecin1Type;
@@ -70,7 +70,7 @@ class MeetMyDocController extends AbstractController
     /**
      * @Route("/modifierPatient", name="app_modifier_patient")
      */
-    public function modifierProfilPatient(Request $request, ObjectManager $manager/*, Patient $patient*/)
+    public function modifierProfilPatient(Request $request, ObjectManager $manager)
     {
       $patient=$this->getUser();
       //Création du Formulaire permettant de saisir un patient
@@ -113,10 +113,8 @@ class MeetMyDocController extends AbstractController
 
     public function showProfilMedecin(MedecinRepository $repositoryMedecin)
     {
-
-      return $this->render('meet_my_doc/profilMedecin.html.twig'/*, [
-        'medecin' => $medecin
-      ]*/);
+      //Envoyer les données à la vue
+        return $this->render('meet_my_doc/profilMedecin.html.twig');
     }
 
     /**
@@ -224,10 +222,13 @@ class MeetMyDocController extends AbstractController
     }
 
     /**
-     * @Route("/modifierMedecin-{email}", name="app_modifier_medecin")
+     * @Route("/modifierMedecin", name="app_modifier_medecin")
      */
-    public function modifierProfilMedecin(Request $request, ObjectManager $manager, Medecin $medecin)
+    public function modifierProfilMedecin(Request $request, ObjectManager $manager)
     {
+      //Récupérer le médecin connecté
+        $medecin = $this->getUser();
+
       //Création du Formulaire permettant de saisir un patient
         $formulaireUser = $this->createForm(ProfilMedecinType::class, $medecin);
 

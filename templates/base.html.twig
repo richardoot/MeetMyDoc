@@ -99,7 +99,7 @@
       <ul class="nav navbar-nav ml-auto">
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
         <li class="nav-item">
-          <a class="nav-link" href="{{path('app_logout')}}" style="color: rgb(232,11,11);">Deconnexion</a>
+          <a class="nav-link" href="{{path('app_logout')}}" style="color: white;">Deconnexion</a>
         </li>
         {% else %}
           <li class="nav-item">
@@ -109,7 +109,7 @@
             <a class="nav-link" href="{{path('app_inscriptionMedecin')}}" >S'inscrire médecin</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('app_login')}}" >Connexion</a>
+            <a class="nav-link btn" href="{{path('app_login')}}">Connexion</a>
           </li>
         {% endif %}
       </ul>
@@ -118,6 +118,7 @@
   </nav>
 
   <div class="container">
+    <div style="margin-top: 5%">
   {% block body %}{% endblock %}
   {# Affichage du menu de connexion sur les petits écrans #}
   {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté ou sur la page de connexion #}
@@ -137,6 +138,7 @@
   {% endblock %}
 
   {% endif %} {# Fin du code gérant l'affichage #}
+  </div>
 </div> <!-- CONTAINER -->
   {% block javascripts %}{% endblock %}
   <script src="{{ asset('assets/js/jquery.min.js')}}"></script>

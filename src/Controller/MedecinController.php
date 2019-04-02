@@ -48,20 +48,21 @@ class MedecinController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="medecin_show", methods={"GET"})
-     */
-    public function show(Medecin $medecin): Response
+//    /**
+//     * @Route("-{id}", name="medecin_show", methods={"GET"})
+//     */
+/*    public function show(Medecin $medecin): Response
     {
         return $this->render('medecin/show.html.twig', [
             'medecin' => $medecin,
         ]);
     }
+*/
 
-    /**
-     * @Route("/{id}/edit", name="medecin_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Medecin $medecin): Response
+//    /**
+//     * @Route("-{id}/edit", name="medecin_edit", methods={"GET","POST"})
+//     */
+/*    public function edit(Request $request, Medecin $medecin): Response
     {
         $form = $this->createForm(Medecin1Type::class, $medecin);
         $form->handleRequest($request);
@@ -79,11 +80,12 @@ class MedecinController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+*/
 
-    /**
-     * @Route("/{id}", name="medecin_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Medecin $medecin): Response
+//    /**
+//     * @Route("-{id}", name="medecin_delete", methods={"DELETE"})
+//     */
+/*    public function delete(Request $request, Medecin $medecin): Response
     {
         if ($this->isCsrfTokenValid('delete'.$medecin->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -93,4 +95,5 @@ class MedecinController extends AbstractController
 
         return $this->redirectToRoute('medecin_index');
     }
+*/
 }
