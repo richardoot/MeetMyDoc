@@ -326,4 +326,18 @@ class MeetMyDocController extends AbstractController
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patint).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
 
+
+      /**
+      *@Route("/patient/prendreRDV-{email}/semaine={debut}", name="meet_my_doc_patient_prendre_rdv")
+      */
+      public function prendreRdv(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau,$email,$debut)
+      {
+        //
+
+        //
+
+        //
+
+      }
+
 }

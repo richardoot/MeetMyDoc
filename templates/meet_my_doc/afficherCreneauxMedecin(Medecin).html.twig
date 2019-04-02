@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+
 {% block body %}
 <div class="container">
     <div class="row">
@@ -35,9 +36,9 @@
                         <tr>
                             <td>Lundi</td>
                             <td>
-                                <!--div class="table-responsive"-->
-                                    <!--table class="table"-->
-                                        <!--tbody-->
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
                                           {% set debutLigne = true %}
                                           {% set nbElem = 0 %}
 
@@ -54,7 +55,9 @@
                                                     {% endif %}
 
                                                   {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                    <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.heureDebut | date('H:i')}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
                                                     {% set nbElem = nbElem + 1 %}
 
                                                   {# Vérifier qu'ont est pas en fin de ligne #}
@@ -69,9 +72,9 @@
                                           {% if nbElem != 4 %}
                                             <td style="width: 136px;"></td></tr>
                                           {% endif %}
-                                        <!--/tbody-->
-                                    <!--/table-->
-                                <!--/div-->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -96,7 +99,9 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                <td style="width: 136px;">
+                                                  <button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                </td>
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -299,4 +304,20 @@
         </div>
     </div>
 </div>
+  {% endblock %}
+
+
+  {% block javascripts %}
+
+    <script>
+      function demanderConfirmation(heure){
+        if(confirm('Etes vous sûr de vouloir prendre un rendez-vous avec le Dc.' + {{medecin.nom}} + ' à ' + {{creneauCourant.heureDebut | date('H:i')}})){
+
+        }
+        else {
+          alert('Bah choisie un autre créneau alors');
+        }
+      }
+    </script>
+
   {% endblock %}
