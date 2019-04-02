@@ -13,7 +13,10 @@
                             <h4><i class="fa fa-star"></i> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
-                        <p>{{ medecin.codePostal }} {{ medecin.ville }}</p><button class="btn btn-primary btnProfilMedecin" type="button">Voir profil</button><button class="btn btn-primary" type="button" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</button></div>
+                        <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
+                        <a class="btn btn-primary btnProfilMedecin" >Voir profil</a>
+                        <a class="btn btn-primary" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</a>
+                    </div>
                 </div>
             {% else %}
                 <div class="alert alert-danger" role="alert" style="margin-top : 10%">

@@ -12,23 +12,11 @@
 
         {{form_row(formulaire.nom)}}
         {{form_row(formulaire.ville)}}
-      
+
         <button type="submit" name="button" class="btn btn-primary">Valider</button>
 
       {{form_end(formulaire)}}
       </div>
     </div>
   </div>
-  {% endblock %}
-
-  {% block javascripts %}
-  <script>
-    function choisirVille(){
-      let input = document.getElementById('laVille').value;
-      let bouton = document.getElementById('leLien');
-
-      bouton.setAttribute("href","{{path('meet_my_doc_patient_afficher_medecins',{ville: "" })}}" + "-"  + input);
-      //alert("{{path('meet_my_doc_patient_afficher_medecins',{ville: "" })}}" + "-" + input);
-    }
-  </script>
   {% endblock %}

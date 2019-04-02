@@ -296,19 +296,6 @@ class MeetMyDocController extends AbstractController
         return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
     }
 
-    /**
-    *@Route("/patient/afficherMedecins/{ville}", name="meet_my_doc_patient_afficher_medecins")
-    */
-    public function rechercherMedecin(MedecinRepository $repoMedecin, $ville=null)
-    {
-      //Récupérer tous les médecins de la ville spécifié
-        $medecins = $repoMedecin->findBy(['ville' => $ville]);
-
-
-      //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
-    }
-
 
     /**
     *@Route("/patient/afficherCreneauMedecin-{email}/semaine={debut}", name="meet_my_doc_patient_afficher_creneaux")
@@ -345,7 +332,6 @@ class MeetMyDocController extends AbstractController
         //Envoyer la page à la vue
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patint).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
-<<<<<<< HEAD
 
 
       /**
@@ -361,6 +347,4 @@ class MeetMyDocController extends AbstractController
 
       }
 
-=======
->>>>>>> cae0f977581e29eb2219e6388b89b026815418e5
 }
