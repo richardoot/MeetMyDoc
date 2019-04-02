@@ -294,6 +294,7 @@ class MeetMyDocController extends AbstractController
             $intervalFin = $intervalFin->format('Y-m-d');
 
           //Enlever les créneaux expirés
+          $creneaux=[];
             foreach ($tousLesCreneaux as $creneauCourant) {
               if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
