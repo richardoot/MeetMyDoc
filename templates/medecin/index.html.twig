@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medecin index{% endblock %}
+
+{% block body %}
+    <h1>Medecin index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>DateNaissance</th>
+                <th>Sexe</th>
+                <th>Telephone</th>
+                <th>Adresse</th>
+                <th>ComplementAdresse</th>
+                <th>CodePostal</th>
+                <th>Ville</th>
+                <th>IdNational</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for medecin in medecins %}
+            <tr>
+                <td>{{ medecin.id }}</td>
+                <td>{{ medecin.email }}</td>
+                <td>{{ medecin.roles ? medecin.roles|json_encode : '' }}</td>
+                <td>{{ medecin.password }}</td>
+                <td>{{ medecin.nom }}</td>
+                <td>{{ medecin.prenom }}</td>
+                <td>{{ medecin.dateNaissance ? medecin.dateNaissance|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ medecin.sexe }}</td>
+                <td>{{ medecin.telephone }}</td>
+                <td>{{ medecin.adresse }}</td>
+                <td>{{ medecin.complementAdresse }}</td>
+                <td>{{ medecin.codePostal }}</td>
+                <td>{{ medecin.ville }}</td>
+                <td>{{ medecin.idNational }}</td>
+                <td>
+                    <a href="{{ path('medecin_show', {'id': medecin.id}) }}">show</a>
+                    <a href="{{ path('medecin_edit', {'id': medecin.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('medecin_new') }}">Create new</a>
+{% endblock %}
