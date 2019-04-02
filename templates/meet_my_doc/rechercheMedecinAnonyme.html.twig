@@ -8,25 +8,14 @@
     <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
     <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
       <h1>Recherche de médecin</h1>
-      <form>
-        <div class="form-group">
-          <fieldset><label>Spécialité*</label>
-            <select class="form-control">
-              <optgroup label="choixSpecialiteMedecin">
-                <option value="12" selected="">Généraliste</option>
-                <option value="13">Cardiologue</option>
-                <option value="14">Kinésithérapeute</option>
-              </optgroup>
-            </select>
-            <label>Ville*</label>
-            <input id="laVille" class="form-control" type="text" name="champNomVille" placeholder="ex : Bayonne" onkeyup="choisirVille()">
-            <label>Nom</label>
-            <input class="form-control" type="text" name="champNomMedecin" placeholder="ex : Richard">
-            <label style="font-size: 12px;">Les champs suivis d'un * sont obligatoires</label>
-          </fieldset>
-          <a id="leLien" class="btn btn-primary" >Rechercher</a>
-          </div>
-        </form>
+      {{form_start(formulaire)}}
+
+        {{form_row(formulaire.nom)}}
+        {{form_row(formulaire.ville)}}
+      
+        <button type="submit" name="button" class="btn btn-primary">Valider</button>
+
+      {{form_end(formulaire)}}
       </div>
     </div>
   </div>

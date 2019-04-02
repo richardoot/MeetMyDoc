@@ -19,22 +19,19 @@ class MedecinRepository extends ServiceEntityRepository
         parent::__construct($registry, Medecin::class);
     }
 
-    // /**
-    //  * @return Medecin[] Returns an array of Medecin objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Medecin[] Returns an array of Medecin objects
+      */
+    
+    public function findMedecinByForm($ville,$nom)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->getEntityManager()->createQuery("SELECT m FROM App\Entity\Medecin m WHERE m.ville LIKE :ville AND m.nom LIKE :nom");
+        $query->setParameter('ville', '%'.$ville.'%');
+        $query->setParameter('nom', '%'.$nom.'%');
+        $users = $query->getResult();
+        return $users;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Medecin

@@ -18,21 +18,41 @@ use App\Form\CreneauType;
 use App\Repository\CreneauRepository;
 use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
+use App\Form\Medecin1Type;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class MeetMyDocController extends AbstractController
 {
     /**
-     * @Route("/", name="accueil")
-     */
-    public function index(CreneauRepository $repo)
-    {
+       *@Route("/", name="accueil")
+       */
+      public function index(MedecinRepository $repoMedecin,Request $request, ObjectManager $manager)
+      {
+        $medecin = new Medecin();
+        //Création du Formulaire permettant de chercher un médecin
+        $formulaireMedecin = $this->createForm(Medecin1Type::class, $medecin);
 
-        return $this->render('meet_my_doc/rechercheMedecinAnonyme.html.twig', [
-            'controller_name' => 'MeetMyDocController',
-        ]);
-    }
+        $formulaireMedecin->handleRequest($request);
+
+        if($formulaireMedecin->isSubmitted() /*&& $formulaireUser->isValid()*/){
+
+            //Enregistrer les donnée en BD
+              $nom = $medecin->getNom();
+              $ville = $medecin->getVille();
+
+              $medecins = $repoMedecin->findMedecinByForm($ville, $nom);
+            //Redirection vers la page de connexion
+              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
+          }
+
+      //Générer la représentation graphique du formulaire
+        $vueFormulaire = $formulaireMedecin->createView();
+
+      //Envoyer la page à la vue
+      // Changer le nom de la vue renvoyée
+        return $this->render('meet_my_doc/rechercheMedecinAnonyme.html.twig',["formulaire" => $vueFormulaire]);
+      }
 
 
     /**
@@ -277,7 +297,7 @@ class MeetMyDocController extends AbstractController
     }
 
     /**
-    *@Route("/patient/afficherMedecins-{ville}", name="meet_my_doc_patient_afficher_medecins")
+    *@Route("/patient/afficherMedecins/{ville}", name="meet_my_doc_patient_afficher_medecins")
     */
     public function rechercherMedecin(MedecinRepository $repoMedecin, $ville=null)
     {
@@ -325,5 +345,4 @@ class MeetMyDocController extends AbstractController
         //Envoyer la page à la vue
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patint).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
-
 }
