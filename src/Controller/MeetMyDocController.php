@@ -273,7 +273,7 @@ class MeetMyDocController extends AbstractController
             }
 
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
+        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
     }
 
     /**
@@ -323,7 +323,7 @@ class MeetMyDocController extends AbstractController
             }
 
         //Envoyer la page à la vue
-          return $this->render('meet_my_doc/afficherCreneauxMedecin.html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patint).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
 
 }
