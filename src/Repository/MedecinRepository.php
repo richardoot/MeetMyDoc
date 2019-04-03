@@ -25,7 +25,7 @@ class MedecinRepository extends ServiceEntityRepository
     
     public function findMedecinByForm($ville,$nom)
     {
-        $query = $this->getEntityManager()->createQuery("SELECT m FROM App\Entity\Medecin m WHERE m.ville LIKE :ville AND m.nom LIKE :nom OR m.prenom LIKE :nom");
+        $query = $this->getEntityManager()->createQuery("SELECT m FROM App\Entity\Medecin m WHERE m.ville LIKE :ville AND m.nom LIKE :nom OR m.prenom LIKE :nom ORDER BY m.ville, m.nom");
         $query->setParameter('ville', '%'.$ville.'%');
         $query->setParameter('nom', '%'.$nom.'%');
         $users = $query->getResult();
