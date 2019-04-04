@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} MeetMyDoc {% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3" style="margin-top: 1rem;">
+    <div class="cadreForm">
+      <h1>Quel utilisateur êtes-vous</h1>
+        <a class="btn btn-primary" href="{{path('app_inscriptionMedecin')}}">Je suis Médecin</a></br>
+        <a class="btn btn-primary" href="{{path('app_inscriptionPatient')}}">Je suis Patient</a>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+   {% block footer %}
+   {% endblock %}

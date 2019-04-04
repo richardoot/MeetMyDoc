@@ -67,7 +67,7 @@
             <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_profil')}}">Voir Profil</a>
-              <a class="dropdown-item" role="presentation" href="#">Mes Patients</a>
+              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_mes_patients')}}">Mes Patients</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -85,7 +85,7 @@
       <ul class="nav navbar-nav ml-auto">
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
         <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="color:white;"><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <a class="dropdown-item" role="presentation" href="#">Aide</a>
               <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
@@ -94,13 +94,10 @@
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{{path('app_inscriptionPatient')}}" >S'inscrire patient</a>
+            <a class="nav-link" href="{{path('meet_my_doc_inscription')}}" >S'inscrire</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('app_inscriptionMedecin')}}" >S'inscrire médecin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn" href="{{path('app_login')}}">Connexion</a>
+            <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
           </li>
         {% endif %}
       </ul>
@@ -119,10 +116,9 @@
     <div class="row">
     <div class="col col-xs-12 col-sm-10 offset-sm-1">
     <div class="corpsConnexionResponsive">
-
             <h1>Envie de vous Inscrire ou vous Connecter ?</h1>
-            <a href="#" class="linkConnexion">Se connecter</a>
-            <button class="btn btn-primary boutonInscription" type="button">S&#39;inscrire</button>
+            <a href="{{path('app_login')}}" class="linkConnexion">Se connecter</a>
+            <a class="btn btn-primary" href="{{path('meet_my_doc_inscription')}}">S&#39;inscrire</a>
     </div>
     </div>
   </div>

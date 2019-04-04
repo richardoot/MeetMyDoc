@@ -47,4 +47,17 @@ class PatientRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+      * @return Patient[] Returns an array of Patient objects
+      */
+    
+      public function findMesPatients($medecin)
+      {
+          // Retourne les patients qui ont au moins un créneau dont le médecin est le médecin passé en paramètre
+          $query = $this->getEntityManager()->createQuery("SELECT p FROM App\Entity\Patient p JOIN p.creneaux c WHERE c.medecin = :medecin ORDER BY p.nom, p.prenom, p.ville");
+          $query->setParameter('medecin', $medecin);
+          $users = $query->getResult();
+          return $users;
+      }
 }

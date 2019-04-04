@@ -200,42 +200,8 @@ class MeetMyDocController extends AbstractController
       return $this->render('meet_my_doc/medecinRecapitulatifCreneau.html.twig');
     }
 
-
     /**
-    *@Route("medecin/ConfirmerCreneau", name="meet_my_doc_confirmCreneau")
-    */
-    public function confirmCreneau()
-    {
-      // persister les Creneaux
-
-      return $this->redirectToRoute('accueil');
-
-    }
-
-    /**
-    *@Route("/patient/afficherCreneau{}", name="meet_my_doc_afficher_creneaux_patient")
-    */
-    public function showCreneauPatient(CreneauRepository $repoCreneau)
-    {
-
-      $creneau->$repoCreneau=findAll();
-
-      return $this->render('meet_my_doc/patientAffciherCreneaux', ['creneaux'=> $creneaux]);
-
-    }
-
-    /*
-    *@Route("/medecin/afficherCreneau", name="meet_my_doc_afficher_creneaux_medecin")
-    */
-    public function showCreneauMedecin(CreneauRepository $repoCreneau)
-    {
-        //$creneaux= $repoCreneau->findOneBy(['medecin'=>$this->getUser()]);
-
-        return $this->render('meet_my_doc/medecinAfficherCreneaux');
-    }
-
-    /**
-     * @Route("/modifierMedecin", name="app_modifier_medecin")
+     * @Route("/medecin/modifierMedecin", name="app_modifier_medecin")
      */
     public function modifierProfilMedecin(Request $request, ObjectManager $manager)
     {
@@ -338,9 +304,10 @@ class MeetMyDocController extends AbstractController
             $intervalFin->add($interval2);
             $intervalFin = $intervalFin->format('Y-m-d');
 
+            // Initialiser les créneaux à vide pour éviter un problème au moment de passer la variable à la vue
             $creneaux=[];
-          //Enlever les créneaux expirés
-            $creneaux=[];
+
+            //Enlever les créneaux expirés
             foreach ($tousLesCreneaux as $creneauCourant) {
               if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
@@ -512,6 +479,28 @@ class MeetMyDocController extends AbstractController
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
+      }
+
+      /**
+      *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
+      */
+      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager, $id=null)
+      {
+        //-----------------SUPPRESSION DU RDV -----------------//
+            $medecin = $this->getUser();
+          //Récupérer le créneau à modifier
+            $patients = $repoPatient->findMesPatients($medecin);
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherMesPatients.html.twig',["patients" => $patients]);
+      }
+
+      /**
+      * @Route("/inscription", name="meet_my_doc_inscription")
+      */
+      public function inscription()
+      {
+        return $this->render('meet_my_doc/choixInscription.html.twig');
       }
 
 }
