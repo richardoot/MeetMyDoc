@@ -325,7 +325,9 @@ class MeetMyDocController extends AbstractController
         //Récupérer le créneau
           $creneau_a_prendre = $repoCreneau->findOneBy(['id' => $id]);
 
+          $medecin = $creneau_a_prendre->getMedecin();
 
+          $medecin->addPatient($patient);
         //Modifier le créneau
           //Changer état du créneau
             $creneau_a_prendre->setEtat('PRIS');
@@ -497,5 +499,17 @@ class MeetMyDocController extends AbstractController
         $manager->flush();
 
         return $this->RedirectToRoute('accueil');
+      }
+
+      /**
+      * @Route("/medecin/patients", name="meet_my_doc_init_specialite")
+      */
+      public function afficherPatientParTab()
+      {
+        $medecin = $this->getUser();
+
+        $patients = $medecin->getPatients();
+
+        return $this->Render('meet_my_doc/afficherPatientsParTab.html.twig',["patients" => $patients]);
       }
 }
