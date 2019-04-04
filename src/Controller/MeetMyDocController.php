@@ -237,7 +237,7 @@ class MeetMyDocController extends AbstractController
 
           //Supprimer le créneau en BD uniquement s'il existe
           if($leCreneauxEnBD != null ){
-
+            
             $manager->remove($leCreneauxEnBD);
             $manager->flush();
           }
