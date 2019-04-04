@@ -296,7 +296,6 @@ class MeetMyDocController extends AbstractController
             $creneaux = [];
             
           //Enlever les créneaux expirés
-          $creneaux[] = $creneaux1;
             foreach ($tousLesCreneaux as $creneauCourant) {
               if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
@@ -334,9 +333,10 @@ class MeetMyDocController extends AbstractController
             $intervalFin->add($interval2);
             $intervalFin = $intervalFin->format('Y-m-d');
 
+            // Initialiser les créneaux à vide pour éviter un problème au moment de passer la variable à la vue
             $creneaux=[];
-          //Enlever les créneaux expirés
-            $creneaux=[];
+
+            //Enlever les créneaux expirés
             foreach ($tousLesCreneaux as $creneauCourant) {
               if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
@@ -490,5 +490,20 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
+
+      /**
+      *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
+      */
+      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager, $id=null)
+      {
+        //-----------------SUPPRESSION DU RDV -----------------//
+            $medecin = $this->getUser();
+          //Récupérer le créneau à modifier
+            $patients = $repoPatient->findMesPatients($medecin);
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherMesPatients.html.twig',["patients" => $patients]);
+      }
+      
 
 }
