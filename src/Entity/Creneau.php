@@ -28,7 +28,7 @@ class Creneau
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Medecin", inversedBy="creneaux")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $medecin;
 
