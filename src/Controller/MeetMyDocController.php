@@ -272,7 +272,7 @@ class MeetMyDocController extends AbstractController
     {
       //Récupérer le médecin connecter
         $medecin = $this->getUser();
-        
+
       //Récupérer l'email du médecin
         $email = $medecin->getEmail();
       //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
@@ -293,16 +293,14 @@ class MeetMyDocController extends AbstractController
             $intervalFin->add($interval2);
             $intervalFin = $intervalFin->format('Y-m-d');
 
-            $creneaux = [];
-            
           //Enlever les créneaux expirés
-          $creneaux[] = $creneaux1;
+            $creneaux = [];
             foreach ($tousLesCreneaux as $creneauCourant) {
               if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
               }
             }
-            
+
 
       //Envoyer la page à la vue
         return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
