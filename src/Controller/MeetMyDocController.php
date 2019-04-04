@@ -127,7 +127,7 @@ class MeetMyDocController extends AbstractController
     /**
     *@Route("/medecin/ajouterCreneau", name="meet_my_doc_medecin_ajouter_creneau")
     */
-    public function addCreneau(Request $request, ObjectManager $manager)
+    public function addCreneau(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau)
     {
 
       $formulaireCreneau = $this->createForm(CreneauType::class);
@@ -159,18 +159,24 @@ class MeetMyDocController extends AbstractController
 
         while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
         {
-          // creer le creneau
-          $creneau= new Creneau();
-          $creneau->setDateRDV($data->getDateRDV());
-          $creneau->setHeureDebut($tempsIn1);
-          $creneau->setHeureFin($tempsIn2);
-          $creneau->setDuree($duree);
-          $creneau->setMedecin($this->getUser());
-          $creneau->setEtat('NON PRIS');
+          //Commencer à creer le creneau
+            $creneau= new Creneau();
+            $creneau->setDateRDV($data->getDateRDV()); //toujours la même date
+            $creneau->setHeureDebut($tempsIn1);
+            $creneau->setHeureFin($tempsIn2);
 
-          $manager->persist($creneau);
-          $manager->flush();
+          //Récupérer s'il existe un créneaux avec une date et heure de début identique à celle souhaitant être ajouté en BD
+            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut()]);
 
+          //Ajouter le créneau en BD uniquement s'il n'existe pas
+          if($leCreneauxEnBD == null ){
+            $creneau->setDuree($duree);
+            $creneau->setMedecin($this->getUser());
+            $creneau->setEtat('NON PRIS');
+
+            $manager->persist($creneau);
+            $manager->flush();
+          }
           // MAJ les $tempsIn1 et $tempsIn2
           $tempsIn1->add($interval);
           $tempsIn2->add($interval);
