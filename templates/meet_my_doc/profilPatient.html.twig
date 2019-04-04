@@ -18,8 +18,10 @@
                         <h6 class="text-muted card-subtitle mb-2">{{app.user.telephone}}</h6>
                         <h4 class="card-title">Adresse</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{app.user.adresse}}</h6>
+                      {% if app.user.complementAdresse != null %}
                         <h4 class="card-title">Complément</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{app.user.complementAdresse}}</h6>
+                      {% endif %}
                         <h4 class="card-title">Code Postale</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{app.user.codePostal}}</h6>
                         <h4 class="card-title">Ville</h4>

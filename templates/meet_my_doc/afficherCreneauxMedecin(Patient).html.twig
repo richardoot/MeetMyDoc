@@ -56,7 +56,7 @@
 
                                                   {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                     <td style="width: 136px;">
-                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                     </td>
                                                     {% set nbElem = nbElem + 1 %}
 
@@ -100,7 +100,7 @@
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                 <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 </td>
                                                 {% set nbElem = nbElem + 1 %}
 
@@ -147,7 +147,7 @@
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                 <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 </td>
                                                 {% set nbElem = nbElem + 1 %}
 
@@ -192,7 +192,7 @@
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                 <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 </td>
                                                 {% set nbElem = nbElem + 1 %}
 
@@ -237,7 +237,7 @@
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                 <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 </td>
                                                 {% set nbElem = nbElem + 1 %}
 
@@ -283,7 +283,7 @@
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
                                                 <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                  <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}})"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 </td>
                                                 {% set nbElem = nbElem + 1 %}
 
@@ -319,13 +319,17 @@
   {% block javascripts %}
 
     <script>
-      function demanderConfirmation(dateHeure, nomMedecin){
-        let date = dateHeure.split("-")[0];
-        let heure = dateHeure.split("-")[1];
+      function demanderConfirmation(dateHeure, nomMedecin, id){
+        let date = dateHeure.split("-")[0]; //Récupération de la date du créneau
+        let heure = dateHeure.split("-")[1]; //Récupération de l'heure du créneau
 
         //Traitements
           if(confirm('Etes vous sûr de vouloir prendre un rendez-vous avec le Dr. ' + nomMedecin + ' le ' + date + ' à ' + heure)){
             //Rediriger vers la page permettant de valider de le RDV et d'afficher le récapitulatif
+              let url = "{{path('meet_my_doc_patient_prendre_rdv')}}";
+              url += '-' + id;
+
+              document.location.href = url;
           }
           else {
             alert('Demande de rendez-vous annulé, veuillez choisir un autre créneau s\'il vous plait');
