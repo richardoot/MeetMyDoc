@@ -23,7 +23,7 @@ class CreneauRepository extends ServiceEntityRepository
       * @return Creneau[] Returns an array of Creneau objects
       */
 
-    public function findCreneauxByMedecin($email)
+    public function findCreneauxByMedecin2($email) //non optimisé
     {
         return $this->createQueryBuilder('c')
             ->join('c.medecin', 'm')
@@ -36,12 +36,31 @@ class CreneauRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Creneau[] Returns an array of Creneau objects
+     */
+     public function findCreneauxByMedecin($email) //Non optimisé
+     {
+         $query = $this->getEntityManager()->createQuery(
+           "SELECT c, m
+            FROM App\Entity\Creneau c
+            JOIN c.medecin m
+            WHERE m.email = :email
+            ORDER BY c.dateRDV, c.heureDebut");
+
+
+         $query->setParameter('email', $email);
+         $users = $query->getResult();
+         return $users;
+     }
+
+
 
     /**
      * @return Creneau[] Returns an array of Creneau objects
      */
 
-   public function findCreneauxByPatient($email)
+   public function findCreneauxByPatient2($email) //Non optimisé
    {
        return $this->createQueryBuilder('c')
            ->join('c.patient', 'p')
@@ -54,6 +73,24 @@ class CreneauRepository extends ServiceEntityRepository
        ;
    }
 
+
+   /**
+    * @return Creneau[] Returns an array of Creneau objects
+    */
+    public function findCreneauxByPatient($email)
+    {
+        $query = $this->getEntityManager()->createQuery(
+          "SELECT c, p
+           FROM App\Entity\Creneau c
+           JOIN c.patient p
+           WHERE p.email = :email
+           ORDER BY c.dateRDV, c.heureDebut");
+
+
+        $query->setParameter('email', $email);
+        $users = $query->getResult();
+        return $users;
+    }
 
     /*
     public function findOneBySomeField($value): ?Creneau
