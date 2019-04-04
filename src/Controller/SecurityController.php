@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/inscriptionMedecin", name="app_inscriptionMedecin")
+     * @Route("/inscription/Medecin", name="app_inscriptionMedecin")
      */
     public function inscriptionMedecin(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/inscriptionPatient", name="app_inscriptionPatient")
+     * @Route("/inscription/Patient", name="app_inscriptionPatient")
      */
     public function inscriptionPatient(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {

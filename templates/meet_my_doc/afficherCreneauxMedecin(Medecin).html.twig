@@ -9,9 +9,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{debut : semaineCourante - 1 })}}" ><i class="fa fa-chevron-left"></i></a>&nbsp;</th>
+                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante - 1 })}}" ><i class="fa fa-chevron-left"></i></a>&nbsp;</th>
                             <th><select><optgroup label="This is a group"><option value="12" selected="">This is item 1</option><option value="13">This is item 2</option><option value="14">This is item 3</option></optgroup></select></th>
-                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{debut : semaineCourante + 1 })}}" ><i class="fa fa-chevron-right"></i></a></th>
+                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante + 1 })}}" ><i class="fa fa-chevron-right"></i></a></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -55,9 +55,15 @@
                                                     {% endif %}
 
                                                   {# Afficher le créneau courant sour foume de bouton dans une cellule #}
+                                                  {% if creneauCourant.etat == 'PRIS' %}
                                                     <td style="width: 136px;">
-                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.heureDebut | date('H:i')}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                              <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                 </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                     </td>
+                                                  {% endif %}
                                                     {% set nbElem = nbElem + 1 %}
 
                                                   {# Vérifier qu'ont est pas en fin de ligne #}
@@ -99,9 +105,15 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
+                                                {% if creneauCourant.etat == 'PRIS' %}
+                                                    <td style="width: 136px;">
+                                             <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+           </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% endif %}
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -146,7 +158,15 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                {% if creneauCourant.etat == 'PRIS' %}
+                                                    <td style="width: 136px;">
+                                             <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+          </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% endif %}
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -189,7 +209,15 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                {% if creneauCourant.etat == 'PRIS' %}
+                                                    <td style="width: 136px;">
+                                                <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+          </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% endif %}
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -232,7 +260,15 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                {% if creneauCourant.etat == 'PRIS' %}
+                                                    <td style="width: 136px;">
+                                                     <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                   </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% endif %}
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -276,7 +312,15 @@
                                                 {% endif %}
 
                                               {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                <td style="width: 136px;"><button class="btn btn-primary" type="button"> {{creneauCourant.heureDebut | date('H:i')}} </button></td>
+                                                {% if creneauCourant.etat == 'PRIS' %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-danger" type="button" onclick="alert('Ce créneau a été réservé par un patient, vous pouvez consulter le détail dans votre calendrier');"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% else %}
+                                                    <td style="width: 136px;">
+                                                      <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    </td>
+                                                  {% endif %}
                                                 {% set nbElem = nbElem + 1 %}
 
                                               {# Vérifier qu'ont est pas en fin de ligne #}
@@ -307,11 +351,25 @@
   {% endblock %}
 
 
+
   {% block javascripts %}
 
     <script>
-      function demanderConfirmation(heure){
-        
+      function demanderConfirmation(dateHeure, nomMedecin, id){
+        let date = dateHeure.split("-")[0]; //Récupération de la date du créneau
+        let heure = dateHeure.split("-")[1]; //Récupération de l'heure du créneau
+
+        //Traitements
+          if(confirm('Etes vous sûr de vouloir prendre un rendez-vous avec le Dr. ' + nomMedecin + ' le ' + date + ' à ' + heure)){
+            //Rediriger vers la page permettant de valider de le RDV et d'afficher le récapitulatif
+              let url = "{{path('meet_my_doc_patient_prendre_rdv')}}";
+              url += '-' + id;
+
+              document.location.href = url;
+          }
+          else {
+            alert('Demande de rendez-vous annulé, veuillez choisir un autre créneau s\'il vous plait');
+          }
       }
     </script>
 

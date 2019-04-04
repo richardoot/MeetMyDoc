@@ -505,5 +505,12 @@ class MeetMyDocController extends AbstractController
           return $this->render('meet_my_doc/afficherMesPatients.html.twig',["patients" => $patients]);
       }
       
+      /**
+      * @Route("/inscription", name="meet_my_doc_inscription")
+      */
+      public function inscription()
+      {
+        return $this->render('meet_my_doc/choixInscription.html.twig');
+      }
 
 }
