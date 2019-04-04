@@ -388,8 +388,11 @@ class MeetMyDocController extends AbstractController
         //Récupérer les créneaux prix par le patient
           $rdv = $repoCreneau->findCreneauxByPatient($email);
 
+        //Récupérer la date d'aujourd'hui
+          $dateAJD = new \dateTime();
+
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv]);
+          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
       }
 
 
@@ -423,9 +426,12 @@ class MeetMyDocController extends AbstractController
         //Récupérer les créneaux prix par le patient
           $rdv = $repoCreneau->findCreneauxByPatient($email);
 
+        //Récupérer la date d'aujourd'hui
+          $dateAJD = new \dateTime();
+
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv]);
+          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
       }
 
 
@@ -485,6 +491,19 @@ class MeetMyDocController extends AbstractController
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+      }
+
+
+      /**
+      *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
+      */
+      public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$email)
+      {
+        //Récupérer le mail du patient actuellement connecté
+          $medecin = $repoMedecin->findOneBy(['email' => $email]);
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
       }
 
 }
