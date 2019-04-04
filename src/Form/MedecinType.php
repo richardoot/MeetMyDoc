@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Medecin;
+use App\Entity\Specialite;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class MedecinType extends AbstractType
 {
@@ -15,7 +17,12 @@ class MedecinType extends AbstractType
     {
         $builder
             ->add('idNational')
-            ->add('Specialite')
+            ->add('specialite', EntityType::class, array(
+                'class' => Specialite::class,
+                'choice_label' => 'nom',
+                'multiple' => false,
+                'expanded' => false,
+            ))
             ->add('email')
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
