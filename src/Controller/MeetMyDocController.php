@@ -14,6 +14,7 @@ use App\Repository\CreneauRepository;
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
+use App\Entity\Specialite;
 
 use App\Form\CreneauType;
 use App\Form\ProfilPatientType;
@@ -185,47 +186,12 @@ class MeetMyDocController extends AbstractController
     }
 
     /**
-    *@Route("/medecin/recapitulatifCreneau", name="meet_my_doc_recapitulatif_ajouter_creneau")
-    */
-
+     * @Route("/medecin/recapitulatifCreneau", name="meet_my_doc_recapitulatif_ajouter_creneau")
+     */
     public function showRecapAjouterCreneau()
     {
 
       return $this->render('meet_my_doc/medecinRecapitulatifCreneau.html.twig');
-    }
-
-
-    /**
-    *@Route("medecin/ConfirmerCreneau", name="meet_my_doc_confirmCreneau")
-    */
-    public function confirmCreneau()
-    {
-      // persister les Creneaux
-
-      return $this->redirectToRoute('accueil');
-
-    }
-
-    /**
-    *@Route("/patient/afficherCreneau{}", name="meet_my_doc_afficher_creneaux_patient")
-    */
-    public function showCreneauPatient(CreneauRepository $repoCreneau)
-    {
-
-      $creneau->$repoCreneau=findAll();
-
-      return $this->render('meet_my_doc/patientAffciherCreneaux', ['creneaux'=> $creneaux]);
-
-    }
-
-    /*
-    *@Route("/medecin/afficherCreneau", name="meet_my_doc_afficher_creneaux_medecin")
-    */
-    public function showCreneauMedecin(CreneauRepository $repoCreneau)
-    {
-        //$creneaux= $repoCreneau->findOneBy(['medecin'=>$this->getUser()]);
-
-        return $this->render('meet_my_doc/medecinAfficherCreneaux');
     }
 
     /**
@@ -513,4 +479,23 @@ class MeetMyDocController extends AbstractController
         return $this->render('meet_my_doc/choixInscription.html.twig');
       }
 
+
+      // Ajoute la spécialité généraliste en BD
+      /**
+      * @Route("/initSpecialite", name="meet_my_doc_init_specialite")
+      */
+      public function initSpecialite(Request $request, ObjectManager $manager)
+      {
+        $specialite = new Specialite();
+
+        $specialite->setNom('Généraliste');
+
+        $specialite->__construct();
+
+        $manager->persist($specialite);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('accueil');
+      }
 }

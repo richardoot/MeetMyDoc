@@ -30,6 +30,12 @@ class Medecin extends User
      */
     private $creneaux;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite", inversedBy="medecins")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $specialite;
+
     public function __construct()
     {
         $this->creneaux = new ArrayCollection();
@@ -80,6 +86,18 @@ class Medecin extends User
                 $creneaux->setMedecin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
+    }
+
+    public function setSpecialite(?Specialite $specialite): self
+    {
+        $this->specialite = $specialite;
 
         return $this;
     }
