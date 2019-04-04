@@ -48,8 +48,9 @@ class MeetMyDocController extends AbstractController
             //Enregistrer les donnée en BD
               $nom = $medecin->getNom();
               $ville = $medecin->getVille();
+              $specialite = $medecin->getSpecialite();
 
-              $medecins = $repoMedecin->findMedecinByForm($ville, $nom);
+              $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
             //Redirection vers la page de connexion
               return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
           }

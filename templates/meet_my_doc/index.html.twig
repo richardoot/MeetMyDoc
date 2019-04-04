@@ -10,6 +10,7 @@
       <h1>Recherche de médecin</h1>
       {{form_start(formulaire, {'attr': {'novalidate': 'novalidate'}})}}
 
+        {{form_row(formulaire.specialite)}}
         {{form_row(formulaire.nom)}}
         {{form_row(formulaire.ville)}}
 

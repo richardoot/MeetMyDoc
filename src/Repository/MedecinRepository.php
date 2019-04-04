@@ -23,11 +23,19 @@ class MedecinRepository extends ServiceEntityRepository
       * @return Medecin[] Returns an array of Medecin objects
       */
     
-    public function findMedecinByForm($ville,$nom)
+    public function findMedecinByForm($ville,$nom,$specialite)
     {
-        $query = $this->getEntityManager()->createQuery("SELECT m FROM App\Entity\Medecin m WHERE m.ville LIKE :ville AND m.nom LIKE :nom OR m.prenom LIKE :nom ORDER BY m.ville, m.nom");
+        $query = $this->getEntityManager()->createQuery("SELECT m 
+                                                         FROM App\Entity\Medecin m 
+                                                         JOIN m.specialite s
+                                                         WHERE m.specialite = :specialite
+                                                         AND m.nom LIKE :nom 
+                                                         OR m.prenom LIKE :nom 
+                                                         AND m.ville LIKE :ville  
+                                                         ORDER BY m.ville, m.nom");
         $query->setParameter('ville', '%'.$ville.'%');
         $query->setParameter('nom', '%'.$nom.'%');
+        $query->setParameter('specialite', $specialite);
         $users = $query->getResult();
         return $users;
     }
