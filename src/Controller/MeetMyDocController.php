@@ -462,7 +462,7 @@ class MeetMyDocController extends AbstractController
       /**
       *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
       */
-      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager, $id=null)
+      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager)
       {
         //-----------------SUPPRESSION DU RDV -----------------//
             $medecin = $this->getUser();
@@ -511,5 +511,35 @@ class MeetMyDocController extends AbstractController
         $patients = $medecin->getPatients();
 
         return $this->Render('meet_my_doc/afficherPatientsParTab.html.twig',["patients" => $patients]);
+      }
+
+      /**
+      * @Route("/patient/ajouter-medecin-favoris/{email}", name="meet_my_doc_ajouter_medecin_favoris")
+      */
+      public function ajouterMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      {
+        $patient = $this->getUser();
+
+        $medecin = $repoMedecin->findOneByEmail($email);
+
+        $patient->addMedecinsFavori($medecin);
+
+        $manager->persist($patient);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('accueil');
+      }
+
+      /**
+      * @Route("/patient/medecins-favoris", name="meet_my_doc_afficher_medecin_favoris")
+      */
+      public function afficherMedecinFavoris()
+      {
+        $patient = $this->getUser();
+
+        $medecins = $this->getUser()->getMedecinsFavoris();
+
+        return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins]);
       }
 }
