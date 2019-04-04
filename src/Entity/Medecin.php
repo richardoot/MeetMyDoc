@@ -26,6 +26,7 @@ class Medecin extends User
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Creneau", mappedBy="medecin", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $creneaux;
 
