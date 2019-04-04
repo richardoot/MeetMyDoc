@@ -338,7 +338,7 @@ class MeetMyDocController extends AbstractController
 
             //Enlever les créneaux expirés
             foreach ($tousLesCreneaux as $creneauCourant) {
-              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin && $creneauCourant->getEtat() != 'PRIS'){
+              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                 $creneaux[] = $creneauCourant;
               }
             }
