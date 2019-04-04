@@ -15,6 +15,7 @@ class MedecinType extends AbstractType
     {
         $builder
             ->add('idNational')
+            ->add('Specialite')
             ->add('email')
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
