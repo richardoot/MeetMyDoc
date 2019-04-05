@@ -52,9 +52,11 @@ class MeetMyDocController extends AbstractController
               $ville = $medecin->getVille();
               $specialite = $medecin->getSpecialite();
 
+              $patient = $this->getUser();
+
               $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
             //Redirection vers la page de connexion
-              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
+              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
           }
 
       //Générer la représentation graphique du formulaire

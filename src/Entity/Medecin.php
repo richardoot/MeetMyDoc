@@ -134,4 +134,13 @@ class Medecin extends User
         return $this;
     }
 
+    public function isMedecinFavori(Patient $patient): self
+    {
+        foreach ($patient->getMedecinsFavoris() as $medecin) {
+            if($medecin == $this){
+              return true;
+            }
+          }
+          return false;
+    }
 }
