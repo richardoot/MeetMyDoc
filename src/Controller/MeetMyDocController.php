@@ -594,7 +594,7 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
       }
-//
+
 
       /**
       *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
