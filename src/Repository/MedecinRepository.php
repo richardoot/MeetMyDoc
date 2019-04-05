@@ -29,8 +29,8 @@ class MedecinRepository extends ServiceEntityRepository
                                                          FROM App\Entity\Medecin m 
                                                          JOIN m.specialite s
                                                          WHERE m.specialite = :specialite
-                                                         AND m.nom LIKE :nom 
-                                                         OR m.prenom LIKE :nom 
+                                                         AND (m.nom LIKE :nom 
+                                                         OR m.prenom LIKE :nom) 
                                                          AND m.ville LIKE :ville  
                                                          ORDER BY m.ville, m.nom");
         $query->setParameter('ville', '%'.$ville.'%');
@@ -41,7 +41,7 @@ class MedecinRepository extends ServiceEntityRepository
     }
     
 
-    /*
+    
     public function findOneBySomeField($value): ?Medecin
     {
         return $this->createQueryBuilder('m')
@@ -51,5 +51,5 @@ class MedecinRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    
 }

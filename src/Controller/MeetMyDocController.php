@@ -677,7 +677,7 @@ class MeetMyDocController extends AbstractController
 
         $manager->flush();
 
-        return $this->RedirectToRoute('accueil');
+        return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
 
       /**
@@ -690,5 +690,23 @@ class MeetMyDocController extends AbstractController
         $medecins = $this->getUser()->getMedecinsFavoris();
 
         return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins]);
+      }
+
+      /**
+      * @Route("/patient/retirer-medecin-favoris/{email}", name="meet_my_doc_retirer_medecin_favoris")
+      */
+      public function retirerMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      {
+        $patient = $this->getUser();
+
+        $medecin = $repoMedecin->findOneByEmail($email);
+
+        $patient->removeMedecinsFavori($medecin);
+
+        $manager->persist($patient);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
 }
