@@ -669,7 +669,7 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/patient/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
+      *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
       */
       public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$email)
       {
