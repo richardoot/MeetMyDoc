@@ -86,6 +86,22 @@
   margin: 1rem;
 }
 
+@media (max-width: 768px) {
+  .btn-primary {
+    color: #fff;
+    background-color: #e6120a;
+    border-color: #e6120a;
+    margin: 1rem;
+  }
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #e6120a;
+  border-color: #e6120a;
+  margin: 1rem;
+}
+
 .btnProfilMedecin {
   color: #fff;
   background-color: #1086b9;
@@ -140,3 +156,14 @@
   width: 100%;
 }
 
+.btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show > .btn-danger.dropdown-toggle {
+  color: #fff;
+  background-color: #e6120a;
+  border-color: #e6120a;
+}
+
+.btn-danger:hover {
+  color: #e6120a;
+  background-color: white;
+  border-color: #e6120a;
+}
