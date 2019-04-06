@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                            <h4> Récapitulatif rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}} {{creneau.medecin.nom}} </h4>
+                            <h4> Récapitulatif rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}} {{creneau.medecin.nom}} ({{creneau.medecin.specialite.nom}})</h4>
                         </fieldset>
                         <p> Adresse : {{ creneau.medecin.adresse }} {{ creneau.medecin.codePostal }} {{ creneau.medecin.ville }}</p>
                         <p> Date : {{creneau.dateRDV | date('d/m/Y')}} </p>

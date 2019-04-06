@@ -30,9 +30,21 @@ class Medecin extends User
      */
     private $creneaux;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite", inversedBy="medecins")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $specialite;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Patient")
+     */
+    private $patients;
+
     public function __construct()
     {
         $this->creneaux = new ArrayCollection();
+        $this->patients = new ArrayCollection();
     }
 
 
@@ -79,6 +91,44 @@ class Medecin extends User
             if ($creneaux->getMedecin() === $this) {
                 $creneaux->setMedecin(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
+    }
+
+    public function setSpecialite(?Specialite $specialite): self
+    {
+        $this->specialite = $specialite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Patient[]
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(Patient $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients[] = $patient;
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Patient $patient): self
+    {
+        if ($this->patients->contains($patient)) {
+            $this->patients->removeElement($patient);
         }
 
         return $this;

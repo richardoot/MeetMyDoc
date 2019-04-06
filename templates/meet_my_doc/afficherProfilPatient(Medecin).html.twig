@@ -6,26 +6,25 @@
 
   <div class="row">
             <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-                <h1>Mon profil</h1>
-                <h2>Dr. {{medecin.nom}} {{medecin.prenom}} ({{medecin.specialite.nom}})</h2>
+                <h2>Patient : {{patient.nom}} {{patient.prenom}} </h2>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Date de naissance</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.dateNaissance | date('d/m/Y')}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.dateNaissance | date('d/m/Y')}}</h6>
                         <h4 class="card-title">Email</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.email}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.email}}</h6>
                         <h4 class="card-title">Telephone</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.telephone}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.telephone}}</h6>
                         <h4 class="card-title">Adresse</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.adresse}}</h6>
-                      {% if medecin.complementAdresse != null %}
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.adresse}}</h6>
+                      {% if patient.complementAdresse != null %}
                         <h4 class="card-title">Complément</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.complementAdresse}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.complementAdresse}}</h6>
                       {% endif %}
                         <h4 class="card-title">Code Postale</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.codePostal}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.codePostal}}</h6>
                         <h4 class="card-title">Ville</h4>
-                        <h6 class="text-muted card-subtitle mb-2">{{medecin.ville}}</h6>
+                        <h6 class="text-muted card-subtitle mb-2">{{patient.ville}}</h6>
                     </div>
                 </div>
             </div>

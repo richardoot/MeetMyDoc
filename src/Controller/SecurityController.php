@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 //use App\Entity\User;
 use App\Entity\Patient;
 use App\Entity\Medecin;
+use App\Entity\Specialite;
 //use App\Form\UserType;
 use App\Form\PatientType;
 use App\Form\ProfilPatientType;

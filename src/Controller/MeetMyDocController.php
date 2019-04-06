@@ -14,6 +14,7 @@ use App\Repository\CreneauRepository;
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
+use App\Entity\Specialite;
 
 use App\Form\CreneauType;
 use App\Form\ProfilPatientType;
@@ -49,8 +50,9 @@ class MeetMyDocController extends AbstractController
             //Enregistrer les donnée en BD
               $nom = $medecin->getNom();
               $ville = $medecin->getVille();
+              $specialite = $medecin->getSpecialite();
 
-              $medecins = $repoMedecin->findMedecinByForm($ville, $nom);
+              $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
             //Redirection vers la page de connexion
               return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
           }
@@ -449,7 +451,9 @@ class MeetMyDocController extends AbstractController
         //Récupérer le créneau
           $creneau_a_prendre = $repoCreneau->findOneBy(['id' => $id]);
 
+          $medecin = $creneau_a_prendre->getMedecin();
 
+          $medecin->addPatient($patient);
         //Modifier le créneau
           //Changer état du créneau
             $creneau_a_prendre->setEtat('PRIS');
@@ -589,7 +593,7 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
+      *@Route("/patient/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
       */
       public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$email)
       {
@@ -600,10 +604,24 @@ class MeetMyDocController extends AbstractController
           return $this->render('meet_my_doc/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
       }
 
+
+      /**
+      *@Route("/medecin/afficherProfil/patient-{email}", name="meet_my_doc_medecin_afficher_profil_patient")
+      */
+      public function afficherProfilPatientAuMedecin(PatientRepository $repoPatient,$email)
+      {
+        //Récupérer le mail du patient actuellement connecté
+          $patient = $repoPatient->findOneBy(['email' => $email]);
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
+      }
+
+
       /**
       *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
       */
-      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager, $id=null)
+      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager)
       {
         //-----------------SUPPRESSION DU RDV -----------------//
             $medecin = $this->getUser();
@@ -622,4 +640,65 @@ class MeetMyDocController extends AbstractController
         return $this->render('meet_my_doc/choixInscription.html.twig');
       }
 
+
+      // Ajoute la spécialité généraliste en BD
+      /**
+      * @Route("/initSpecialite", name="meet_my_doc_init_specialite")
+      */
+      public function initSpecialite(Request $request, ObjectManager $manager)
+      {
+        $specialite = new Specialite();
+
+        $specialite->setNom('Généraliste');
+
+        $specialite->__construct();
+
+        $manager->persist($specialite);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('accueil');
+      }
+
+      /**
+      * @Route("/medecin/patients", name="meet_my_doc_init_specialite")
+      */
+      public function afficherPatientParTab()
+      {
+        $medecin = $this->getUser();
+
+        $patients = $medecin->getPatients();
+
+        return $this->Render('meet_my_doc/afficherPatientsParTab.html.twig',["patients" => $patients]);
+      }
+
+      /**
+      * @Route("/patient/ajouter-medecin-favoris/{email}", name="meet_my_doc_ajouter_medecin_favoris")
+      */
+      public function ajouterMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      {
+        $patient = $this->getUser();
+
+        $medecin = $repoMedecin->findOneByEmail($email);
+
+        $patient->addMedecinsFavori($medecin);
+
+        $manager->persist($patient);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('accueil');
+      }
+
+      /**
+      * @Route("/patient/medecins-favoris", name="meet_my_doc_afficher_medecin_favoris")
+      */
+      public function afficherMedecinFavoris()
+      {
+        $patient = $this->getUser();
+
+        $medecins = $this->getUser()->getMedecinsFavoris();
+
+        return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins]);
+      }
 }

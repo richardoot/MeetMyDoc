@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\User;
 use App\Entity\Patient;
 use App\Entity\Medecin;
+use App\Entity\Specialite;
 
 class AppFixtures extends Fixture
 {
@@ -17,7 +18,7 @@ class AppFixtures extends Fixture
 
           // créer patient
 
-        $patient = new Patient();
+      /*  $patient = new Patient();
         $patient->setNbRDVannule(0);
         $patient->setEmail("richard@user.com");
         $patient->setRoles(['ROLE_PATIENT']);
@@ -31,7 +32,7 @@ class AppFixtures extends Fixture
         $patient->setCodePostal("64100");
         $patient->setVille("Bayonne");
         $patient->setSexe("Masculin");
-        
+
         $manager->persist($patient);
 
         // créer Medecin
@@ -50,7 +51,13 @@ class AppFixtures extends Fixture
         $medecin->setVille("Anglet");
         $medecin->setSexe("Masculin");
 
-        $manager->persist($medecin);
+        $manager->persist($medecin);*/
+
+        // créer spécialité
+          $specialite = new Specialite();
+          $specialite->setNom('Généraliste');
+
+          $manager->persist($specialite);
 
 
 

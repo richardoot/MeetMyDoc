@@ -29,9 +29,15 @@ class Patient extends User
      */
     private $creneaux;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Medecin")
+     */
+    private $medecinsFavoris;
+
     public function __construct()
     {
         $this->creneaux = new ArrayCollection();
+        $this->medecinsFavoris = new ArrayCollection();
     }
 
 
@@ -78,6 +84,32 @@ class Patient extends User
             if ($creneaux->getPatient() === $this) {
                 $creneaux->setPatient(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Medecin[]
+     */
+    public function getMedecinsFavoris(): Collection
+    {
+        return $this->medecinsFavoris;
+    }
+
+    public function addMedecinsFavori(Medecin $medecinsFavori): self
+    {
+        if (!$this->medecinsFavoris->contains($medecinsFavori)) {
+            $this->medecinsFavoris[] = $medecinsFavori;
+        }
+
+        return $this;
+    }
+
+    public function removeMedecinsFavori(Medecin $medecinsFavori): self
+    {
+        if ($this->medecinsFavoris->contains($medecinsFavori)) {
+            $this->medecinsFavoris->removeElement($medecinsFavori);
         }
 
         return $this;

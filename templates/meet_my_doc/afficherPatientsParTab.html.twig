@@ -6,22 +6,22 @@
 
 <div class="row">
             <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
-            {% for medecin in medecins %}
+            {% for patient in patients %}
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                            <h4><a href="{{path('meet_my_doc_ajouter_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
+                            <h4> {{ patient.nom }} {{ patient.prenom }}</h4>
                         </fieldset>
-                        <p>{{ medecin.adresse }}</p>
-                        <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
-                        <a class="btn btn-primary" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{'email': medecin.email})}}">Voir profil</a>
-                        <a class="btn btn-primary" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</a></div>
+                        <p>{{ patient.adresse }}</p>
+                        <p>{{ patient.codePostal }} {{ patient.ville }}</p>
+                        <a class="btn btn-primary" href="">Voir profil</a>
+                        {# <a class="btn btn-primary" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</a></div> #}
                 </div>
                 <div style="height: 5%"></div>
             {% else %}
                 <div class="alert alert-danger" role="alert" style="margin-top : 10%">
-                    Aucun médecin trouvé pour ces informations</br>
-                    Cliquez <a href="{{ path('accueil')}}">ici<a> pour chercher à nouveau !
+                    Aucun patient trouvé</br>
+                    Mettez en ligne des créneaux <a href="{{ path('accueil')}}">ici<a> et attendez qu'au moins un patient réserve !
                 </div>
             {% endfor %}
             </div>
