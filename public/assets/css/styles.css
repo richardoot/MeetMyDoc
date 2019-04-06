@@ -87,7 +87,7 @@
 }
 
 @media (max-width: 768px) {
-  .btn-primary {
+  .btn-danger {
     color: #fff;
     background-color: #e6120a;
     border-color: #e6120a;
