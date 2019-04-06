@@ -335,9 +335,47 @@ class MeetMyDocController extends AbstractController
               }
             }
 
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 6){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
 
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
+        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
     }
 
 
@@ -435,8 +473,46 @@ class MeetMyDocController extends AbstractController
               }
             }
 
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 6){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
         //Envoyer les données à la vue
-          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "jours" => $jours, "joursRef" => $joursRef]);
       }
 
 

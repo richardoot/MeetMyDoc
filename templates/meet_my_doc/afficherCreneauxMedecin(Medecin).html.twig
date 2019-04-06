@@ -33,310 +33,123 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Lundi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                          {% set debutLigne = true %}
-                                          {% set nbElem = 0 %}
+                                          {# Variable #}
+                                            {% set datePremierRDV = true %}
+                                            {% set dateExacte = null %}
 
-                                          {% for creneauCourant in creneaux %}
-                                          {% set jourCourant = creneauCourant.dateRDV | date('D') %}
 
-                                            {# Vérifier qu'ont est bien Lundi (Monday => Mon)#}
-                                              {% if jourCourant == 'Mon' %}
-                                                  {# Vérifier qu'ont est en début de ligne #}
-                                                    {% if debutLigne == true %}
+                                          {# Traitements #}
+                                            {# Affichage des différents jours #}
+                                              {% for jour in joursRef %}
+
+                                                  {# Init #}
+                                                    {% set leJourExiste = false %}
+                                                    {% set debutJour = true %}
+                                                    {% set nbElem = 0 %}
+                                                    {% if datePremierRDV == false %}
+                                                    {% set dateExacte = dateExacte|date_modify("+1 day")%}
+
+                                                    {% endif %}
+
+                                                  {# Commencer l'ouverture des balises du jour #}
                                                       <tr>
-                                                      {% set debutLigne = false %}
-                                                      {% set nbElem = 0 %}
-                                                    {% endif %}
+                                                        <td> {% if jour == 'Mon'%}
+                                                                Lundi
+                                                              {% elseif jour == 'Tue' %}
+                                                                Mardi
+                                                              {% elseif jour == 'Wed' %}
+                                                                Mercredi
+                                                              {% elseif jour == 'Thu' %}
+                                                                Jeudi
+                                                              {% elseif jour == 'Fri' %}
+                                                                Vendredi
+                                                              {% elseif jour == 'Sat' %}
+                                                                Samedi
+                                                              {% endif %}
 
-                                                  {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                                  {% if creneauCourant.etat == "NON PRIS"%}
-                                                    <td style="width: 136px;">
-                                                      <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                    </td>
-                                                  {% else %}
-                                                    <td style="width: 136px;">
-                                                      <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                    </td>
+
+                                                  {# debut FOR #}
+                                                    {% for creneauCourant in creneaux %}
+                                                      {# Définir la date exacte du créneau #}
+                                                        {% if datePremierRDV == true %}
+                                                          {% set dateExacte = creneauCourant.dateRDV %}
+                                                          {% set datePremierRDV = false %}
+                                                        {% endif %}
+
+                                                      {# Définir jour courant #}
+                                                        {% set jourCourant = creneauCourant.dateRDV | date('D') %}
+
+                                                        {% if jourCourant == jour %}
+                                                            {# Définir qu'on est bien rentré dans le if #}
+                                                              {% set leJourExiste = true %}
+
+                                                            {# Continuer l'ouverture des balises du jour #}
+                                                              {% if debutJour == true %}
+                                                                  {{dateExacte | date('d/m')}} </td>
+                                                                    <td>
+                                                                      <div class="table-responsive">
+                                                                        <table class="table">
+                                                                          <tbody>
+                                                                  {% set debutJour = false %}
+                                                                  {% set debutLigne = true %}
+                                                              {% endif %}
+
+                                                            {# Démarer le début de la ligne permettant d'afficher les créneaux #}
+                                                              {% if debutLigne == true %}
+                                                                <tr>
+                                                                {% set debutLigne = false %}
+                                                                {% set nbElem = 0 %}
+                                                              {% endif %}
+
+                                                            {# Ajout du créneau #}
+                                                              <td style="width: 136px;">
+                                                                {% if creneauCourant.etat == "NON PRIS"%}
+                                                                    <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                                {% else %}
+                                                                    <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                                {% endif %}
+                                                              </td>
+
+                                                            {# Incrémenter le nombre d'éléments #}
+                                                              {% set nbElem = nbElem + 1 %}
+
+                                                            {# Vérifier qu'ont est pas en fin de ligne #}
+                                                              {% if nbElem == 4 %}
+                                                                </tr>
+                                                                {% set debutLigne = true %}
+                                                              {% endif %}
+
+                                                          {% endif %}
+
+                                                    {% endfor %}
+
+                                                  {% if leJourExiste == false %}
+                                                    {# Continuer l'ouverture des balises du jour #}
+                                                      {{dateExacte | date('d/m') }} </td>
+                                                        <td>
+                                                          <div class="table-responsive">
+                                                            <table class="table">
+                                                              <tbody>
+
                                                   {% endif %}
-                                                    {% set nbElem = nbElem + 1 %}
 
-                                                  {# Vérifier qu'ont est pas en fin de ligne #}
-                                                    {% if nbElem == 4 %}
-                                                      </tr>
-                                                      {% set debutLigne = true %}
+                                                  {# Fermeture des balises précédentes #}
+                                                    {% if nbElem != 4 %}
+                                                            </tr>
                                                     {% endif %}
-                                              {% endif %}
-
-                                          {% endfor %}
-
-                                          {% if nbElem != 4 %}
-                                            <td style="width: 136px;"></td></tr>
-                                          {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mardi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <tbody>
-                                      {% set debutLigne = true %}
-                                      {% set nbElem = 0 %}
-
-                                      {% for creneauCourant in creneaux %}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %}
-
-                                        {# Vérifier qu'ont est bien Mardi (Tuesday => Tue)#}
-                                          {% if jourCourant == 'Tue' %}
-                                              {# Vérifier qu'ont est en début de ligne #}
-                                                {% if debutLigne == true %}
-                                                  <tr>
-                                                  {% set debutLigne = false %}
-                                                  {% set nbElem = 0 %}
-                                                {% endif %}
-
-                                              {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                              {% if creneauCourant.etat == "NON PRIS"%}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% else %}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% endif %}
-                                                {% set nbElem = nbElem + 1 %}
-
-                                              {# Vérifier qu'ont est pas en fin de ligne #}
-                                                {% if nbElem == 4 %}
+                                                          </tbody>
+                                                        </table>
+                                                      </div>
+                                                    </td>
                                                   </tr>
-                                                  {% set debutLigne = true %}
-                                                {% endif %}
 
-                                          {% endif %}
 
-                                      {% endfor %}
-
-                                      {# Fermer le tableau s'il ne l'ai pas #}
-                                      {% if nbElem != 4 %}
-                                        <td style="width: 136px;"></td></tr>
-                                      {% endif %}
-
-                                      </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mercredi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <tbody>
-                                      {% set debutLigne = true %}
-                                      {% set nbElem = 0 %}
-
-                                      {% for creneauCourant in creneaux %}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %}
-
-                                        {# Vérifier qu'ont est bien Mercredi (Wednesday => Wed)#}
-                                          {% if jourCourant == 'Wed' %}
-                                              {# Vérifier qu'ont est en début de ligne #}
-                                                {% if debutLigne == true %}
-                                                  <tr>
-                                                  {% set debutLigne = false %}
+                                                {# Définir nbElem à 0 #}
                                                   {% set nbElem = 0 %}
-                                                {% endif %}
 
-                                              {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                              {% if creneauCourant.etat == "NON PRIS"%}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% else %}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% endif %}
-                                                {% set nbElem = nbElem + 1 %}
-
-                                              {# Vérifier qu'ont est pas en fin de ligne #}
-                                                {% if nbElem == 4 %}
-                                                  </tr>
-                                                  {% set debutLigne = true %}
-                                                {% endif %}
-                                          {% endif %}
-
-                                      {% endfor %}
-
-                                      {% if nbElem != 4 %}
-                                        <td style="width: 136px;"></td></tr>
-                                      {% endif %}
-
-                                      </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jeudi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <tbody>
-                                      {% set debutLigne = true %}
-                                      {% set nbElem = 0 %}
-
-                                      {% for creneauCourant in creneaux %}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %}
-
-                                        {# Vérifier qu'ont est bien Jeudi (Thursday => Thu)#}
-                                          {% if jourCourant == 'Thu' %}
-                                              {# Vérifier qu'ont est en début de ligne #}
-                                                {% if debutLigne == true %}
-                                                  <tr>
-                                                  {% set debutLigne = false %}
-                                                  {% set nbElem = 0 %}
-                                                {% endif %}
-
-                                              {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                              {% if creneauCourant.etat == "NON PRIS"%}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% else %}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% endif %}
-
-                                                {% set nbElem = nbElem + 1 %}
-
-                                              {# Vérifier qu'ont est pas en fin de ligne #}
-                                                {% if nbElem == 4 %}
-                                                  </tr>
-                                                  {% set debutLigne = true %}
-                                                {% endif %}
-                                          {% endif %}
-
-                                      {% endfor %}
-
-                                      {% if nbElem != 4 %}
-                                        <td style="width: 136px;"></td></tr>
-                                      {% endif %}
-
-                                      </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Vendredi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <tbody>
-                                      {% set debutLigne = true %}
-                                      {% set nbElem = 0 %}
-
-                                      {% for creneauCourant in creneaux %}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %}
-
-                                        {# Vérifier qu'ont est bien Vendredi (Friday => Fri)#}
-                                          {% if jourCourant == 'Fri' %}
-                                              {# Vérifier qu'ont est en début de ligne #}
-                                                {% if debutLigne == true %}
-                                                  <tr>
-                                                  {% set debutLigne = false %}
-                                                  {% set nbElem = 0 %}
-                                                {% endif %}
-
-                                              {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                              {% if creneauCourant.etat == "NON PRIS"%}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% else %}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% endif %}
-                                                {% set nbElem = nbElem + 1 %}
-
-                                              {# Vérifier qu'ont est pas en fin de ligne #}
-                                                {% if nbElem == 4 %}
-                                                  </tr>
-                                                  {% set debutLigne = true %}
-                                                {% endif %}
-                                          {% endif %}
-
-
-                                      {% endfor %}
-
-                                      {% if nbElem != 4 %}
-                                        <td style="width: 136px;"></td></tr>
-                                      {% endif %}
-
-                                      </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Samedi</td>
-                            <td>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <tbody>
-                                      {% set debutLigne = true %}
-                                      {% set nbElem = 0 %}
-
-                                      {% for creneauCourant in creneaux %}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %} {# Définir le jour courant #}
-
-                                        {# Vérifier qu'ont est bien Samedi (Saturday => Sat)#}
-                                          {% if jourCourant == 'Sat' %}
-                                              {# Vérifier qu'ont est en début de ligne #}
-                                                {% if debutLigne == true %}
-                                                  <tr>
-                                                  {% set debutLigne = false %}
-                                                  {% set nbElem = 0 %}
-                                                {% endif %}
-
-                                              {# Afficher le créneau courant sour foume de bouton dans une cellule #}
-                                              {% if creneauCourant.etat == "NON PRIS"%}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% else %}
-                                                <td style="width: 136px;">
-                                                  <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
-                                                </td>
-                                              {% endif %}
-                                                {% set nbElem = nbElem + 1 %}
-
-                                              {# Vérifier qu'ont est pas en fin de ligne #}
-                                                {% if nbElem == 4 %}
-                                                  </tr>
-                                                  {% set debutLigne = true %}
-                                                {% endif %}
-                                          {% endif %}
-
-
-                                      {% endfor %}
-
-                                      {% if nbElem != 4 %}
-                                        <td style="width: 136px;"></td></tr>
-                                      {% endif %}
+                                            {# Fin boucle des jours #}
+                                              {% endfor %}
+<!---------------------------------------------->
 
                                       </tbody>
                                     </table>
