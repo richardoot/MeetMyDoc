@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                            <h4> Rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}} {{creneau.medecin.nom}} </h4>
+                            <h4> Rendez-vous avec <br> Dr. {{creneau.medecin.Prenom}} {{creneau.medecin.nom}} ({{creneau.medecin.specialite.nom}})</h4>
                         </fieldset>
                         <p> Adresse : {{ creneau.medecin.adresse }} {{ creneau.medecin.codePostal }} {{ creneau.medecin.ville }}</p>
                       {# faire if date expiré --> pour cela faut que la vue reçoive de la part du controleur la date d'aujourd'hui #}

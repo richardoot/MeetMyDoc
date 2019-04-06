@@ -597,7 +597,7 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
+      *@Route("/patient/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
       */
       public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$email)
       {
@@ -607,6 +607,20 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
       }
+
+
+      /**
+      *@Route("/medecin/afficherProfil/patient-{email}", name="meet_my_doc_medecin_afficher_profil_patient")
+      */
+      public function afficherProfilPatientAuMedecin(PatientRepository $repoPatient,$email)
+      {
+        //Récupérer le mail du patient actuellement connecté
+          $patient = $repoPatient->findOneBy(['email' => $email]);
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
+      }
+
 
       /**
       *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
