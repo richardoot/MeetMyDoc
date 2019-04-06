@@ -42,9 +42,10 @@ class CreneauRepository extends ServiceEntityRepository
      public function findCreneauxByMedecin($email) //Non optimisé
      {
          $query = $this->getEntityManager()->createQuery(
-           "SELECT c, m
+           "SELECT c, m, s
             FROM App\Entity\Creneau c
             JOIN c.medecin m
+            JOIN m.specialite s
             WHERE m.email = :email
             ORDER BY c.dateRDV, c.heureDebut");
 
