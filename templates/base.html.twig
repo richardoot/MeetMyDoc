@@ -106,8 +106,7 @@
   </div>
   </nav>
 
-  <div class="container">
-    <div style="margin-top: 5%">
+  <div class="container" style="margin-top:50px;">
   {% block body %}{% endblock %}
   {# Affichage du menu de connexion sur les petits écrans #}
   {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté ou sur la page de connexion #}
@@ -126,7 +125,6 @@
   {% endblock %}
 
   {% endif %} {# Fin du code gérant l'affichage #}
-  </div>
 </div> <!-- CONTAINER -->
   {% block javascripts %}{% endblock %}
   <script src="{{ asset('assets/js/jquery.min.js')}}"></script>
