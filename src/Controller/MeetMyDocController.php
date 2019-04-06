@@ -319,6 +319,7 @@ class MeetMyDocController extends AbstractController
             $intervalDebut = new \dateTime();
             $interval1= new \DateInterval('P' . $debut . 'W');
             $intervalDebut->add($interval1);
+            $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
             $intervalDebut = $intervalDebut->format('Y-m-d');
 
           //definir date fin de l'interval
@@ -336,8 +337,8 @@ class MeetMyDocController extends AbstractController
             }
 
             //Définir tableau
-              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 
               //initialiser
@@ -357,7 +358,7 @@ class MeetMyDocController extends AbstractController
                   $case = $place;
                   for($k=0 ; $k <= sizeof($tab) ; $k++){
 
-                    if($case == 6){
+                    if($case == 7){
                       $case = -1;
                     }
 
@@ -416,6 +417,7 @@ class MeetMyDocController extends AbstractController
               $intervalDebut = new \dateTime();
               $interval1= new \DateInterval('P' . $debut . 'W');
               $intervalDebut->add($interval1);
+              $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
               $intervalDebut = $intervalDebut->format('Y-m-d');
 
             //definir date fin de l'interval
@@ -455,27 +457,28 @@ class MeetMyDocController extends AbstractController
             $intervalDebut = new \dateTime();
             $interval1= new \DateInterval('P' . $debut . 'W');
             $intervalDebut->add($interval1);
-            $intervalDebut = $intervalDebut->format('Y-m-d');
+            $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
+            $intervalDebutString = $intervalDebut->format('Y-m-d');
 
           //definir date fin de l'interval
             $intervalFin = new \dateTime();
             $interval2= new \DateInterval('P' . $fin . 'W');
             $intervalFin->add($interval2);
-            $intervalFin = $intervalFin->format('Y-m-d');
+            $intervalFinString = $intervalFin->format('Y-m-d');
 
             // Initialiser les créneaux à vide pour éviter un problème au moment de passer la variable à la vue
             $creneaux=[];
 
             //Enlever les créneaux expirés
             foreach ($tousLesCreneaux as $creneauCourant) {
-              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
+              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebutString && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFinString && $creneauCourant->getHeureDebut() >= $intervalDebut->format('H-i')){
                 $creneaux[] = $creneauCourant;
               }
             }
 
             //Définir tableau
-              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 
               //initialiser
@@ -495,7 +498,7 @@ class MeetMyDocController extends AbstractController
                   $case = $place;
                   for($k=0 ; $k <= sizeof($tab) ; $k++){
 
-                    if($case == 6){
+                    if($case == 7){
                       $case = -1;
                     }
 
@@ -648,6 +651,7 @@ class MeetMyDocController extends AbstractController
               $intervalDebut = new \dateTime();
               $interval1= new \DateInterval('P' . $debut . 'W');
               $intervalDebut->add($interval1);
+              $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
               $intervalDebut = $intervalDebut->format('Y-m-d');
 
             //definir date fin de l'interval
