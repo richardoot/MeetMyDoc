@@ -52,9 +52,11 @@ class MeetMyDocController extends AbstractController
               $ville = $medecin->getVille();
               $specialite = $medecin->getSpecialite();
 
+              $patient = $this->getUser();
+
               $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
             //Redirection vers la page de connexion
-              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',["medecins" => $medecins]);
+              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
           }
 
       //Générer la représentation graphique du formulaire
@@ -435,8 +437,49 @@ class MeetMyDocController extends AbstractController
               }
 
 
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 7){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
+
+
+
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin]);
+        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
     }
 
 
@@ -667,8 +710,49 @@ class MeetMyDocController extends AbstractController
                 }
               }
 
+
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 7){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
+
+
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin]);
+          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "joursRef" => $joursRef]);
       }
 
 
@@ -767,7 +851,7 @@ class MeetMyDocController extends AbstractController
 
         $manager->flush();
 
-        return $this->RedirectToRoute('accueil');
+        return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
 
       /**
@@ -779,6 +863,26 @@ class MeetMyDocController extends AbstractController
 
         $medecins = $this->getUser()->getMedecinsFavoris();
 
-        return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins]);
+        return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
+      }
+
+
+
+      /**
+      * @Route("/patient/retirer-medecin-favoris/{email}", name="meet_my_doc_retirer_medecin_favoris")
+      */
+      public function retirerMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      {
+        $patient = $this->getUser();
+
+        $medecin = $repoMedecin->findOneByEmail($email);
+
+        $patient->removeMedecinsFavori($medecin);
+
+        $manager->persist($patient);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
 }

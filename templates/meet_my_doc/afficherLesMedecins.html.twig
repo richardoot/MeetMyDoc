@@ -10,7 +10,13 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
+                        {% if patient == null %}
+                            <h4><i class="fa fa-star" onclick="alert('Vous devez être connecté pour ajouter un médecin en favoris');"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
+                        {% elseif medecin.isMedecinFavori(patient) == true %}
+                            <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
+                        {% else %}
                             <h4><a href="{{path('meet_my_doc_ajouter_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
+                        {% endif %}
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>

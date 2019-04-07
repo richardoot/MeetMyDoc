@@ -5,14 +5,20 @@
 {% block body %}
 
   <div class="row">
-    <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3" style="margin-top: 1rem;">
-    <div class="cadreForm">
-      <h1>Quel utilisateur êtes-vous</h1>
-        <a class="btn btn-primary" href="{{path('app_inscriptionMedecin')}}">Je suis Médecin</a></br>
-        <a class="btn btn-primary" href="{{path('app_inscriptionPatient')}}">Je suis Patient</a>
-      </div>
-    </div>
-  </div>
+            <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <fieldset>
+                            <h4>Quel type d'utilisateur êtes-vous ?</h4>
+                        </fieldset>
+                        <div class="btn-group buttonsInscription" role="group">
+                          <a class="btn btn-primary" href="{{path('app_inscriptionPatient')}}">Je suis Patient</a>
+                          <a class="btn btn-primary" href="{{path('app_inscriptionMedecin')}}">Je suis Médecin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
   {% endblock %}
 
    {% block footer %}
