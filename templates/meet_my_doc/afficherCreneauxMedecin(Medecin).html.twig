@@ -19,7 +19,11 @@
             </div>
         </div>
     </div>
-
+    {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+    {% endfor %}
     <h1> Calendrier du Dr. {{medecin.prenom}} {{medecin.nom}} ({{medecin.specialite.nom}})</h1>
 
     <div class="row">
