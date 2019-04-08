@@ -34,7 +34,7 @@
 
 <div class="container">
   <div class="row">
-      <div class="col col-xs-12 col-sm-10 offset-sm-1">
+      <div class="col col-xs-12 col-sm-12">
           <div class="table-responsive">
               <table class="table">
                     {# Variable #}
@@ -99,7 +99,8 @@
                                                 <tbody>
                                                   <tr>
                                                     <td>
-                                                      <div style="display:flex; justify-content: space-between; flex-flow:row wrap;">
+                                                      <div class="row">
+                                                      <!--div style="display:flex; justify-content: space-between; flex-flow:row wrap;"-->
                                             {% set debutJour = false %}
                                         {% endif %}
 
@@ -111,11 +112,13 @@
                                           {# endif #}
 
                                       {# Ajout du créneau #}
+                                          <div class="col col-xs-6 col-sm-4 col-md-3">
                                             {% if creneauCourant.etat == "NON PRIS"%}
-                                                <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                <button class="btn btn-primary" style="width: 120px;" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                             {% else %}
-                                                <button class="btn btn-danger" type="button" onclick="afficherMessage('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                <button class="btn btn-danger" style="width: 120px;" type="button" onclick="afficherMessage('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                             {% endif %}
+                                          </div>
 
                                       {# Incrémenter le nombre d'éléments #}
                                         {% set nbElem = nbElem + 1 %}
@@ -152,6 +155,7 @@
                               {# endif #}
 
                             {# Fermeture des balises précédentes #}
+                                          <!--/div-->
                                           </div>
                                         </td>
                                       </tr>

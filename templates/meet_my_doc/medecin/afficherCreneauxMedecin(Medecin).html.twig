@@ -40,90 +40,93 @@
 
 <br>
 
-    <div class="container">
-      <div class="row">
-          <div class="col col-xs-12 col-sm-10 offset-sm-1">
-              <div class="table-responsive">
-                  <table class="table">
-                        {# Variable #}
-                          {% set datePremierRDV = true %}
-                          {% set dateExacte = null %}
+<div class="container">
+  <div class="row">
+      <div class="col col-xs-12 col-sm-12">
+          <div class="table-responsive">
+              <table class="table">
+                    {# Variable #}
+                      {% set datePremierRDV = true %}
+                      {% set dateExacte = null %}
 
 
-                        {# Traitements #}
-                          {# Affichage des différents jours #}
-                            {% for jour in joursRef %}
+                    {# Traitements #}
+                      {# Affichage des différents jours #}
+                        {% for jour in joursRef %}
 
-                                {# Init #}
-                                  {% set leJourExiste = false %}
-                                  {% set debutJour = true %}
-                                  {% set nbElem = 0 %}
+                            {# Init #}
+                              {% set leJourExiste = false %}
+                              {% set debutJour = true %}
+                              {% set nbElem = 0 %}
 
-                                  {% if datePremierRDV == false %}
-                                    {% set dateExacte = dateExacte|date_modify("+1 day")%}
+                              {% if datePremierRDV == false %}
+                                {% set dateExacte = dateExacte|date_modify("+1 day")%}
+                              {% endif %}
+
+                            {# Commencer l'ouverture des balises du jour #}
+                              <thead>
+                                <tr>
+                                  <th> {% if jour == 'Mon'%}
+                                          Lundi
+                                        {% elseif jour == 'Tue' %}
+                                          Mardi
+                                        {% elseif jour == 'Wed' %}
+                                          Mercredi
+                                        {% elseif jour == 'Thu' %}
+                                          Jeudi
+                                        {% elseif jour == 'Fri' %}
+                                          Vendredi
+                                        {% elseif jour == 'Sat' %}
+                                          Samedi
+                                        {% elseif jour == 'Sun' %}
+                                          Dimanche
+                                        {% endif %}
+
+
+                            {# debut FOR #}
+                              {% for creneauCourant in creneaux %}
+
+                                {# Définir la date exacte du créneau #}
+                                  {% if datePremierRDV == true %}
+                                    {% set dateExacte = creneauCourant.dateRDV %}
+                                    {% set datePremierRDV = false %}
                                   {% endif %}
 
-                                {# Commencer l'ouverture des balises du jour #}
-                                  <thead>
-                                    <tr>
-                                      <th> {% if jour == 'Mon'%}
-                                              Lundi
-                                            {% elseif jour == 'Tue' %}
-                                              Mardi
-                                            {% elseif jour == 'Wed' %}
-                                              Mercredi
-                                            {% elseif jour == 'Thu' %}
-                                              Jeudi
-                                            {% elseif jour == 'Fri' %}
-                                              Vendredi
-                                            {% elseif jour == 'Sat' %}
-                                              Samedi
-                                            {% elseif jour == 'Sun' %}
-                                              Dimanche
-                                            {% endif %}
+                                {# Définir jour courant #}
+                                  {% set jourCourant = creneauCourant.dateRDV | date('D') %}
 
+                                  {% if jourCourant == jour %}
+                                      {# Définir qu'on est bien rentré dans le if #}
+                                        {% set leJourExiste = true %}
 
-                                {# debut FOR #}
-                                  {% for creneauCourant in creneaux %}
+                                      {# Continuer l'ouverture des balises du jour #}
+                                        {% if debutJour == true %}
+                                            {{dateExacte | date('d/m')}} </th>
+                                            </tr>
+                                              </thead>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                      <div class="row">
+                                                      <!--div style="display:flex; justify-content: space-between; flex-flow:row wrap;"-->
+                                            {% set debutJour = false %}
+                                        {% endif %}
 
-                                    {# Définir la date exacte du créneau #}
-                                      {% if datePremierRDV == true %}
-                                        {% set dateExacte = creneauCourant.dateRDV %}
-                                        {% set datePremierRDV = false %}
-                                      {% endif %}
+                                        {# Démarer le début de la ligne permettant d'afficher les créneaux #}
+                                          {# if debutLigne == true #}
+                                            <!--tr-->
+                                            {# set debutLigne = false #}
+                                            {# set nbElem = 0 #}
+                                          {# endif #}
 
-                                    {# Définir jour courant #}
-                                      {% set jourCourant = creneauCourant.dateRDV | date('D') %}
-
-                                      {% if jourCourant == jour %}
-                                          {# Définir qu'on est bien rentré dans le if #}
-                                            {% set leJourExiste = true %}
-
-                                          {# Continuer l'ouverture des balises du jour #}
-                                            {% if debutJour == true %}
-                                                {{dateExacte | date('d/m')}} </th>
-                                                </tr>
-                                                  </thead>
-                                                    <tbody>
-                                                      <tr>
-                                                        <td>
-                                                          <div style="display:flex; justify-content: space-between; flex-flow:row wrap;">
-                                                {% set debutJour = false %}
-                                            {% endif %}
-
-                                            {# Démarer le début de la ligne permettant d'afficher les créneaux #}
-                                              {# if debutLigne == true #}
-                                                <!--tr-->
-                                                {# set debutLigne = false #}
-                                                {# set nbElem = 0 #}
-                                              {# endif #}
-
-                                          {# Ajout du créneau #}
-                                                {% if creneauCourant.etat == "NON PRIS"%}
-                                                    <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                      {# Ajout du créneau #}
+                                          <div class="col col-xs-6 col-sm-4 col-md-3">
+                                            {% if creneauCourant.etat == "NON PRIS"%}
+                                                <button class="btn btn-primary" style="width: 120px;" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 {% else %}
-                                                    <button style="background-color: #32CD32;border-color: #32CD32" class="btn btn-primary" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    <button style="background-color: #32CD32;border-color: #32CD32;width: 120px;" class="btn btn-primary" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 {% endif %}
+                                              </div>
 
                                           {# Incrémenter le nombre d'éléments #}
                                             {% set nbElem = nbElem + 1 %}
@@ -160,6 +163,7 @@
                                   {# endif #}
 
                                 {# Fermeture des balises précédentes #}
+                                              <!--/div-->
                                               </div>
                                             </td>
                                           </tr>
@@ -177,7 +181,7 @@
               </div>
           </div>
       </div>
-  </div>
+    </div>
   {% endblock %}
 
 
