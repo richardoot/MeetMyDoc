@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,9 @@ use App\Repository\PatientRepository;
 use App\Repository\MedecinRepository;
 use App\Repository\CreneauRepository;
 use App\Repository\DossierPatientRepository;
+use App\Repository\AdminRepository;
 
+use App\Entity\Admin;
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
@@ -526,7 +529,9 @@ class MeetMyDocController extends AbstractController
             $tempsIn2->add($interval);
         }
 
-        return $this->redirectToRoute('accueil');
+        $this->addFlash('success', 'Créneau ajouté correctement !');
+
+        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau');
       }
 
       return $this->render('meet_my_doc/medecin/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
@@ -625,11 +630,18 @@ class MeetMyDocController extends AbstractController
               return $this->redirectToRoute('meet_my_doc_medecin_profil');
           }
 
+
       //Générer la représentation graphique du formulaire
         $vueFormulaire = $formulaireUser->createView();
 
       //Envoyer la page à la vue
         return $this->render('meet_my_doc/medecin/modifierProfilMedecin.html.twig',["formulaire" => $vueFormulaire]);
+
+
+      //Envoyer la page à la vue
+      return $this->RedirectToRoute('meet_my_doc_patient_afficher_creneaux',["creneaux" => $creneaux, "semaineCourante" => $debut,"semaineCourante" => $debut, "email" => $medecin->email, "medecin"=> $medecin, "joursRef" => $joursRef,"debut" => $debut,]);
+
+
     }
 
 
@@ -902,5 +914,34 @@ class MeetMyDocController extends AbstractController
         $manager->flush();
 
         return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
+      }
+
+      /**
+      * @Route("/ajouterAdmin", name="meet_my_doc_ajouter_admin")
+      */
+      public function initAdmin(AdminRepository $repoAdmin, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+      {
+        $admin = new Admin();
+
+        $admin->setNom("Lemoine")
+              ->setPrenom("Alexandre")
+              ->setEmail("admin@meetmydoc.fr")
+              ->setRoles(["ROLE_ADMIN"])
+              ->setDateNaissance(new \dateTime())
+              ->setSexe("Masculin")
+              ->setTelephone("0631545352")
+              ->setAdresse("1499 route de Cazalis")
+              ->setVille("Momuy")
+              ->setCodePostal("64600");
+
+            //Encoder le mot de passe
+        $encoded = $encoder->encodePassword($admin, "K32zcqp01");
+        $admin->setPassword($encoded);
+
+        $manager->persist($admin);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('easy_admin');
       }
 }
