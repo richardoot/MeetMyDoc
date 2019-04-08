@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\PatientRepository;
 use App\Repository\MedecinRepository;
 use App\Repository\CreneauRepository;
+use App\Repository\AdminRepository;
 
+use App\Entity\Admin;
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
@@ -479,7 +482,7 @@ class MeetMyDocController extends AbstractController
 
               $this->addFlash('success', 'Créneau supprimé correctement !');
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
+      return $this->RedirectToRoute('meet_my_doc_patient_afficher_creneaux',["creneaux" => $creneaux, "semaineCourante" => $debut,"semaineCourante" => $debut, "email" => $medecin->email, "medecin"=> $medecin, "joursRef" => $joursRef,"debut" => $debut,]);
     }
 
 
@@ -884,5 +887,34 @@ class MeetMyDocController extends AbstractController
         $manager->flush();
 
         return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
+      }
+
+      /**
+      * @Route("/ajouterAdmin", name="meet_my_doc_ajouter_admin")
+      */
+      public function initAdmin(AdminRepository $repoAdmin, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+      {
+        $admin = new Admin();
+
+        $admin->setNom("Lemoine")
+              ->setPrenom("Alexandre")
+              ->setEmail("admin@meetmydoc.fr")
+              ->setRoles(["ROLE_ADMIN"])
+              ->setDateNaissance(new \dateTime())
+              ->setSexe("Masculin")
+              ->setTelephone("0631545352")
+              ->setAdresse("1499 route de Cazalis")
+              ->setVille("Momuy")
+              ->setCodePostal("64600");
+
+            //Encoder le mot de passe
+        $encoded = $encoder->encodePassword($admin, "K32zcqp01");
+        $admin->setPassword($encoded);
+
+        $manager->persist($admin);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('easy_admin');
       }
 }
