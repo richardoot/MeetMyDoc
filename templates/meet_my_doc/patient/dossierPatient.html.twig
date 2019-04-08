@@ -17,28 +17,28 @@
                           <h6 class="text-muted card-subtitle mb-2">Groupe sanguin non renseigner</h6>
                           {% endif %}
 
-                        <h4 class="card-title">Email</h4>
+                        <h4 class="card-title">Allergies:</h4>
                           {% for allergie  in dossierPatient.allergies %}
                             <h6 class="text-muted card-subtitle mb-2">{{allergie.nom}}</h6>
                           {% else %}
                             <h6 class="text-muted card-subtitle mb-2">Aucune allergie</h6>
                           {% endfor %}
 
-                        <h4 class="card-title">Telephone</h4>
+                        <h4 class="card-title">Maladies graves:</h4>
                           {% for maladieGrave in dossierPatient.maladiesGraves %}
                             <h6 class="text-muted card-subtitle mb-2">{{maladieGrave.nom}}</h6>
                           {% else %}
                             <h6 class="text-muted card-subtitle mb-2">Aucune maladie</h6>
                           {% endfor %}
 
-                        <h4 class="card-title">Adresse</h4>
+                        <h4 class="card-title">Vaccins:</h4>
                           {% for vaccin in dossierPatient.vaccins %}
                             <h6 class="text-muted card-subtitle mb-2">{{vaccin.nom}}</h6>
                           {% else %}
                             <h6 class="text-muted card-subtitle mb-2">Aucun Vaccin</h6>
                           {% endfor %}
 
-                        <a class="btn btn-primary" style="width: 180px;" href="{{path('app_modifier_patient',{email: app.user.email})}}">Modifier mon dossier</a>
+                        <a class="btn btn-primary" style="width: 180px;" href="{{path('meet_my_doc_modifier_dossier_patient')}}">Modifier mon dossier</a>
                     </div>
                 </div>
             </div>

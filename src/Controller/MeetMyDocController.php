@@ -25,6 +25,7 @@ use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
 use App\Form\Medecin1Type;
 use App\Form\SupprimerCreneauType;
+use App\Form\DossierPatientType;
 
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -456,6 +457,46 @@ class MeetMyDocController extends AbstractController
 
         //Renvoyer les donées à la vue
           return $this->render('meet_my_doc/patient/dossierPatient.html.twig',['patient' => $patient, "dossierPatient" => $dossier]);
+      }
+
+
+      /**
+       * @Route("/patient/modifierDossier", name="meet_my_doc_modifier_dossier_patient")
+       */
+      public function modifierDossierPatient(Request $request, ObjectManager $manager, DossierPatientRepository $repoDossierPatient)
+      {
+        //Récupérer le patient actuelle
+          $patient=$this->getUser();
+
+        //Récupérer son dossier patient
+          $dossierPatient = $repoDossierPatient->findOneBy(['patient' => $patient]);
+
+        //Création du Formulaire permettant de saisir un patient
+          $formulaireDossier = $this->createForm(DossierPatientType::class, $dossierPatient);
+
+
+        //Analyse la derniére requete html pour voir si le tableau post
+        // contient les variables qui ont été rentrées, si c'est le cas
+        // alors il hydrate l'objet user
+          $formulaireDossier->handleRequest($request);
+
+          //dump($entreprise);
+        //Vérifier que le formulaire a été soumis
+          if($formulaireDossier->isSubmitted() /*&& $formulaireDossier->isValid()*/){
+
+              //Enregistrer les donnée en BD
+                $manager->persist($dossierPatient);
+                $manager->flush();
+
+              //Redirection vers la page de connexion
+                return $this->redirectToRoute('meet_my_doc_patient_afficher_dossier');
+            }
+
+        //Générer la représentation graphique du formulaire
+          $vueFormulaire = $formulaireDossier->createView();
+
+        //Envoyer la page à la vue
+          return $this->render('meet_my_doc/patient/modifierDossierPatient.html.twig',["formulaire" => $vueFormulaire]);
       }
 
 

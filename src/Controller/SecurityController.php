@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Specialite;
+use App\Entity\DossierPatient;
 //use App\Form\UserType;
 use App\Form\PatientType;
 use App\Form\ProfilPatientType;
@@ -107,8 +108,10 @@ class SecurityController extends AbstractController
         //dump($entreprise);
       //Vérifier que le formulaire a été soumis
         if($formulaireUser->isSubmitted() && $formulaireUser->isValid()){
-            //Entrer le role et la date de naissance de l'utilisateur
+            //Créer un dossier patient vide
+              $dossierPatient = new DossierPatient();
 
+            //Entrer le role et la date de naissance de l'utilisateur
               $patient->setSexe("Masculin"); //Temporaire
               $patient->setDateNaissance(new \dateTime()); //Temporaire
               $patient->setRoles(['ROLE_PATIENT']); //Temporaire
@@ -118,7 +121,12 @@ class SecurityController extends AbstractController
               $encoded = $encoder->encodePassword($patient, $patient->getPassword());
               $patient->setPassword($encoded);
 
+            //Définir le patient du dossierPatient
+              $dossierPatient->setPatient($patient);
+
+
             //Enregistrer les donnée en BD
+              $manager->persist($dossierPatient);
               $manager->persist($patient);
               $manager->flush();
 
