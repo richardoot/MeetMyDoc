@@ -120,11 +120,11 @@
                                           {# endif #}
 
                                       {# Ajout du créneau #}
-                                          <div class="col col-xs-6 col-sm-4 col-md-3" style="text-align: center">
+                                          <div class="col col-4" style="text-align: center">
                                             {% if creneauCourant.etat == "NON PRIS"%}
-                                                <button class="btn btn-primary" style="width: 120px;" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                <button class="btn btn-primary" style="width: 100%;" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 {% else %}
-                                                    <button style="background-color: #32CD32;border-color: #32CD32;width: 120px;" class="btn btn-primary" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                    <button style="background-color: #32CD32;border-color: #32CD32;width: 100%;" class="btn btn-primary" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                 {% endif %}
                                               </div>
 
