@@ -942,6 +942,6 @@ class MeetMyDocController extends AbstractController
 
         $manager->flush();
 
-        return $this->RedirectToRoute('easy_admin');
+        return $this->RedirectToRoute('accueil');
       }
 }
