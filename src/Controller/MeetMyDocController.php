@@ -27,6 +27,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class MeetMyDocController extends AbstractController
 {
+
+  //------------------------ TOUS LES UTILISATEURS ------------------------//
     /**
        *@Route("/", name="accueil")
        */
@@ -56,7 +58,7 @@ class MeetMyDocController extends AbstractController
 
               $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
             //Redirection vers la page de connexion
-              return $this->render('meet_my_doc/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
+              return $this->render('meet_my_doc/patient/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
           }
 
       //Générer la représentation graphique du formulaire
@@ -68,6 +70,38 @@ class MeetMyDocController extends AbstractController
       }
 
 
+      /**
+      * @Route("/inscription", name="meet_my_doc_inscription")
+      */
+      public function inscription()
+      {
+        return $this->render('meet_my_doc/choixInscription.html.twig');
+      }
+
+
+      // Ajoute la spécialité généraliste en BD
+      /**
+      * @Route("/initSpecialite", name="meet_my_doc_init_specialite")
+      */
+      public function initSpecialite(Request $request, ObjectManager $manager)
+      {
+        $specialite = new Specialite();
+
+        $specialite->setNom('Généraliste');
+
+        $specialite->__construct();
+
+        $manager->persist($specialite);
+
+        $manager->flush();
+
+        return $this->RedirectToRoute('accueil');
+      }
+
+
+
+  //------------------------ PATIENT ------------------------//
+
     /**
     *@Route("/patient/profil", name="meet_my_doc_patient_profil")
     */
@@ -75,9 +109,7 @@ class MeetMyDocController extends AbstractController
     {
 
 
-      return $this->render('meet_my_doc/profilPatient.html.twig'/*, [
-        'patient' => $patient
-      ]*/);
+      return $this->render('meet_my_doc/patient/profilPatient.html.twig');
     }
 
     /**
@@ -111,380 +143,9 @@ class MeetMyDocController extends AbstractController
         $vueFormulaire = $formulaireUser->createView();
 
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/modifierProfilPatient.html.twig',["formulaire" => $vueFormulaire]);
+        return $this->render('meet_my_doc/patient/modifierProfilPatient.html.twig',["formulaire" => $vueFormulaire]);
     }
 
-
-
-
-    //-----------------------PARTIE MEDECIN-----------------------//
-
-
-    /**
-    *@Route("/medecin/profil", name="meet_my_doc_medecin_profil")
-    */
-
-    public function showProfilMedecin(MedecinRepository $repositoryMedecin)
-    {
-      //Envoyer les données à la vue
-        return $this->render('meet_my_doc/profilMedecin.html.twig');
-    }
-
-    /**
-    *@Route("/medecin/ajouterCreneau", name="meet_my_doc_medecin_ajouter_creneau")
-    */
-    public function addCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau)
-    {
-      //Récupérer le médecin courant
-        $medecin = $this->getUser();
-
-      $formulaireCreneau = $this->createForm(CreneauType::class);
-
-      $formulaireCreneau->handleRequest($request);
-
-      if($formulaireCreneau->isSubmitted() && $formulaireCreneau->isValid())
-      {
-        // Recuperer les données saisie par l'utilisateur
-          $data=$formulaireCreneau->getData();
-          dump($data);
-          $horaireDeb=$data->getHeureDebut();
-          $horaireFin=$data->getHeureFin();
-          $duree=$data->getDuree();
-
-        // definir l'interval des creneau à partir du duree entré par l'utilisateur
-          $interval= new \DateInterval('PT'.$duree.'M');
-
-        // initialiser le tempsIntermediaire à l'horaire de debut + duree pou la création de 1 creneau
-          $tempsIn1= clone $horaireDeb; // premier horaire (debut rendez vous)
-          $tempsIn2= clone $horaireDeb; // deuxieme horaire (fin rendez vous), INITIALISE
-          $tempsIn2->add($interval); //deuxieme horaire (fin rendez vous)
-
-
-        while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
-        {
-          //Commencer à creer le creneau
-            $creneau= new Creneau();
-            $creneau->setDateRDV($data->getDateRDV()); //toujours la même date
-            $creneau->setHeureDebut($tempsIn1);
-            $creneau->setHeureFin($tempsIn2);
-
-          //Récupérer s'il existe un créneaux pour ce médecin avec une date et heure de début identique à celle souhaitant être ajouté en BD
-            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
-            dump($leCreneauxEnBD);
-
-          //Ajouter le créneau en BD uniquement s'il n'existe pas
-          if($leCreneauxEnBD == null){
-            $creneau->setDuree($duree);
-            $creneau->setMedecin($this->getUser());
-            $creneau->setEtat('NON PRIS');
-
-            $manager->persist($creneau);
-            $manager->flush();
-          }
-
-          // MAJ les $tempsIn1 et $tempsIn2
-            $tempsIn1->add($interval);
-            $tempsIn2->add($interval);
-        }
-
-        return $this->redirectToRoute('accueil');
-      }
-
-      return $this->render('meet_my_doc/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
-
-    }
-
-
-
-    /**
-    *@Route("/medecin/supprimerCreneaux", name="meet_my_doc_medecin_supprimer_creneaux")
-    */
-    public function removeCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau) //permet de supprimer plusieur creneau"X"
-    {
-      //Récupérer le médecin courant
-        $medecin = $this->getUser();
-
-      $formulaireCreneau = $this->createForm(SupprimerCreneauType::class);
-
-      $formulaireCreneau->handleRequest($request);
-
-      if($formulaireCreneau->isSubmitted() && $formulaireCreneau->isValid())
-      {
-        // Recuperer les données saisie par l'utilisateur
-          $data=$formulaireCreneau->getData();
-          dump($data);
-          $horaireDeb=$data->getHeureDebut();
-          $horaireFin=$data->getHeureFin();
-          $duree=$data->getDuree();
-
-        // definir l'interval des creneau à partir du duree entré par l'utilisateur
-          $interval= new \DateInterval('PT'.$duree.'M');
-
-        // initialiser le tempsIntermediaire à l'horaire de debut + duree pou la création de 1 creneau
-          $tempsIn1= clone $horaireDeb; // premier horaire (debut rendez vous)
-          $tempsIn2= clone $horaireDeb; // deuxieme horaire (fin rendez vous), INITIALISE
-          $tempsIn2->add($interval); //deuxieme horaire (fin rendez vous)
-
-        while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
-        {
-          //Commencer à creer le creneau
-            $creneau= new Creneau();
-            $creneau->setDateRDV($data->getDateRDV()); //toujours la même date
-            $creneau->setHeureDebut($tempsIn1);
-            $creneau->setHeureFin($tempsIn2);
-
-          //Récupérer s'il existe un créneaux avec une date et heure de début identique à celle souhaitant être ajouté en BD
-            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
-            dump($leCreneauxEnBD);
-
-          //Supprimer le créneau en BD uniquement s'il existe
-          if($leCreneauxEnBD != null ){
-
-            $manager->remove($leCreneauxEnBD);
-            $manager->flush();
-          }
-          // MAJ les $tempsIn1 et $tempsIn2
-          $tempsIn1->add($interval);
-          $tempsIn2->add($interval);
-        }
-
-        return $this->redirectToRoute('accueil');
-      }
-
-      return $this->render('meet_my_doc/medecinSupprimerCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
-
-    }
-
-
-
-
-    /**
-    *@Route("/medecin/recapitulatifCreneau", name="meet_my_doc_recapitulatif_ajouter_creneau")
-    */
-
-    public function showRecapAjouterCreneau()
-    {
-
-      return $this->render('meet_my_doc/medecinRecapitulatifCreneau.html.twig');
-    }
-
-    /**
-     * @Route("/medecin/modifierMedecin", name="app_modifier_medecin")
-     */
-    public function modifierProfilMedecin(Request $request, ObjectManager $manager)
-    {
-      //Récupérer le médecin connecté
-        $medecin = $this->getUser();
-
-      //Création du Formulaire permettant de saisir un patient
-        $formulaireUser = $this->createForm(ProfilMedecinType::class, $medecin);
-
-
-      //Analyse la derniére requete html pour voir si le tableau post
-      // contient les variables qui ont été rentrées, si c'est le cas
-      // alors il hydrate l'objet user
-        $formulaireUser->handleRequest($request);
-
-        //dump($entreprise);
-      //Vérifier que le formulaire a été soumis
-        if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
-
-            //Enregistrer les donnée en BD
-              $manager->persist($medecin);
-              $manager->flush();
-
-            //Redirection vers la page de connexion
-              return $this->redirectToRoute('meet_my_doc_medecin_profil');
-          }
-
-      //Générer la représentation graphique du formulaire
-        $vueFormulaire = $formulaireUser->createView();
-
-      //Envoyer la page à la vue
-        return $this->render('meet_my_doc/modifierProfilMedecin.html.twig',["formulaire" => $vueFormulaire]);
-    }
-
-
-    /**
-    *@Route("/medecin/afficherCreneau/semaine={debut}", name="meet_my_doc_medecin_afficher_creneau")
-    */
-    public function showCalendrierMedecin(CreneauRepository $repoCreneau,$debut)
-    {
-      //Récupérer le médecin connecter
-        $medecin = $this->getUser();
-
-      //Récupérer l'email du médecin
-        $email = $medecin->getEmail();
-      //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
-        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
-        //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
-
-      //Récupérer uniquement les créneaux demandé
-          $fin = ($debut+1);
-          //définir date du début de l'interval
-            $intervalDebut = new \dateTime();
-            $interval1= new \DateInterval('P' . $debut . 'W');
-            $intervalDebut->add($interval1);
-            $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
-            $intervalDebut = $intervalDebut->format('Y-m-d');
-
-          //definir date fin de l'interval
-            $intervalFin = new \dateTime();
-            $interval2= new \DateInterval('P' . $fin . 'W');
-            $intervalFin->add($interval2);
-            $intervalFin = $intervalFin->format('Y-m-d');
-
-          //Enlever les créneaux expirés
-            $creneaux = [];
-            foreach ($tousLesCreneaux as $creneauCourant) {
-              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
-                $creneaux[] = $creneauCourant;
-              }
-            }
-
-            //Définir tableau
-              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
-
-              //initialiser
-                $joursRef = [];
-                $jours = [];
-
-              //Vérifier que le tableau de créneaux n'est pas vide
-              if($creneaux != []){
-                //Trouver la place du jour courant
-                  for($i=0 ; $i < sizeof($tab) ; $i++){
-                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
-                      $place = $i;
-                    }
-                  }
-
-                //Réordonner le tableau
-                  $case = $place;
-                  for($k=0 ; $k <= sizeof($tab) ; $k++){
-
-                    if($case == 7){
-                      $case = -1;
-                    }
-
-                    if($case != -1){
-                      $jours[] = $tab[$case];
-                      $joursRef[] = $tabRef[$case];
-                    }
-
-                    if($case == ($place-1)){
-                      break;
-                    }
-                    $case++;
-                  }
-              }
-
-
-      //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
-    }
-
-
-
-    /**
-    *@Route("/medecin/supprimerCreneau-{id}", name="meet_my_doc_medecin_supprimer_creneau")
-    */
-    public function supprimerUnCreneauDuCalendrierMedecin(ObjectManager $manager, CreneauRepository $repoCreneau,$id=null)
-    {
-      //SUPPRIMER LE CRENEAU CHOISIE PAR LE MEDECIN
-        //SI LE CRENEAU EST PRIS FAUT NOTIFIER LE PATIENT
-
-        //SUPPRIMER LE CRENEAU
-          //Récupérer le creneau à supprimer
-            $creneau_a_supprimer = $repoCreneau->findOneBy(['id' => $id]);
-            //dump($creneau_a_supprimer);
-          //Posser une étiquette sur le creneau
-            $manager->remove($creneau_a_supprimer);
-
-          //Supprimer le creneau de la BD
-            $manager->flush();
-
-
-      //REDIRIGER VERS LE CALENDRIER QUI AFFICHE LES CRENEAUX DU MEDECIN
-        //Récupérer le médecin connecter
-          $medecin = $this->getUser();
-
-        //Récupérer l'email du médecin
-          $email = $medecin->getEmail();
-
-        //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
-          $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
-
-        //Récupérer uniquement les créneaux demandé
-            $debut = 0;
-            $fin = ($debut+1);
-            //définir date du début de l'interval
-              $intervalDebut = new \dateTime();
-              $interval1= new \DateInterval('P' . $debut . 'W');
-              $intervalDebut->add($interval1);
-              $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
-              $intervalDebut = $intervalDebut->format('Y-m-d');
-
-            //definir date fin de l'interval
-              $intervalFin = new \dateTime();
-              $interval2= new \DateInterval('P' . $fin . 'W');
-              $intervalFin->add($interval2);
-              $intervalFin = $intervalFin->format('Y-m-d');
-
-            //Enlever les créneaux expirés
-              $creneaux = [];
-              foreach ($tousLesCreneaux as $creneauCourant) {
-                if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
-                  $creneaux[] = $creneauCourant;
-                }
-              }
-
-
-            //Définir tableau
-              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
-
-              //initialiser
-                $joursRef = [];
-                $jours = [];
-
-              //Vérifier que le tableau de créneaux n'est pas vide
-              if($creneaux != []){
-                //Trouver la place du jour courant
-                  for($i=0 ; $i < sizeof($tab) ; $i++){
-                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
-                      $place = $i;
-                    }
-                  }
-
-                //Réordonner le tableau
-                  $case = $place;
-                  for($k=0 ; $k <= sizeof($tab) ; $k++){
-
-                    if($case == 7){
-                      $case = -1;
-                    }
-
-                    if($case != -1){
-                      $jours[] = $tab[$case];
-                      $joursRef[] = $tabRef[$case];
-                    }
-
-                    if($case == ($place-1)){
-                      break;
-                    }
-                    $case++;
-                  }
-              }
-
-
-
-
-      //Envoyer la page à la vue
-        return $this->render('meet_my_doc/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
-    }
 
 
     /**
@@ -562,7 +223,7 @@ class MeetMyDocController extends AbstractController
               }
 
         //Envoyer les données à la vue
-          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "jours" => $jours, "joursRef" => $joursRef]);
+          return $this->render('meet_my_doc/patient/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "jours" => $jours, "joursRef" => $joursRef]);
       }
 
 
@@ -597,7 +258,7 @@ class MeetMyDocController extends AbstractController
 
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre]);
+          return $this->render('meet_my_doc/patient/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre]);
       }
 
 
@@ -619,7 +280,7 @@ class MeetMyDocController extends AbstractController
           $dateAJD = new \dateTime();
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "patient" => $patient]);
+          return $this->render('meet_my_doc/patient/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "patient" => $patient]);
       }
 
 
@@ -658,7 +319,7 @@ class MeetMyDocController extends AbstractController
 
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
+          return $this->render('meet_my_doc/patient/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
       }
 
 
@@ -759,7 +420,7 @@ class MeetMyDocController extends AbstractController
 
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "joursRef" => $joursRef]);
+          return $this->render('meet_my_doc/patient/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "joursRef" => $joursRef]);
       }
 
 
@@ -772,8 +433,367 @@ class MeetMyDocController extends AbstractController
           $medecin = $repoMedecin->findOneBy(['email' => $email]);
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
+          return $this->render('meet_my_doc/patient/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
       }
+
+
+
+    //----------------------------- MEDECIN -----------------------------//
+
+
+    /**
+    *@Route("/medecin/profil", name="meet_my_doc_medecin_profil")
+    */
+
+    public function showProfilMedecin(MedecinRepository $repositoryMedecin)
+    {
+      //Envoyer les données à la vue
+        return $this->render('meet_my_doc/medecin/profilMedecin.html.twig');
+    }
+
+    /**
+    *@Route("/medecin/ajouterCreneau", name="meet_my_doc_medecin_ajouter_creneau")
+    */
+    public function addCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau)
+    {
+      //Récupérer le médecin courant
+        $medecin = $this->getUser();
+
+      $formulaireCreneau = $this->createForm(CreneauType::class);
+
+      $formulaireCreneau->handleRequest($request);
+
+      if($formulaireCreneau->isSubmitted() && $formulaireCreneau->isValid())
+      {
+        // Recuperer les données saisie par l'utilisateur
+          $data=$formulaireCreneau->getData();
+          dump($data);
+          $horaireDeb=$data->getHeureDebut();
+          $horaireFin=$data->getHeureFin();
+          $duree=$data->getDuree();
+
+        // definir l'interval des creneau à partir du duree entré par l'utilisateur
+          $interval= new \DateInterval('PT'.$duree.'M');
+
+        // initialiser le tempsIntermediaire à l'horaire de debut + duree pou la création de 1 creneau
+          $tempsIn1= clone $horaireDeb; // premier horaire (debut rendez vous)
+          $tempsIn2= clone $horaireDeb; // deuxieme horaire (fin rendez vous), INITIALISE
+          $tempsIn2->add($interval); //deuxieme horaire (fin rendez vous)
+
+
+        while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
+        {
+          //Commencer à creer le creneau
+            $creneau= new Creneau();
+            $creneau->setDateRDV($data->getDateRDV()); //toujours la même date
+            $creneau->setHeureDebut($tempsIn1);
+            $creneau->setHeureFin($tempsIn2);
+
+          //Récupérer s'il existe un créneaux pour ce médecin avec une date et heure de début identique à celle souhaitant être ajouté en BD
+            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
+            dump($leCreneauxEnBD);
+
+          //Ajouter le créneau en BD uniquement s'il n'existe pas
+          if($leCreneauxEnBD == null){
+            $creneau->setDuree($duree);
+            $creneau->setMedecin($this->getUser());
+            $creneau->setEtat('NON PRIS');
+
+            $manager->persist($creneau);
+            $manager->flush();
+          }
+
+          // MAJ les $tempsIn1 et $tempsIn2
+            $tempsIn1->add($interval);
+            $tempsIn2->add($interval);
+        }
+
+        return $this->redirectToRoute('accueil');
+      }
+
+      return $this->render('meet_my_doc/medecin/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
+
+    }
+
+
+
+    /**
+    *@Route("/medecin/supprimerCreneaux", name="meet_my_doc_medecin_supprimer_creneaux")
+    */
+    public function removeCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau) //permet de supprimer plusieur creneau"X"
+    {
+      //Récupérer le médecin courant
+        $medecin = $this->getUser();
+
+      $formulaireCreneau = $this->createForm(SupprimerCreneauType::class);
+
+      $formulaireCreneau->handleRequest($request);
+
+      if($formulaireCreneau->isSubmitted() && $formulaireCreneau->isValid())
+      {
+        // Recuperer les données saisie par l'utilisateur
+          $data=$formulaireCreneau->getData();
+          dump($data);
+          $horaireDeb=$data->getHeureDebut();
+          $horaireFin=$data->getHeureFin();
+          $duree=$data->getDuree();
+
+        // definir l'interval des creneau à partir du duree entré par l'utilisateur
+          $interval= new \DateInterval('PT'.$duree.'M');
+
+        // initialiser le tempsIntermediaire à l'horaire de debut + duree pou la création de 1 creneau
+          $tempsIn1= clone $horaireDeb; // premier horaire (debut rendez vous)
+          $tempsIn2= clone $horaireDeb; // deuxieme horaire (fin rendez vous), INITIALISE
+          $tempsIn2->add($interval); //deuxieme horaire (fin rendez vous)
+
+        while($tempsIn2 <= $horaireFin) // verifier que le deuxieme horaire (fin rendez vous ) est inferieur a l'horaire de fin
+        {
+          //Commencer à creer le creneau
+            $creneau= new Creneau();
+            $creneau->setDateRDV($data->getDateRDV()); //toujours la même date
+            $creneau->setHeureDebut($tempsIn1);
+            $creneau->setHeureFin($tempsIn2);
+
+          //Récupérer s'il existe un créneaux avec une date et heure de début identique à celle souhaitant être ajouté en BD
+            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
+            dump($leCreneauxEnBD);
+
+          //Supprimer le créneau en BD uniquement s'il existe
+          if($leCreneauxEnBD != null ){
+
+            $manager->remove($leCreneauxEnBD);
+            $manager->flush();
+          }
+          // MAJ les $tempsIn1 et $tempsIn2
+          $tempsIn1->add($interval);
+          $tempsIn2->add($interval);
+        }
+
+        return $this->redirectToRoute('accueil');
+      }
+
+      return $this->render('meet_my_doc/medecin/medecinSupprimerCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
+
+    }
+
+
+
+    /**
+     * @Route("/medecin/modifierMedecin", name="app_modifier_medecin")
+     */
+    public function modifierProfilMedecin(Request $request, ObjectManager $manager)
+    {
+      //Récupérer le médecin connecté
+        $medecin = $this->getUser();
+
+      //Création du Formulaire permettant de saisir un patient
+        $formulaireUser = $this->createForm(ProfilMedecinType::class, $medecin);
+
+
+      //Analyse la derniére requete html pour voir si le tableau post
+      // contient les variables qui ont été rentrées, si c'est le cas
+      // alors il hydrate l'objet user
+        $formulaireUser->handleRequest($request);
+
+        //dump($entreprise);
+      //Vérifier que le formulaire a été soumis
+        if($formulaireUser->isSubmitted() /*&& $formulaireUser->isValid()*/){
+
+            //Enregistrer les donnée en BD
+              $manager->persist($medecin);
+              $manager->flush();
+
+            //Redirection vers la page de connexion
+              return $this->redirectToRoute('meet_my_doc_medecin_profil');
+          }
+
+      //Générer la représentation graphique du formulaire
+        $vueFormulaire = $formulaireUser->createView();
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/medecin/modifierProfilMedecin.html.twig',["formulaire" => $vueFormulaire]);
+    }
+
+
+    /**
+    *@Route("/medecin/afficherCreneau/semaine={debut}", name="meet_my_doc_medecin_afficher_creneau")
+    */
+    public function showCalendrierMedecin(CreneauRepository $repoCreneau,$debut)
+    {
+      //Récupérer le médecin connecter
+        $medecin = $this->getUser();
+
+      //Récupérer l'email du médecin
+        $email = $medecin->getEmail();
+      //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
+        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+        //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
+
+      //Récupérer uniquement les créneaux demandé
+          $fin = ($debut+1);
+          //définir date du début de l'interval
+            $intervalDebut = new \dateTime();
+            $interval1= new \DateInterval('P' . $debut . 'W');
+            $intervalDebut->add($interval1);
+            $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
+            $intervalDebut = $intervalDebut->format('Y-m-d');
+
+          //definir date fin de l'interval
+            $intervalFin = new \dateTime();
+            $interval2= new \DateInterval('P' . $fin . 'W');
+            $intervalFin->add($interval2);
+            $intervalFin = $intervalFin->format('Y-m-d');
+
+          //Enlever les créneaux expirés
+            $creneaux = [];
+            foreach ($tousLesCreneaux as $creneauCourant) {
+              if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
+                $creneaux[] = $creneauCourant;
+              }
+            }
+
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 7){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/medecin/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
+    }
+
+
+
+    /**
+    *@Route("/medecin/supprimerCreneau-{id}", name="meet_my_doc_medecin_supprimer_creneau")
+    */
+    public function supprimerUnCreneauDuCalendrierMedecin(ObjectManager $manager, CreneauRepository $repoCreneau,$id=null)
+    {
+      //SUPPRIMER LE CRENEAU CHOISIE PAR LE MEDECIN
+        //SI LE CRENEAU EST PRIS FAUT NOTIFIER LE PATIENT
+
+        //SUPPRIMER LE CRENEAU
+          //Récupérer le creneau à supprimer
+            $creneau_a_supprimer = $repoCreneau->findOneBy(['id' => $id]);
+            //dump($creneau_a_supprimer);
+          //Posser une étiquette sur le creneau
+            $manager->remove($creneau_a_supprimer);
+
+          //Supprimer le creneau de la BD
+            $manager->flush();
+
+
+      //REDIRIGER VERS LE CALENDRIER QUI AFFICHE LES CRENEAUX DU MEDECIN
+        //Récupérer le médecin connecter
+          $medecin = $this->getUser();
+
+        //Récupérer l'email du médecin
+          $email = $medecin->getEmail();
+
+        //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
+          $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+
+        //Récupérer uniquement les créneaux demandé
+            $debut = 0;
+            $fin = ($debut+1);
+            //définir date du début de l'interval
+              $intervalDebut = new \dateTime();
+              $interval1= new \DateInterval('P' . $debut . 'W');
+              $intervalDebut->add($interval1);
+              $intervalDebut->add(new \DateInterval('PT' . '2' . 'H'));
+              $intervalDebut = $intervalDebut->format('Y-m-d');
+
+            //definir date fin de l'interval
+              $intervalFin = new \dateTime();
+              $interval2= new \DateInterval('P' . $fin . 'W');
+              $intervalFin->add($interval2);
+              $intervalFin = $intervalFin->format('Y-m-d');
+
+            //Enlever les créneaux expirés
+              $creneaux = [];
+              foreach ($tousLesCreneaux as $creneauCourant) {
+                if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
+                  $creneaux[] = $creneauCourant;
+                }
+              }
+
+
+            //Définir tableau
+              $tabRef = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+              $tab = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+
+              //initialiser
+                $joursRef = [];
+                $jours = [];
+
+              //Vérifier que le tableau de créneaux n'est pas vide
+              if($creneaux != []){
+                //Trouver la place du jour courant
+                  for($i=0 ; $i < sizeof($tab) ; $i++){
+                    if($creneaux[0]->getDateRDV()->format('D') == $tabRef[$i]){
+                      $place = $i;
+                    }
+                  }
+
+                //Réordonner le tableau
+                  $case = $place;
+                  for($k=0 ; $k <= sizeof($tab) ; $k++){
+
+                    if($case == 7){
+                      $case = -1;
+                    }
+
+                    if($case != -1){
+                      $jours[] = $tab[$case];
+                      $joursRef[] = $tabRef[$case];
+                    }
+
+                    if($case == ($place-1)){
+                      break;
+                    }
+                    $case++;
+                  }
+              }
+
+
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/medecin/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
+    }
 
 
       /**
@@ -785,14 +805,14 @@ class MeetMyDocController extends AbstractController
           $patient = $repoPatient->findOneBy(['email' => $email]);
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
+          return $this->render('meet_my_doc/medecin/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
       }
 
 
-      /**
-      *@Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
-      */
-      public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager)
+//      /**
+//      *@Route("/medecin/mes-patients2", name="meet_my_doc_mes_patients2")
+//      */
+      /*public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager)
       {
         //-----------------SUPPRESSION DU RDV -----------------//
             $medecin = $this->getUser();
@@ -800,39 +820,12 @@ class MeetMyDocController extends AbstractController
             $patients = $repoPatient->findMesPatients($medecin);
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherMesPatients.html.twig',["patients" => $patients]);
-      }
+          return $this->render('meet_my_doc/medecin/afficherMesPatients.html.twig',["patients" => $patients]);
+      }*/
+
 
       /**
-      * @Route("/inscription", name="meet_my_doc_inscription")
-      */
-      public function inscription()
-      {
-        return $this->render('meet_my_doc/choixInscription.html.twig');
-      }
-
-
-      // Ajoute la spécialité généraliste en BD
-      /**
-      * @Route("/initSpecialite", name="meet_my_doc_init_specialite")
-      */
-      public function initSpecialite(Request $request, ObjectManager $manager)
-      {
-        $specialite = new Specialite();
-
-        $specialite->setNom('Généraliste');
-
-        $specialite->__construct();
-
-        $manager->persist($specialite);
-
-        $manager->flush();
-
-        return $this->RedirectToRoute('accueil');
-      }
-
-      /**
-      * @Route("/medecin/patients", name="meet_my_doc_init_specialite")
+      * @Route("/medecin/mes-patients", name="meet_my_doc_mes_patients")
       */
       public function afficherPatientParTab()
       {
@@ -840,7 +833,7 @@ class MeetMyDocController extends AbstractController
 
         $patients = $medecin->getPatients();
 
-        return $this->Render('meet_my_doc/afficherPatientsParTab.html.twig',["patients" => $patients]);
+        return $this->Render('meet_my_doc/medecin/afficherPatientsParTab.html.twig',["patients" => $patients]);
       }
 
       /**
@@ -870,7 +863,7 @@ class MeetMyDocController extends AbstractController
 
         $medecins = $this->getUser()->getMedecinsFavoris();
 
-        return $this->Render('meet_my_doc/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
+        return $this->Render('meet_my_doc/medecin/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
       }
 
 
