@@ -112,7 +112,7 @@
                                           {# endif #}
 
                                       {# Ajout du créneau #}
-                                          <div class="col col-xs-6 col-sm-4 col-md-3">
+                                          <div class="col col-xs-6 col-sm-4 col-md-3" style="text-align: center">
                                             {% if creneauCourant.etat == "NON PRIS"%}
                                                 <button class="btn btn-primary" style="width: 120px;" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                             {% else %}
