@@ -9,9 +9,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{'email': medecin.email, debut : semaineCourante - 1 })}}" ><i class="fa fa-chevron-left"></i></a>&nbsp;</th>
-                            <th><select><optgroup label="This is a group"><option value="12" selected="">This is item 1</option><option value="13">This is item 2</option><option value="14">This is item 3</option></optgroup></select></th>
-                            <th><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{'email': medecin.email, debut : semaineCourante + 1 })}}" ><i class="fa fa-chevron-right"></i></a></th>
+                            <th style="text-align: left"><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{'email': medecin.email, debut : semaineCourante - 1 })}}" ><i class="fa fa-chevron-left"></i></a>&nbsp;</th>
+                            <th><!--select><optgroup label="This is a group"><option value="12" selected="">This is item 1</option><option value="13">This is item 2</option><option value="14">This is item 3</option></optgroup></select--></th>
+                            <th style="text-align: right"><a class="btn btn-primary"  href="{{path('meet_my_doc_medecin_afficher_creneau',{'email': medecin.email, debut : semaineCourante + 1 })}}" ><i class="fa fa-chevron-right"></i></a></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -27,7 +27,7 @@
             <div class="table-responsive">
                 <table class="table">
                     <thead>
-                        <tr>
+                        <tr style="text-align: center">
                             <th>Jours</th>
                             <th>Horaires</th>
                         </tr>
@@ -108,7 +108,7 @@
                                                                 {% if creneauCourant.etat == "NON PRIS"%}
                                                                     <button class="btn btn-primary" type="button" onclick="supprimerCreneau('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                                 {% else %}
-                                                                    <button class="btn btn-success" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
+                                                                    <button style="background-color: #32CD32;border-color: #32CD32" class="btn btn-primary" type="button" onclick="supprimerCreneauAvecRDV('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                                                 {% endif %}
                                                               </td>
 
@@ -137,6 +137,9 @@
 
                                                   {# Fermeture des balises précédentes #}
                                                     {% if nbElem != 4 %}
+                                                        {% for i in 0..(3 - nbElem) %}
+                                                            <td style="width: 135px "></td>
+                                                        {% endfor %}
                                                             </tr>
                                                     {% endif %}
                                                           </tbody>

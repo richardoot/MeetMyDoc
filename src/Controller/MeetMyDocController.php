@@ -135,6 +135,8 @@ class MeetMyDocController extends AbstractController
     */
     public function addCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau)
     {
+      //Récupérer le médecin courant
+        $medecin = $this->getUser();
 
       $formulaireCreneau = $this->createForm(CreneauType::class);
 
@@ -166,8 +168,8 @@ class MeetMyDocController extends AbstractController
             $creneau->setHeureDebut($tempsIn1);
             $creneau->setHeureFin($tempsIn2);
 
-          //Récupérer s'il existe un créneaux avec une date et heure de début identique à celle souhaitant être ajouté en BD
-            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut()]);
+          //Récupérer s'il existe un créneaux pour ce médecin avec une date et heure de début identique à celle souhaitant être ajouté en BD
+            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
             dump($leCreneauxEnBD);
 
           //Ajouter le créneau en BD uniquement s'il n'existe pas
@@ -199,6 +201,8 @@ class MeetMyDocController extends AbstractController
     */
     public function removeCreneaux(Request $request, ObjectManager $manager, CreneauRepository $repoCreneau) //permet de supprimer plusieur creneau"X"
     {
+      //Récupérer le médecin courant
+        $medecin = $this->getUser();
 
       $formulaireCreneau = $this->createForm(SupprimerCreneauType::class);
 
@@ -230,7 +234,7 @@ class MeetMyDocController extends AbstractController
             $creneau->setHeureFin($tempsIn2);
 
           //Récupérer s'il existe un créneaux avec une date et heure de début identique à celle souhaitant être ajouté en BD
-            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut()]);
+            $leCreneauxEnBD = $repoCreneau->findOneBy(['dateRDV' => $creneau->getDateRDV(), 'heureDebut' => $creneau->getHeureDebut(), 'medecin' => $medecin]);
             dump($leCreneauxEnBD);
 
           //Supprimer le créneau en BD uniquement s'il existe
@@ -602,8 +606,11 @@ class MeetMyDocController extends AbstractController
       */
       public function afficherLesRDV(CreneauRepository $repoCreneau)
       {
+        //Récupérer le patient actuellement connecté
+          $patient = $this->getUser();
+
         //Récupérer le mail du patient actuellement connecté
-          $email = $this->getUser()->getEmail();
+          $email = $patient->getEmail();
 
         //Récupérer les créneaux prix par le patient
           $rdv = $repoCreneau->findCreneauxByPatient($email);
@@ -612,7 +619,7 @@ class MeetMyDocController extends AbstractController
           $dateAJD = new \dateTime();
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
+          return $this->render('meet_my_doc/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "patient" => $patient]);
       }
 
 
