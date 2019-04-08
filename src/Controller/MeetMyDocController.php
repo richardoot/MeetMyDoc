@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\PatientRepository;
 use App\Repository\MedecinRepository;
 use App\Repository\CreneauRepository;
+use App\Repository\DossierPatientRepository;
 
 use App\Entity\Patient;
 use App\Entity\Medecin;
@@ -432,10 +433,27 @@ class MeetMyDocController extends AbstractController
         //Récupérer le mail du patient actuellement connecté
           $medecin = $repoMedecin->findOneBy(['email' => $email]);
 
+          dump($medecin);
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/patient/afficherProfilMedecin(Patient).html.twig',["medecin" => $medecin]);
       }
 
+
+      /**
+      *@Route("/patient/dossier", name="meet_my_doc_patient_afficher_dossier")
+      */
+      public function afficherDossier(DossierPatientRepository $repoDossierPatient)
+      {
+        //Récupérer le patient connecté actuellement
+          $patient = $this->getUser();
+
+        //Récupérer le dossier patient
+          $dossier = $repoDossierPatient->findOneBy(['patient' => $patient]);
+          dump($dossier);
+
+        //Renvoyer les donées à la vue
+          return $this->render('meet_my_doc/patient/dossierPatient.html.twig',['patient' => $patient, "dossierPatient" => $dossier]);
+      }
 
 
     //----------------------------- MEDECIN -----------------------------//

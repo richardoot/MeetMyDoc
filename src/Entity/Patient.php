@@ -34,6 +34,8 @@ class Patient extends User
      */
     private $medecinsFavoris;
 
+
+
     public function __construct()
     {
         $this->creneaux = new ArrayCollection();
@@ -110,6 +112,24 @@ class Patient extends User
     {
         if ($this->medecinsFavoris->contains($medecinsFavori)) {
             $this->medecinsFavoris->removeElement($medecinsFavori);
+        }
+
+        return $this;
+    }
+
+    public function getDossierPatient(): ?DossierPatient
+    {
+        return $this->dossierPatient;
+    }
+
+    public function setDossierPatient(?DossierPatient $dossierPatient): self
+    {
+        $this->dossierPatient = $dossierPatient;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPatient = $dossierPatient === null ? null : $this;
+        if ($newPatient !== $dossierPatient->getPatient()) {
+            $dossierPatient->setPatient($newPatient);
         }
 
         return $this;
