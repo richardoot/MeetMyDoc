@@ -83,23 +83,6 @@
   color: #fff;
   background-color: #1086b9;
   border-color: #3d8bb9;
-  margin: 1rem;
-}
-
-@media (max-width: 768px) {
-  .btn-danger {
-    color: #fff;
-    background-color: #e6120a;
-    border-color: #e6120a;
-    margin: 1rem;
-  }
-}
-
-.btn-danger {
-  color: #fff;
-  background-color: #e6120a;
-  border-color: #e6120a;
-  margin: 1rem;
 }
 
 .btnProfilMedecin {
@@ -152,18 +135,18 @@
   }
 }
 
-.btn-group.buttonsInscription {
-  width: 100%;
+.btn.btn-primary.flecheSemaine {
 }
 
-.btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show > .btn-danger.dropdown-toggle {
-  color: #fff;
-  background-color: #e6120a;
-  border-color: #e6120a;
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+  margin: 1rem;
 }
 
-.btn-danger:hover {
-  color: #e6120a;
-  background-color: white;
-  border-color: #e6120a;
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+  width: 20%;
 }
+
+.btn.btn-primary {
+  width: 22%;
+}
+

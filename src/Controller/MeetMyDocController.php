@@ -881,7 +881,7 @@ class MeetMyDocController extends AbstractController
 
         $medecins = $this->getUser()->getMedecinsFavoris();
 
-        return $this->Render('meet_my_doc/medecin/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
+        return $this->Render('meet_my_doc/patient/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
       }
 
 

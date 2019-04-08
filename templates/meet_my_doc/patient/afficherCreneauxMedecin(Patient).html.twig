@@ -5,164 +5,171 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left"><a class="btn btn-primary"  href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante - 1 })}}" ><i class="fa fa-chevron-left"></i></a>&nbsp;</th>
-                            <th><!--select><optgroup label="This is a group"><option value="12" selected="">This is item 1</option><option value="13">This is item 2</option><option value="14">This is item 3</option></optgroup></select--></th>
-                            <th style="text-align: right"><a class="btn btn-primary"  href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante + 1 })}}" ><i class="fa fa-chevron-right"></i></a></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
+
+      <div class="col col-1 offset-2" style="padding:0px;">
+        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante - 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
+          <i class="fa fa-chevron-left">
+          </i>
+        </a>
+      </div>
+
+      <div class="col col-6">
+          <h1 style="text-align: center;">Calendrier du Dr. {{medecin.prenom}} {{medecin.nom}} ({{medecin.specialite.nom}})</h1>
+          <div class="row">
+              <div class="col col-xs-10 col-sm-8 offset-sm-2"></div>
+          </div>
+      </div>
+
+      <div class="col col-1" style="padding: 0;">
+        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante + 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
+          <i class="fa fa-chevron-right">
+          </i>
+        </a>
+      </div>
+
     </div>
+</div>
 
-    <h1> Calendrier du Dr. {{medecin.prenom}} {{medecin.nom}} ({{medecin.specialite.nom}})</h1>
+<br>
 
-    <div class="row">
-        <div class="col">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr style="text-align: center">
-                            <th>Jours</th>
-                            <th>Horaires</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      {# Variable #}
-                        {% set datePremierRDV = true %}
-                        {% set dateExacte = null %}
+<div class="container">
+  <div class="row">
+      <div class="col col-xs-12 col-sm-10 offset-sm-1">
+          <div class="table-responsive">
+              <table class="table">
+                    {# Variable #}
+                      {% set datePremierRDV = true %}
+                      {% set dateExacte = null %}
 
 
-                      {# Traitements #}
-                        {# Affichage des différents jours #}
-                          {% for jour in joursRef %}
+                    {# Traitements #}
+                      {# Affichage des différents jours #}
+                        {% for jour in joursRef %}
 
-                              {# Init #}
-                                {% set leJourExiste = false %}
-                                {% set debutJour = true %}
-                                {% set nbElem = 0 %}
-                                {% if datePremierRDV == false %}
+                            {# Init #}
+                              {% set leJourExiste = false %}
+                              {% set debutJour = true %}
+                              {% set nbElem = 0 %}
+
+                              {% if datePremierRDV == false %}
                                 {% set dateExacte = dateExacte|date_modify("+1 day")%}
+                              {% endif %}
 
-                                {% endif %}
+                            {# Commencer l'ouverture des balises du jour #}
+                              <thead>
+                                <tr>
+                                  <th> {% if jour == 'Mon'%}
+                                          Lundi
+                                        {% elseif jour == 'Tue' %}
+                                          Mardi
+                                        {% elseif jour == 'Wed' %}
+                                          Mercredi
+                                        {% elseif jour == 'Thu' %}
+                                          Jeudi
+                                        {% elseif jour == 'Fri' %}
+                                          Vendredi
+                                        {% elseif jour == 'Sat' %}
+                                          Samedi
+                                        {% elseif jour == 'Sun' %}
+                                          Dimanche
+                                        {% endif %}
 
-                              {# Commencer l'ouverture des balises du jour #}
-                                  <tr>
-                                    <td> {% if jour == 'Mon'%}
-                                            Lundi
-                                          {% elseif jour == 'Tue' %}
-                                            Mardi
-                                          {% elseif jour == 'Wed' %}
-                                            Mercredi
-                                          {% elseif jour == 'Thu' %}
-                                            Jeudi
-                                          {% elseif jour == 'Fri' %}
-                                            Vendredi
-                                          {% elseif jour == 'Sat' %}
-                                            Samedi
-                                          {% elseif jour == 'Sun' %}
-                                            Dimanche
-                                          {% endif %}
 
+                            {# debut FOR #}
+                              {% for creneauCourant in creneaux %}
 
-                              {# debut FOR #}
-                                {% for creneauCourant in creneaux %}
-                                  {# Définir la date exacte du créneau #}
-                                    {% if datePremierRDV == true %}
-                                      {% set dateExacte = creneauCourant.dateRDV %}
-                                      {% set datePremierRDV = false %}
-                                    {% endif %}
+                                {# Définir la date exacte du créneau #}
+                                  {% if datePremierRDV == true %}
+                                    {% set dateExacte = creneauCourant.dateRDV %}
+                                    {% set datePremierRDV = false %}
+                                  {% endif %}
 
-                                  {# Définir jour courant #}
-                                    {% set jourCourant = creneauCourant.dateRDV | date('D') %}
+                                {# Définir jour courant #}
+                                  {% set jourCourant = creneauCourant.dateRDV | date('D') %}
 
-                                    {% if jourCourant == jour %}
-                                        {# Définir qu'on est bien rentré dans le if #}
-                                          {% set leJourExiste = true %}
+                                  {% if jourCourant == jour %}
+                                      {# Définir qu'on est bien rentré dans le if #}
+                                        {% set leJourExiste = true %}
 
-                                        {# Continuer l'ouverture des balises du jour #}
-                                          {% if debutJour == true %}
-                                              {{dateExacte | date('d/m')}} </td>
-                                                <td>
-                                                  <div class="table-responsive">
-                                                    <table class="table">
-                                                      <tbody>
-                                              {% set debutJour = false %}
-                                              {% set debutLigne = true %}
-                                          {% endif %}
+                                      {# Continuer l'ouverture des balises du jour #}
+                                        {% if debutJour == true %}
+                                            {{dateExacte | date('d/m')}} </th>
+                                            </tr>
+                                              </thead>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                      <div style="display:flex; justify-content: space-between; flex-flow:row wrap;">
+                                            {% set debutJour = false %}
+                                        {% endif %}
 
                                         {# Démarer le début de la ligne permettant d'afficher les créneaux #}
-                                          {% if debutLigne == true %}
-                                            <tr>
-                                            {% set debutLigne = false %}
-                                            {% set nbElem = 0 %}
-                                          {% endif %}
+                                          {# if debutLigne == true #}
+                                            <!--tr-->
+                                            {# set debutLigne = false #}
+                                            {# set nbElem = 0 #}
+                                          {# endif #}
 
-                                        {# Ajout du créneau #}
-                                          <td style="width: 136px;">
+                                      {# Ajout du créneau #}
                                             {% if creneauCourant.etat == "NON PRIS"%}
                                                 <button class="btn btn-primary" type="button" onclick="demanderConfirmation('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                             {% else %}
                                                 <button class="btn btn-danger" type="button" onclick="afficherMessage('{{creneauCourant.dateRDV | date('d/m')}}-{{creneauCourant.heureDebut | date('H:i')}}', '{{medecin.nom}}', '{{creneauCourant.id}}')"> {{creneauCourant.heureDebut | date('H:i')}} </button>
                                             {% endif %}
-                                          </td>
 
-                                        {# Incrémenter le nombre d'éléments #}
-                                          {% set nbElem = nbElem + 1 %}
+                                      {# Incrémenter le nombre d'éléments #}
+                                        {% set nbElem = nbElem + 1 %}
 
-                                        {# Vérifier qu'ont est pas en fin de ligne #}
-                                          {% if nbElem == 4 %}
-                                            </tr>
-                                            {% set debutLigne = true %}
-                                          {% endif %}
+                                      {# Vérifier qu'ont est pas en fin de ligne #}
+                                        {# if nbElem == 4 #}
+                                          <!--/tr-->
+                                          {# set debutLigne = true #}
+                                        {# endif #}
 
-                                      {% endif %}
+                                    {% endif %}
 
-                                {% endfor %}
+                              {% endfor %}
 
-                              {% if leJourExiste == false %}
-                                {# Continuer l'ouverture des balises du jour #}
-                                  {{dateExacte | date('d/m') }} </td>
-                                    <td>
-                                      <div class="table-responsive">
-                                        <table class="table">
-                                          <tbody>
+                            {% if leJourExiste == false %}
+                              {# Continuer l'ouverture des balises du jour #}
+                              {{dateExacte | date('d/m')}} </th>
+                                <tr>
+                                  </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <div style="display:flex; justify-content: space-between; flex-flow:row wrap;">
+                                            <p> Aucun Créneaux disponible ce jour</p>
 
-                              {% endif %}
+                            {% endif %}
 
-                              {# Fermeture des balises précédentes #}
-                                {% if nbElem != 4 %}
-                                      {% for i in 0..(3 - nbElem) %}
-                                          <td style="width: 135px "></td>
-                                      {% endfor %}
-                                        </tr>
-                                {% endif %}
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </td>
-                              </tr>
+                            {# Fermeture des balises précédentes #}
+                              {# if nbElem != 4 #}
+                                    {# for i in 0..(3 - nbElem) #}
+                                        <!--td style="width: 135px "></td-->
+                                    {# endfor #}
+                                      <!--/tr-->
+                              {# endif #}
+
+                            {# Fermeture des balises précédentes #}
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
 
 
-                            {# Définir nbElem à 0 #}
-                              {% set nbElem = 0 %}
+                          {# Définir nbElem à 0 #}
+                            {% set nbElem = 0 %}
 
-                        {# Fin boucle des jours #}
-                          {% endfor %}
+                      {# Fin boucle des jours #}
+                        {% endfor %}
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+                  <!--/tbody-->
+              </table>
+          </div>
+      </div>
+  </div>
 </div>
-
   {% endblock %}
 
 
