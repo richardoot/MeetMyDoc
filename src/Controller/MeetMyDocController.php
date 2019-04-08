@@ -919,6 +919,8 @@ class MeetMyDocController extends AbstractController
         return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
 
+//----------------------------- ADMIN -----------------------------//
+
       /**
       * @Route("/ajouterAdmin", name="meet_my_doc_ajouter_admin")
       */
