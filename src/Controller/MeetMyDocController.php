@@ -529,7 +529,7 @@ class MeetMyDocController extends AbstractController
             $tempsIn2->add($interval);
         }
 
-        $this->addFlash('success', 'Créneau ajouté correctement !');
+        $this->addFlash('success', 'Créneau(x) ajouté(s) correctement !');
 
         return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau');
       }
@@ -537,6 +537,7 @@ class MeetMyDocController extends AbstractController
       return $this->render('meet_my_doc/medecin/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
 
     }
+
 
 
 
@@ -591,6 +592,8 @@ class MeetMyDocController extends AbstractController
           $tempsIn1->add($interval);
           $tempsIn2->add($interval);
         }
+
+        $this->addFlash('success', 'Créneau(x) supprimé(s) correctement !');
 
         return $this->redirectToRoute('accueil');
       }
