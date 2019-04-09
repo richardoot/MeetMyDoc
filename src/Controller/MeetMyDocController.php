@@ -953,22 +953,18 @@ class MeetMyDocController extends AbstractController
         //Récupérer le dossier patient
           $dossierP = $repoDossierPatient->findOneBy(['patient' => $patient]);
 
-        //Récupérer tous les dossier patients partager avec le medecin
-          $emailMedecin = $medecin->getEmail();
-          $dossiersM = $repoDossierPatient->findBy(['medecins' => $medecin]);
+        //Vérifier que le médecin à un droit d'access
+          $droit = $medecin->isGranted($dossierP);
 
         //Afficher la page si le dossier patient est bien présent dans patient et dans médecin
-          foreach ($dossierM as $dossiersM) {
-            if($dossierM == $dossierP){
-              return $this->Render('meet_my_doc/medecin/afficherPatientsParTab.html.twig',["dossierPatient" => $dossierM, 'patient => $patient']);
+            if($droit){
+              return $this->Render('meet_my_doc/medecin/dossierPatient(Medecin).html.twig',["dossierPatient" => $dossierP, 'patient' => $patient]);
             }
-          }
-
-        //S'il n'y a pas de droit
-          $this->addFlash('echec-access', 'Vous n\'avez pas les droits d\'accés à se dossier patient!');
-
-          return $this->RedirectToRoute('meet_my_doc_mes_patients');
-
+            else{
+              //S'il n'y a pas de droit
+                $this->addFlash('echec-access', 'Vous n\'avez pas les droits d\'accés à se dossier patient!');
+                return $this->RedirectToRoute('meet_my_doc_mes_patients');
+            }
 
       }
 

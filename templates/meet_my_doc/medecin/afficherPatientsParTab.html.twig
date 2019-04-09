@@ -22,7 +22,7 @@
                         <p>{{ patient.codePostal }} {{ patient.ville }}</p>
                         <a class="btn btn-primary" href="{{path('meet_my_doc_medecin_afficher_profil_patient',{'email': patient.email})}}">Voir profil</a>
                         <a class="btn btn-primary" href="{{path('meet_my_doc_dossier_de_mes_patients',{'email': patient.email})}}">Voir dossier</a>
-                </div>
+                    </div>
                 <div style="height: 5%"></div>
             {% else %}
                 <div class="alert alert-danger" role="alert" style="margin-top : 10%">

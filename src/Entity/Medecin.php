@@ -41,6 +41,11 @@ class Medecin extends User
      */
     private $patients;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\DossierPatient", inversedBy="medecins")
+     */
+    private $dossierPatient;
+
 
     public function __construct()
     {
@@ -146,4 +151,41 @@ class Medecin extends User
           return false;
     }
 
+
+    /**
+     * @return Collection|DossierPatient[]
+     */
+    public function getDossierPatient(): Collection
+    {
+        return $this->dossierPatient;
+    }
+
+    public function addDossierPatient(DossierPatient $dossierPatient): self
+    {
+        if (!$this->dossierPatient->contains($dossierPatient)) {
+            $this->dossierPatient[] = $dossierPatient;
+        }
+
+        return $this;
+    }
+
+    public function removeDossierPatient(DossierPatient $dossierPatient): self
+    {
+        if ($this->dossierPatient->contains($dossierPatient)) {
+            $this->dossierPatient->removeElement($dossierPatient);
+        }
+
+        return $this;
+    }
+
+
+    public function isGranted(DossierPatient $dossier): ?bool
+    {
+        foreach ($dossier->getMedecins() as $medecin) {
+            if($medecin == $this){
+              return true;
+            }
+          }
+          return false;
+    }
 }

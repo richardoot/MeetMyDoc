@@ -44,9 +44,10 @@ class DossierPatient
     private $groupeSanguin;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Medecin")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Medecin", mappedBy="dossierPatient")
      */
     private $medecins;
+
 
     public function __construct()
     {
@@ -175,6 +176,7 @@ class DossierPatient
     {
         if (!$this->medecins->contains($medecin)) {
             $this->medecins[] = $medecin;
+            $medecin->addDossierPatient($this);
         }
 
         return $this;
@@ -184,8 +186,11 @@ class DossierPatient
     {
         if ($this->medecins->contains($medecin)) {
             $this->medecins->removeElement($medecin);
+            $medecin->removeDossierPatient($this);
         }
 
         return $this;
     }
+
+
 }
