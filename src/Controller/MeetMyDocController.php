@@ -228,6 +228,12 @@ class MeetMyDocController extends AbstractController
                   }
               }
 
+              if(sizeof($joursRef) == 0){
+                for($i=0 ; $i < sizeof($tabRef) ; $i++){
+                  $joursRef[$i] = $tabRef[$i];
+                }
+              }
+
         //Envoyer les données à la vue
           return $this->render('meet_my_doc/patient/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "jours" => $jours, "joursRef" => $joursRef]);
       }
@@ -792,6 +798,12 @@ class MeetMyDocController extends AbstractController
                     }
                     $case++;
                   }
+              }
+
+              if(sizeof($joursRef) == 0){
+                for($i=0 ; $i < sizeof($tabRef) ; $i++){
+                  $joursRef[$i] = $tabRef[$i];
+                }
               }
 
 
