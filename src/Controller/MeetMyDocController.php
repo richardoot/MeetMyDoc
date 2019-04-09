@@ -42,8 +42,6 @@ class MeetMyDocController extends AbstractController
       {
         if($this->isGranted('ROLE_MEDECIN') )
         {
-          dump($this->getUser());
-          // c'est un medecin, donc rediriger vers la page pour ajouter creneau
           return $this->RedirectToRoute('meet_my_doc_medecin_ajouter_creneau');
         }
 
@@ -53,7 +51,7 @@ class MeetMyDocController extends AbstractController
 
         $formulaireMedecin->handleRequest($request);
 
-        if($formulaireMedecin->isSubmitted() /*&& $formulaireUser->isValid()*/){
+        if($formulaireMedecin->isSubmitted()) {
 
             //Enregistrer les donnée en BD
               $nom = $medecin->getNom();
@@ -63,6 +61,11 @@ class MeetMyDocController extends AbstractController
               $patient = $this->getUser();
 
               $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
+
+              if($patient == NULL) {
+                return $this->render('meet_my_doc/patient/afficherLesMedecinsAnonyme.html.twig',['medecins' => $medecins]);
+              }
+
             //Redirection vers la page de connexion
               return $this->render('meet_my_doc/patient/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
           }
@@ -329,7 +332,7 @@ class MeetMyDocController extends AbstractController
 
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/patient/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD]);
+          return $this->redirectToRoute('meet_my_doc_patient_afficher_rdv');
       }
 
 

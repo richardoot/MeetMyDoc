@@ -143,12 +143,15 @@ class Medecin extends User
 
     public function isMedecinFavori(Patient $patient): ?bool
     {
+        if( $patient == NULL ){
+            return false;
+        }
         foreach ($patient->getMedecinsFavoris() as $medecin) {
             if($medecin == $this){
               return true;
             }
           }
-          return false;
+        return false;
     }
 
 

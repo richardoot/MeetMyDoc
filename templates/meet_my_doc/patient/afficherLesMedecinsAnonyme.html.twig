@@ -10,13 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                          {% if medecin.isMedecinFavori(patient) == true %}
-                              <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
-                          {% elseif patient == NULL %}
-                              <h4>Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
-                          {% else %}
-                              <h4><a href="{{path('meet_my_doc_afficher_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
-                          {% endif %}
+                              <h4>Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>                      
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
