@@ -9,6 +9,7 @@
   </div>
 {% endfor %}
 
+
 <br>
 
   <div class="container">
@@ -49,7 +50,7 @@
                       {% set datePremierRDV = true %}
                       {% set dateExacte = null %}
 
-
+              {% if joursRef != null %}
                     {# Traitements #}
                       {# Affichage des différents jours #}
                         {% for jour in joursRef %}
@@ -175,12 +176,20 @@
                           {# Fin boucle des jours #}
                             {% endfor %}
 
+
                       <!--/tbody-->
                   </table>
               </div>
           </div>
       </div>
     </div>
+              {% else %}
+                {% for message in app.flashes('pas-de-creneau') %}
+                  <div class="alert alert-danger">
+                    {{message}}
+                  </div>
+                {% endfor %}
+              {% endif %}
   {% endblock %}
 
 

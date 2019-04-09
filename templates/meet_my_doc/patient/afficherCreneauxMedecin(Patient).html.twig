@@ -41,6 +41,7 @@
                       {% set datePremierRDV = true %}
                       {% set dateExacte = null %}
 
+              {% if joursRef != null %}
 
                     {# Traitements #}
                       {# Affichage des différents jours #}
@@ -174,6 +175,16 @@
       </div>
   </div>
 </div>
+
+              {% else %}
+                {% for message in app.flashes('pas-de-creneau') %}
+                  <div class="alert alert-danger">
+                    {{message}}
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+
   {% endblock %}
 
 
