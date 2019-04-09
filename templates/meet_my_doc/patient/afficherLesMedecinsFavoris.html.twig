@@ -18,8 +18,12 @@
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
-                        <a class="btn btn-primary" style="width: 170px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
-                        <a class="btn btn-primary" style="width: 170px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a></div>
+                        <div style="text-align: center">
+                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'email': medecin.email}) }}">Partager RDV</a>
+                        </divS
+                      </div>
                 </div>
                 <div style="height: 5%"></div>
             {% else %}

@@ -43,11 +43,17 @@ class DossierPatient
      */
     private $groupeSanguin;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Medecin")
+     */
+    private $medecins;
+
     public function __construct()
     {
         $this->allergies = new ArrayCollection();
         $this->maladiesGraves = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
+        $this->medecins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,6 +159,32 @@ class DossierPatient
     public function setGroupeSanguin(?GroupeSanguin $groupeSanguin): self
     {
         $this->groupeSanguin = $groupeSanguin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Medecin[]
+     */
+    public function getMedecins(): Collection
+    {
+        return $this->medecins;
+    }
+
+    public function addMedecin(Medecin $medecin): self
+    {
+        if (!$this->medecins->contains($medecin)) {
+            $this->medecins[] = $medecin;
+        }
+
+        return $this;
+    }
+
+    public function removeMedecin(Medecin $medecin): self
+    {
+        if ($this->medecins->contains($medecin)) {
+            $this->medecins->removeElement($medecin);
+        }
 
         return $this;
     }

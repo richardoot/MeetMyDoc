@@ -41,10 +41,12 @@ class Medecin extends User
      */
     private $patients;
 
+
     public function __construct()
     {
         $this->creneaux = new ArrayCollection();
         $this->patients = new ArrayCollection();
+        $this->dossierPatient = new ArrayCollection();
     }
 
 
@@ -143,4 +145,5 @@ class Medecin extends User
           }
           return false;
     }
+
 }

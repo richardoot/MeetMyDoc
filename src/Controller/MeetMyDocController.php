@@ -19,6 +19,7 @@ use App\Entity\Patient;
 use App\Entity\Medecin;
 use App\Entity\Creneau;
 use App\Entity\Specialite;
+use App\Entity\DossierPatient;
 
 use App\Form\CreneauType;
 use App\Form\ProfilPatientType;
@@ -500,6 +501,35 @@ class MeetMyDocController extends AbstractController
       }
 
 
+      /**
+      *@Route("/patient/partagerDossier/medecin-{email}", name="meet_my_doc_patient_partager_dossier")
+      */
+      public function partagerDossier(MedecinRepository $repoMedecin, DossierPatientRepository $repoDossierPatient, ObjectManager $manager, $email)
+      {
+        //Récupérer le patient connecté actuellement
+          $patient = $this->getUser();
+
+        //Récupérer le dossier patient
+          $dossier = $repoDossierPatient->findOneBy(['patient' => $patient]);
+          dump($dossier);
+
+        //Récupérer le medecin à qui partager le dossier
+          $medecin = $repoMedecin->findOneBy(['email' => $email]);
+
+        //Donnée accées au médecin
+          $dossier->addMedecin($medecin);
+          $manager->persist($dossier);
+          $manager->flush();
+
+        //Envoyer un message qui dis que le partage à bien été réalisé
+          $this->addFlash('success-partage', 'Dossier patient correctement partagé!');
+
+
+        //Renvoyer les donées à la vue
+          return $this->redirectToRoute('meet_my_doc_patient_afficher_dossier');
+      }
+
+
     //----------------------------- MEDECIN -----------------------------//
 
 
@@ -909,6 +939,39 @@ class MeetMyDocController extends AbstractController
 
         return $this->Render('meet_my_doc/medecin/afficherPatientsParTab.html.twig',["patients" => $patients]);
       }
+
+
+      /**
+      * @Route("/medecin/afficherDossierPatient-{email}", name="meet_my_doc_dossier_de_mes_patients")
+      */
+      public function afficherDossierDUPatient(DossierPatientRepository $repoDossierPatient ,PatientRepository $repoPatient,$email)
+      {
+        //Récupérer le patient et le medecin
+          $medecin = $this->getUser();
+          $patient = $repoPatient->findOneBy(['email' => $email]);
+
+        //Récupérer le dossier patient
+          $dossierP = $repoDossierPatient->findOneBy(['patient' => $patient]);
+
+        //Récupérer tous les dossier patients partager avec le medecin
+          $emailMedecin = $medecin->getEmail();
+          $dossiersM = $repoDossierPatient->findBy(['medecins' => $medecin]);
+
+        //Afficher la page si le dossier patient est bien présent dans patient et dans médecin
+          foreach ($dossierM as $dossiersM) {
+            if($dossierM == $dossierP){
+              return $this->Render('meet_my_doc/medecin/afficherPatientsParTab.html.twig',["dossierPatient" => $dossierM, 'patient => $patient']);
+            }
+          }
+
+        //S'il n'y a pas de droit
+          $this->addFlash('echec-access', 'Vous n\'avez pas les droits d\'accés à se dossier patient!');
+
+          return $this->RedirectToRoute('meet_my_doc_mes_patients');
+
+
+      }
+
 
       /**
       * @Route("/patient/ajouter-medecin-favoris/{email}", name="meet_my_doc_ajouter_medecin_favoris")

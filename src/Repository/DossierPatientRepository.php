@@ -19,22 +19,26 @@ class DossierPatientRepository extends ServiceEntityRepository
         parent::__construct($registry, DossierPatient::class);
     }
 
-    // /**
-    //  * @return DossierPatient[] Returns an array of DossierPatient objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return DossierPatient[] Returns an array of DossierPatient objects
+      */
+
+    public function findByEmailMedecin($email)
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+      $query = $this->getEntityManager()->createQuery(
+        "SELECT d, m
+         FROM App\Entity\DossierPatient d
+         JOIN d.medecins m
+         JOIN m.specialite s
+         WHERE m.email = :email
+         ORDER BY c.dateRDV, c.heureDebut");
+
+
+      $query->setParameter('email', $email);
+      $users = $query->getResult();
+      return $users;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?DossierPatient
