@@ -38,6 +38,7 @@
 
       <!--Partie gauche du menu-->
       <ul class="nav navbar-nav mr-auto">
+
         {% if is_granted('ROLE_PATIENT') %}
           <li class="nav-item dropdown">
             <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
@@ -53,12 +54,8 @@
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_afficher_rdv')}}">Voir mes Rendez-vous</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Dossier</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_afficher_dossier')}}">Voir mon Dossier</a>
-              <a class="dropdown-item" role="presentation" href="#">Partager mon Dossier</a>
-            </div>
+          <li class="nav-item ">
+              <a class="nav-link" role="presentation" href="{{path('meet_my_doc_patient_afficher_dossier')}}">Mon Dossier</a>
           </li>
 
         {% elseif is_granted('ROLE_MEDECIN') %} {# S'il s'agit d'un médecin #}
