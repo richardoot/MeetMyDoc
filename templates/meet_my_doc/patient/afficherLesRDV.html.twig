@@ -13,14 +13,8 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                          {% if creneau.medecin.isMedecinFavori(patient) == true %}
-                              <h4> Rendez-vous avec <br>
-                              <a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: creneau.medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ creneau.medecin.nom }} {{ creneau.medecin.prenom }} ({{creneau.medecin.specialite.nom}})</h4>
-                          {% else %}
-                              <h4> Rendez-vous avec <br>
-                              <a href="{{path('meet_my_doc_afficher_medecin_favoris',{email: creneau.medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ creneau.medecin.nom }} {{ creneau.medecin.prenom }} ({{creneau.medecin.specialite.nom}})</h4>
-                          {% endif %}
-                        </fieldset>
+                              <h4> Rendez-vous avec : <br>
+                              Dr. {{ creneau.medecin.nom }} {{ creneau.medecin.prenom }} ({{creneau.medecin.specialite.nom}})</h4>                        </fieldset>
                         <p> Adresse : {{ creneau.medecin.adresse }} {{ creneau.medecin.codePostal }} {{ creneau.medecin.ville }}</p>
                       {# faire if date expiré --> pour cela faut que la vue reçoive de la part du controleur la date d'aujourd'hui #}
                       {% if dateActuelle <= dateDuRDV %}

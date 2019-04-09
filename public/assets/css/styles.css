@@ -75,7 +75,6 @@
     color: #fff;
     background-color: #1086b9;
     border-color: #3d8bb9;
-    margin: 1rem;
   }
 }
 
@@ -135,18 +134,9 @@
   }
 }
 
-.btn.btn-primary.flecheSemaine {
-}
-
-[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
-  margin: 1rem;
-}
-
-[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
-  width: 20%;
-}
-
-.btn.btn-primary {
+.btnCreneau {
   width: 22%;
+  margin: 1rem;
+  margin-left:0px;
 }
 
