@@ -602,7 +602,7 @@ class MeetMyDocController extends AbstractController
 
         $this->addFlash('success', 'Créneau(x) ajouté(s) correctement !');
 
-        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau');
+        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',["debut"=>0]);
       }
 
       return $this->render('meet_my_doc/medecin/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
@@ -896,8 +896,8 @@ class MeetMyDocController extends AbstractController
 
 
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/medecin/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
-    }
+        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',["debut"=>0]);
+        }
 
 
       /**

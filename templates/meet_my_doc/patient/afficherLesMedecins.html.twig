@@ -10,24 +10,26 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                        {% if patient == null %}
-                            <h4><i class="fa fa-star" onclick="alert('Vous devez être connecté pour ajouter un médecin en favoris');"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
-                        {% elseif medecin.isMedecinFavori(patient) == true %}
-                            <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
-                        {% else %}
-                            <h4><a href="{{path('meet_my_doc_ajouter_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }}</h4>
-                        {% endif %}
+                          {% if medecin.isMedecinFavori(patient) == true %}
+                              <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
+                          {% else %}
+                              <h4><a href="{{path('meet_my_doc_afficher_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
+                          {% endif %}
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
-                        <a class="btn btn-primary" style="width: 170px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{'email': medecin.email})}}">Voir profil</a>
-                        <a class="btn btn-primary" style="width: 170px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0}) }}">Prendre RDV</a></div>
+                        <div style="text-align: center">
+                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'email': medecin.email}) }}">Partager Dossier</a>
+                        </div>
+                    </div>
                 </div>
                 <div style="height: 5%"></div>
             {% else %}
                 <div class="alert alert-danger" role="alert" style="margin-top : 10%">
-                    Aucun médecin trouvé pour ces informations</br>
-                    Cliquez <a href="{{ path('accueil')}}">ici<a> pour chercher à nouveau !
+                    Aucun médecin trouvé</br>
+                    Cliquez <a href="{{ path('accueil')}}">ici<a> pour en recommencer la recherche !
                 </div>
             {% endfor %}
             </div>
