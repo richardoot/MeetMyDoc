@@ -229,9 +229,7 @@ class MeetMyDocController extends AbstractController
               }
 
               if(sizeof($joursRef) == 0){
-                for($i=0 ; $i < sizeof($tabRef) ; $i++){
-                  $joursRef[$i] = $tabRef[$i];
-                }
+                $this->addFlash('pas-de-creneau', 'Aucun créneau prévu pour cette semaine!');
               }
 
         //Envoyer les données à la vue
@@ -801,9 +799,7 @@ class MeetMyDocController extends AbstractController
               }
 
               if(sizeof($joursRef) == 0){
-                for($i=0 ; $i < sizeof($tabRef) ; $i++){
-                  $joursRef[$i] = $tabRef[$i];
-                }
+                $this->addFlash('pas-de-creneau', 'Aucun créneau prévu pour cette semaine!');
               }
 
 
