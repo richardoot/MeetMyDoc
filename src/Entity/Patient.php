@@ -45,7 +45,8 @@ class Patient extends User
 
     public function getId(): ?int
     {
-        return $this->id;
+        //return $this->id;
+        return parent::getId();
     }
 
     public function getNbRDVAnnule(): ?int

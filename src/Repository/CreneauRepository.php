@@ -39,18 +39,18 @@ class CreneauRepository extends ServiceEntityRepository
     /**
      * @return Creneau[] Returns an array of Creneau objects
      */
-     public function findCreneauxByMedecin($email) //Non optimisé
+     public function findCreneauxByMedecin($id) //Non optimisé
      {
          $query = $this->getEntityManager()->createQuery(
            "SELECT c, m, s
             FROM App\Entity\Creneau c
             JOIN c.medecin m
             JOIN m.specialite s
-            WHERE m.email = :email
+            WHERE m.id = :id
             ORDER BY c.dateRDV, c.heureDebut");
 
 
-         $query->setParameter('email', $email);
+         $query->setParameter('id', $id);
          $users = $query->getResult();
          return $users;
      }

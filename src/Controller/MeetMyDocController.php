@@ -15,6 +15,7 @@ use App\Repository\CreneauRepository;
 use App\Repository\DossierPatientRepository;
 use App\Repository\AdminRepository;
 
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -50,7 +51,8 @@ class MeetMyDocController extends AbstractController
         {
           return $this->RedirectToRoute('meet_my_doc_medecin_ajouter_creneau');
         }
-
+        dump($this->getUser());
+        dump($this->getUser()->getId());
         $medecin = new Medecin();
         //Création du Formulaire permettant de chercher un médecin
         $formulaireMedecin = $this->createForm(Medecin1Type::class, $medecin);
@@ -161,16 +163,17 @@ class MeetMyDocController extends AbstractController
 
 
     /**
-    *@Route("/patient/afficherCreneauMedecin-{email}/semaine={debut}", name="meet_my_doc_patient_afficher_creneaux")
+    *@Route("/patient/afficherCreneauMedecin/{id}/semaine={debut}", name="meet_my_doc_patient_afficher_creneaux")
     */
-    public function showCreneauxMedecin(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau,$email,$debut)
+    public function showCreneauxMedecin(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau,$id,$debut)
     {
       //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
-        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($id);
 
       //Récupérer le nom du médecins
-        $leMedecin = $repoMedecin->findOneBy(['email' => $email]);
+        $leMedecin = $repoMedecin->findOneBy(['id' => $id]);
 
+        dump($leMedecin->getId());
       //Récupérer uniquement les créneaux demandé
           $fin = ($debut+1);
           //définir date du début de l'interval
@@ -298,10 +301,10 @@ class MeetMyDocController extends AbstractController
           $patient = $this->getUser();
 
         //Récupérer le mail du patient actuellement connecté
-          $email = $patient->getEmail();
+          $id = $patient->getId();
 
         //Récupérer les créneaux prix par le patient
-          $rdv = $repoCreneau->findCreneauxByPatient($email);
+          $rdv = $repoCreneau->findCreneauxByPatient($id);
 
         //Récupérer la date d'aujourd'hui
           $dateAJD = new \dateTime();
@@ -327,7 +330,7 @@ class MeetMyDocController extends AbstractController
           //Définnir le patient qui a pris le créneau
             $creneau_a_annuler->setPatient(NULL);
 
-            $creneau_a_annuler->setMotif('');
+            $creneau_a_annuler->setMotif(NULL);
 
         //Enregistrer le créneau annuler en BD
           //Poser l'etiquette dessus
@@ -453,12 +456,12 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/afficherProfil/medecin-{email}", name="meet_my_doc_patient_afficher_profil_medecin")
+      *@Route("/afficherProfil/medecin-{id}", name="meet_my_doc_patient_afficher_profil_medecin")
       */
-      public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$email)
+      public function afficherProfilMedecinAuPatient(MedecinRepository $repoMedecin,$id)
       {
         //Récupérer le mail du patient actuellement connecté
-          $medecin = $repoMedecin->findOneBy(['email' => $email]);
+          $medecin = $repoMedecin->findOneBy(['id' => $id]);
 
           dump($medecin);
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
@@ -524,9 +527,9 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/patient/partagerDossier/medecin-{email}", name="meet_my_doc_patient_partager_dossier")
+      *@Route("/patient/partagerDossier/medecin-{id}", name="meet_my_doc_patient_partager_dossier")
       */
-      public function partagerDossier(MedecinRepository $repoMedecin, DossierPatientRepository $repoDossierPatient, ObjectManager $manager, $email)
+      public function partagerDossier(MedecinRepository $repoMedecin, DossierPatientRepository $repoDossierPatient, ObjectManager $manager, $id)
       {
         //Récupérer le patient connecté actuellement
           $patient = $this->getUser();
@@ -536,7 +539,7 @@ class MeetMyDocController extends AbstractController
           dump($dossier);
 
         //Récupérer le medecin à qui partager le dossier
-          $medecin = $repoMedecin->findOneBy(['email' => $email]);
+          $medecin = $repoMedecin->findOneBy(['id' => $id]);
 
         //Donnée accées au médecin
           $dossier->addMedecin($medecin);
@@ -612,7 +615,7 @@ class MeetMyDocController extends AbstractController
             $creneau->setDuree($duree);
             $creneau->setMedecin($this->getUser());
             $creneau->setEtat('NON PRIS');
-            $creneau->setMotif('');
+            $creneau->setMotif(NULL);
             $manager->persist($creneau);
             $manager->flush();
           }
@@ -735,7 +738,7 @@ class MeetMyDocController extends AbstractController
 
 
       //Envoyer la page à la vue
-      return $this->RedirectToRoute('meet_my_doc_patient_afficher_creneaux',["creneaux" => $creneaux, "semaineCourante" => $debut,"semaineCourante" => $debut, "email" => $medecin->email, "medecin"=> $medecin, "joursRef" => $joursRef,"debut" => $debut,]);
+      return $this->RedirectToRoute('meet_my_doc_patient_afficher_creneaux',["creneaux" => $creneaux, "semaineCourante" => $debut,"semaineCourante" => $debut, "id" => $medecin->getId(), "medecin"=> $medecin, "joursRef" => $joursRef,"debut" => $debut,]);
 
 
     }
@@ -750,9 +753,9 @@ class MeetMyDocController extends AbstractController
         $medecin = $this->getUser();
 
       //Récupérer l'email du médecin
-        $email = $medecin->getEmail();
+        $id = $medecin->getId();
       //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
-        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+        $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($id);
         //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
 
       //Récupérer uniquement les créneaux demandé
@@ -851,10 +854,10 @@ class MeetMyDocController extends AbstractController
           $medecin = $this->getUser();
 
         //Récupérer l'email du médecin
-          $email = $medecin->getEmail();
+          $id = $medecin->getId();
 
         //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
-          $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($email);
+          $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($id);
 
         //Récupérer uniquement les créneaux demandé
             $debut = 0;
@@ -927,12 +930,12 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      *@Route("/medecin/afficherProfil/patient-{email}", name="meet_my_doc_medecin_afficher_profil_patient")
+      *@Route("/medecin/afficherProfil/patient-{id}", name="meet_my_doc_medecin_afficher_profil_patient")
       */
-      public function afficherProfilPatientAuMedecin(PatientRepository $repoPatient,$email)
+      public function afficherProfilPatientAuMedecin(PatientRepository $repoPatient,$id)
       {
         //Récupérer le mail du patient actuellement connecté
-          $patient = $repoPatient->findOneBy(['email' => $email]);
+          $patient = $repoPatient->findOneBy(['id' => $id]);
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/medecin/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
@@ -968,13 +971,13 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      * @Route("/medecin/afficherDossierPatient-{email}", name="meet_my_doc_dossier_de_mes_patients")
+      * @Route("/medecin/afficherDossierPatient-{id}", name="meet_my_doc_dossier_de_mes_patients")
       */
       public function afficherDossierDUPatient(DossierPatientRepository $repoDossierPatient ,PatientRepository $repoPatient,$email)
       {
         //Récupérer le patient et le medecin
           $medecin = $this->getUser();
-          $patient = $repoPatient->findOneBy(['email' => $email]);
+          $patient = $repoPatient->findOneBy(['id' => $id]);
 
         //Récupérer le dossier patient
           $dossierP = $repoDossierPatient->findOneBy(['patient' => $patient]);
@@ -996,13 +999,13 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      * @Route("/patient/ajouter-medecin-favoris/{email}", name="meet_my_doc_ajouter_medecin_favoris")
+      * @Route("/patient/ajouter-medecin-favoris/{id}", name="meet_my_doc_ajouter_medecin_favoris")
       */
-      public function ajouterMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      public function ajouterMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $id)
       {
         $patient = $this->getUser();
 
-        $medecin = $repoMedecin->findOneByEmail($email);
+        $medecin = $repoMedecin->findOneById($id);
 
         $patient->addMedecinsFavori($medecin);
 
@@ -1028,13 +1031,13 @@ class MeetMyDocController extends AbstractController
 
 
       /**
-      * @Route("/patient/retirer-medecin-favoris/{email}", name="meet_my_doc_retirer_medecin_favoris")
+      * @Route("/patient/retirer-medecin-favoris/{id}", name="meet_my_doc_retirer_medecin_favoris")
       */
-      public function retirerMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $email)
+      public function retirerMedecinFavoris(MedecinRepository $repoMedecin, ObjectManager $manager, $id)
       {
         $patient = $this->getUser();
 
-        $medecin = $repoMedecin->findOneByEmail($email);
+        $medecin = $repoMedecin->findOneById($id);
 
         $patient->removeMedecinsFavori($medecin);
 
