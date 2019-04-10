@@ -15,8 +15,8 @@
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
                         <div style="text-align: center">
-                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
-                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{'id': medecin.id})}}">Voir profil</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'id': medecin.id, 'debut': 0 }) }}">Prendre RDV</a>
                         </div>
                     </div>
                 </div>
