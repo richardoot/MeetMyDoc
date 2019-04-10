@@ -140,3 +140,9 @@
   margin-left:0px;
 }
 
+.btn.btn-success:hover {
+  color:green;
+  border-color:green;
+  background-color:white
+}
+

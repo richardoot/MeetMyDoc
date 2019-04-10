@@ -48,6 +48,11 @@ class DossierPatient
      */
     private $medecins;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RessourceDossierPatient", mappedBy="dossierPatient", orphanRemoval=true)
+     */
+    private $ressourcesDossierPatient;
+
 
     public function __construct()
     {
@@ -55,6 +60,7 @@ class DossierPatient
         $this->maladiesGraves = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
         $this->medecins = new ArrayCollection();
+        $this->ressourcesDossierPatient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,6 +193,37 @@ class DossierPatient
         if ($this->medecins->contains($medecin)) {
             $this->medecins->removeElement($medecin);
             $medecin->removeDossierPatient($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RessourceDossierPatient[]
+     */
+    public function getRessourcesDossierPatient(): Collection
+    {
+        return $this->ressourcesDossierPatient;
+    }
+
+    public function addRessourcesDossierPatient(RessourceDossierPatient $ressourcesDossierPatient): self
+    {
+        if (!$this->ressourcesDossierPatient->contains($ressourcesDossierPatient)) {
+            $this->ressourcesDossierPatient[] = $ressourcesDossierPatient;
+            $ressourcesDossierPatient->setDossierPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRessourcesDossierPatient(RessourceDossierPatient $ressourcesDossierPatient): self
+    {
+        if ($this->ressourcesDossierPatient->contains($ressourcesDossierPatient)) {
+            $this->ressourcesDossierPatient->removeElement($ressourcesDossierPatient);
+            // set the owning side to null (unless already changed)
+            if ($ressourcesDossierPatient->getDossierPatient() === $this) {
+                $ressourcesDossierPatient->setDossierPatient(null);
+            }
         }
 
         return $this;

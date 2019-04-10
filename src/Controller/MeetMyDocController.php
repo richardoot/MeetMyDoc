@@ -14,6 +14,8 @@ use App\Repository\MedecinRepository;
 use App\Repository\CreneauRepository;
 use App\Repository\DossierPatientRepository;
 use App\Repository\AdminRepository;
+use App\Repository\RessourceDossierPatientRepository;
+use App\Repository\TypeRessourceDossierPatientRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,7 +28,10 @@ use App\Entity\Medecin;
 use App\Entity\Creneau;
 use App\Entity\Specialite;
 use App\Entity\DossierPatient;
+use App\Entity\TypeRessourceDossierPatient;
+use App\Entity\RessourceDossierPatient;
 
+use App\Form\RessourceDossierPatientType;
 use App\Form\CreneauType;
 use App\Form\Creneau2Type;
 use App\Form\ProfilPatientType;
@@ -68,6 +73,8 @@ class MeetMyDocController extends AbstractController
               $patient = $this->getUser();
 
               $medecins = $repoMedecin->findMedecinByForm($ville, $nom, $specialite);
+
+              dump($medecins);
 
               if($patient == NULL) {
                 return $this->render('meet_my_doc/patient/afficherLesMedecinsAnonyme.html.twig',['medecins' => $medecins]);
@@ -534,23 +541,26 @@ class MeetMyDocController extends AbstractController
           $patient = $this->getUser();
 
         //Récupérer le dossier patient
-          $dossier = $repoDossierPatient->findOneBy(['patient' => $patient]);
-          dump($dossier);
+          $dossier = $patient->getDossierPatient();
 
         //Récupérer le medecin à qui partager le dossier
           $medecin = $repoMedecin->findOneBy(['id' => $id]);
 
-        //Donnée accées au médecin
-          $dossier->addMedecin($medecin);
-          $manager->persist($dossier);
-          $manager->flush();
-
-        //Envoyer un message qui dis que le partage à bien été réalisé
-          $this->addFlash('success-partage', 'Dossier patient correctement partagé!');
-
-
-        //Renvoyer les donées à la vue
-          return $this->redirectToRoute('meet_my_doc_patient_afficher_dossier');
+          foreach($dossier->getMedecins as $leMedecin)
+          {
+            if($leMedecin == $medecin)
+            {
+              $this->addFlash('error','Vous avez déjà partagé votre dossier patient avec le médecin '.$medecin->getNom().' '.$medecin->getPrenom());
+              $this->redirectToRoute('meet_my_doc_afficher_medecin_favoris');
+            } else 
+              {
+                //Donnée accées au médecin
+                $dossier->addMedecin($medecin);
+                $manager->persist($dossier);
+                $manager->flush();
+                $this->addFlash('success-partage', 'Dossier patient correctement partagé avec le docteur '.$medecin->getNom().' '.$medecin->getPrenom());
+              }
+          }
       }
 
 
@@ -756,7 +766,11 @@ class MeetMyDocController extends AbstractController
       //Récupérer tous les créneaux du médecin connecter à partir de son email unique en BD
         $tousLesCreneaux = $repoCreneau->findCreneauxByMedecin($id);
         //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
-
+        if($debut < 0){
+          $debut = 0;
+          $this->addFlash('fail','Vous avez été redirigé vers le calendrier de la semaine courant car vous avez essayé de consulté des dates passées');
+          return $this->RedirectToRoute('meet_my_doc_medecin_afficher_creneau',['debut' => $debut]);
+        }
       //Récupérer uniquement les créneaux demandé
           $fin = ($debut+1);
           //définir date du début de l'interval
@@ -972,12 +986,11 @@ class MeetMyDocController extends AbstractController
       /**
       * @Route("/medecin/afficherDossierPatient-{id}", name="meet_my_doc_dossier_de_mes_patients")
       */
-      public function afficherDossierDUPatient(DossierPatientRepository $repoDossierPatient ,PatientRepository $repoPatient,$email)
+      public function afficherDossierDUPatient(DossierPatientRepository $repoDossierPatient ,PatientRepository $repoPatient,$id)
       {
         //Récupérer le patient et le medecin
           $medecin = $this->getUser();
           $patient = $repoPatient->findOneBy(['id' => $id]);
-
         //Récupérer le dossier patient
           $dossierP = $repoDossierPatient->findOneBy(['patient' => $patient]);
 
@@ -990,10 +1003,9 @@ class MeetMyDocController extends AbstractController
             }
             else{
               //S'il n'y a pas de droit
-                $this->addFlash('echec-access', 'Vous n\'avez pas les droits d\'accés à se dossier patient!');
+                $this->addFlash('echec-access', 'Vous n\'avez pas les droits d\'accès au dossier patient de '.$patient->getNom().' '.$patient->getPrenom());
                 return $this->RedirectToRoute('meet_my_doc_mes_patients');
             }
-
       }
 
 
@@ -1006,8 +1018,14 @@ class MeetMyDocController extends AbstractController
 
         $medecin = $repoMedecin->findOneById($id);
 
-        $patient->addMedecinsFavori($medecin);
-
+        foreach ($patient->getMedecinsFavoris() as $leMedecin){
+        if($leMedecin == $medecin){
+          $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
+        } else { 
+                  $patient->addMedecinsFavori($medecin);
+                  $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
+               }
+        }
         $manager->persist($patient);
 
         $manager->flush();
@@ -1076,5 +1094,47 @@ class MeetMyDocController extends AbstractController
         $manager->flush();
 
         return $this->RedirectToRoute('accueil');
+      }
+
+      // PARTIE DES RESSOURCES DU DOSSIER PATIENT //
+      /**
+      * @Route("/medecin/dossier-patient/{id}/ajouterRessource", name="meet_my_doc_medecin_ajouter_ressource_dossier_patient")
+      */
+      public function ajouterRessourceDossierPatient(ObjectManager $manager, UserPasswordEncoderInterface $encoder, Request $request, $id)
+      {
+        // On récupère le patient dont il faut ajouter une ressource dans son dossier patient
+        $patient = $repoPatient->findOneById($id);
+
+        // Instancier une nouvelle ressource pour le dossier patient en question
+        $ressourceDossierPatient = new RessourceDossierPatient();
+
+        // On récupère le dossier patient
+        $dossier = $patient->getDossierPatient();
+
+        //Création du Formulaire permettant d'ajouter une ressource au dossier du patient
+        $formulaireRessource = $this->createForm(RessourceDossierPatientType::class, $ressourceDossierPatient);
+
+        $formulaireRessource->handleRequest($request);
+  
+      //Vérifier que le formulaire a été soumis
+        if($formulaireRessource->isSubmitted()){
+
+              $ressourceDossierPatient->setMedecin($this->getUser());
+
+              $ressourceDossierPatient->setDossierPatient($dossier);
+
+              //Enregistrer les donnée en BD
+              $manager->persist($ressourceDossierPatient);
+              $manager->flush();
+
+              //Redirection vers la page de connexion
+              return $this->redirectToRoute('meet_my_doc_dossier_de_mes_patients',['id' => $id]);
+          }
+
+      //Générer la représentation graphique du formulaire
+        $vueFormulaire = $formulaireRessource->createView();
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/medecin/ajouterRessourceDossierPatient.html.twig',["formulaire" => $vueFormulaire]);   
       }
 }

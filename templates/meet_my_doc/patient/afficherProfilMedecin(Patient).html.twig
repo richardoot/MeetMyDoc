@@ -25,6 +25,8 @@
                         <h6 class="text-muted card-subtitle mb-2">{{medecin.codePostal}}</h6>
                         <h4 class="card-title">Ville</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{medecin.ville}}</h6>
+                        <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'id': medecin.id, 'debut': 0 }) }}">Prendre RDV</a>
+                        <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'id': medecin.id}) }}">Partager Dossier</a>
                     </div>
                 </div>
             </div>
