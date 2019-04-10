@@ -112,8 +112,8 @@
 @media (max-width: 768px) {
   .corpsConnexionResponsive {
     margin-top: 1rem;
-    border: solid 1px;
-    border-color: rgb(219,219,219);
+    border: solid 2px;
+    border-color: #045FB4;
     border-radius: 3px;
     padding: 1rem;
   }
