@@ -64,10 +64,7 @@ class MeetMyDocController extends AbstractController
 
               if($patient == NULL) {
                 return $this->render('meet_my_doc/patient/afficherLesMedecinsAnonyme.html.twig',['medecins' => $medecins]);
-              }
-
-            //Redirection vers la page de connexion
-              return $this->render('meet_my_doc/patient/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
+              } else return $this->render('meet_my_doc/patient/afficherLesMedecins.html.twig',['medecins' => $medecins, 'patient' => $patient]);
           }
 
       //Générer la représentation graphique du formulaire
@@ -569,8 +566,8 @@ class MeetMyDocController extends AbstractController
           dump($data);
           $horaireDeb=$data->getHeureDebut();
           $horaireFin=$data->getHeureFin();
-          $duree=$data->getDuree();
-
+          // $duree=$data->getDuree();
+          $duree = 30;
         // definir l'interval des creneau à partir du duree entré par l'utilisateur
           $interval= new \DateInterval('PT'.$duree.'M');
 
@@ -609,7 +606,7 @@ class MeetMyDocController extends AbstractController
 
         $this->addFlash('success', 'Créneau(x) ajouté(s) correctement !');
 
-        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',["debut"=>0]);
+        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',["debut"=>0,"duree" =>$duree]);
       }
 
       return $this->render('meet_my_doc/medecin/medecinAjouterCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
@@ -805,9 +802,9 @@ class MeetMyDocController extends AbstractController
                 $this->addFlash('pas-de-creneau', 'Aucun créneau prévu pour cette semaine!');
               }
 
-
+        $duree = 30;
       //Envoyer la page à la vue
-        return $this->render('meet_my_doc/medecin/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef]);
+        return $this->render('meet_my_doc/medecin/afficherCreneauxMedecin(Medecin).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $medecin, "joursRef" => $joursRef, "duree" => $duree]);
     }
 
 
