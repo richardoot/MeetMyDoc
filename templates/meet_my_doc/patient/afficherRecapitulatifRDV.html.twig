@@ -16,7 +16,7 @@
                         <p> Heure : {{creneau.heureDebut | date('H:i')}} </p>
                         {{form_start(vueFormulaire)}}
                             <p> Motif : {{form_widget(vueFormulaire.motif)}}</p>
-                            <button type="submit">Valider</button>
+                            <button class="btn btn-primary" type="submit">Valider</button>
                         {{form_end(vueFormulaire)}}
                         
                     </div>

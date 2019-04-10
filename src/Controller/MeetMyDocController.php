@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -330,6 +327,7 @@ class MeetMyDocController extends AbstractController
           //Définnir le patient qui a pris le créneau
             $creneau_a_annuler->setPatient(NULL);
 
+            $creneau_a_annuler->setMotif('');
 
         //Enregistrer le créneau annuler en BD
           //Poser l'etiquette dessus
