@@ -2,17 +2,25 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormBuilder;
 
 use App\Repository\PatientRepository;
 use App\Repository\MedecinRepository;
 use App\Repository\CreneauRepository;
 use App\Repository\DossierPatientRepository;
 use App\Repository\AdminRepository;
+
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 use App\Entity\Admin;
 use App\Entity\Patient;
@@ -22,6 +30,7 @@ use App\Entity\Specialite;
 use App\Entity\DossierPatient;
 
 use App\Form\CreneauType;
+use App\Form\Creneau2Type;
 use App\Form\ProfilPatientType;
 use App\Form\ProfilMedecinType;
 use App\Form\Medecin1Type;
@@ -240,17 +249,20 @@ class MeetMyDocController extends AbstractController
       /**
       *@Route("/patient/prendreRDV-{id}", name="meet_my_doc_patient_prendre_rdv")
       */
-      public function prendreRdv(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau, ObjectManager $manager, $id=null)
+      public function prendreRdv(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau, ObjectManager $manager,Request $request, $id=null)
       {
+
         //Récupérer le patient
-          $patient = $this->getUser();
+            $patient = $this->getUser();
 
         //Récupérer le créneau
-          $creneau_a_prendre = $repoCreneau->findOneBy(['id' => $id]);
+            $creneau_a_prendre = $repoCreneau->findOneBy(['id' => $id]);
 
-          $medecin = $creneau_a_prendre->getMedecin();
+            $formulaire = $this->createForm(Creneau2Type::class, $creneau_a_prendre);
 
-          $medecin->addPatient($patient);
+            $medecin = $creneau_a_prendre->getMedecin();
+
+            $medecin->addPatient($patient);
         //Modifier le créneau
           //Changer état du créneau
             $creneau_a_prendre->setEtat('PRIS');
@@ -258,17 +270,25 @@ class MeetMyDocController extends AbstractController
           //Définnir le patient qui a pris le créneau
             $creneau_a_prendre->setPatient($patient);
 
+            $formulaire->handleRequest($request);
 
-        //Enregistrer le créneau modifier en BD
-          //Poser l'etiquette dessus
-            $manager->persist($creneau_a_prendre);
+            if($formulaire->isSubmitted()){
 
-          //Modifier le créneau en BD
-            $manager->flush();
+              //Enregistrer le créneau en BD
+              $manager->persist($creneau_a_prendre);
+
+              //Modifier le créneau en BD
+              $manager->flush(); 
+  
+              //Redirection vers la page de connexion
+              return $this->redirectToRoute('meet_my_doc_patient_afficher_rdv');
+            }
+
+        
 
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/patient/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre]);
+          return $this->render('meet_my_doc/patient/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre,'vueFormulaire'=>$formulaire->createView()]);
       }
 
 
@@ -594,7 +614,7 @@ class MeetMyDocController extends AbstractController
             $creneau->setDuree($duree);
             $creneau->setMedecin($this->getUser());
             $creneau->setEtat('NON PRIS');
-
+            $creneau->setMotif('');
             $manager->persist($creneau);
             $manager->flush();
           }
