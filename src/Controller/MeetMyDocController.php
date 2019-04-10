@@ -51,8 +51,7 @@ class MeetMyDocController extends AbstractController
         {
           return $this->RedirectToRoute('meet_my_doc_medecin_ajouter_creneau');
         }
-        dump($this->getUser());
-        dump($this->getUser()->getId());
+
         $medecin = new Medecin();
         //Création du Formulaire permettant de chercher un médecin
         $formulaireMedecin = $this->createForm(Medecin1Type::class, $medecin);
