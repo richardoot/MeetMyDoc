@@ -19,7 +19,7 @@ class SupprimerCreneauType extends AbstractType
             ->add('dateRDV', DateType::class)
             ->add('heureDebut', TimeType::class)
             ->add('heureFin', TimeType::class)
-            ->add('duree')
+            ->add('duree', IntegerType::class, ['attr' => ['disabled' => 'disabled', 'value' => 30]])
             //->add('medecin')
             //->add('patient')
         ;

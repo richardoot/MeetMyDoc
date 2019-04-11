@@ -665,7 +665,7 @@ class MeetMyDocController extends AbstractController
           dump($data);
           $horaireDeb=$data->getHeureDebut();
           $horaireFin=$data->getHeureFin();
-          $duree=$data->getDuree();
+          $duree=30;
 
         // definir l'interval des creneau à partir du duree entré par l'utilisateur
           $interval= new \DateInterval('PT'.$duree.'M');
@@ -700,7 +700,7 @@ class MeetMyDocController extends AbstractController
 
         $this->addFlash('success', 'Créneau(x) supprimé(s) correctement !');
 
-        return $this->redirectToRoute('accueil');
+        return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',['debut' => 0]);
       }
 
       return $this->render('meet_my_doc/medecin/medecinSupprimerCreneau.html.twig', ['vueFormulaire'=>$formulaireCreneau->createView()]);
