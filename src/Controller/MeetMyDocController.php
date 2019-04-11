@@ -558,7 +558,7 @@ class MeetMyDocController extends AbstractController
               $dossier->addMedecin($medecin);
               $manager->persist($dossier);
               $manager->flush();
-              $this->addFlash('success-partage', 'Dossier patient correctement partagé avec le docteur '.$medecin->getNom().' '.$medecin->getPrenom());
+              $this->addFlash('success', 'Dossier patient correctement partagé avec le docteur '.$medecin->getNom().' '.$medecin->getPrenom());
               return $this->redirectToRoute('meet_my_doc_afficher_medecin_favoris');
             }
       }
@@ -1019,7 +1019,7 @@ class MeetMyDocController extends AbstractController
 
         $medecin = $repoMedecin->findOneById($id);
 
-        foreach ($patient->getMedecinsFavoris() as $leMedecin){
+        /*foreach ($patient->getMedecinsFavoris() as $leMedecin){
         if($leMedecin == $medecin){
           $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
         } else { 
@@ -1027,6 +1027,22 @@ class MeetMyDocController extends AbstractController
                   $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
                }
         }
+        */
+        $t=[];
+        foreach ($patient->getMedecinsFavoris() as $leMedecin){
+          $t[]=$leMedecin;
+        }
+  
+        if(in_array($medecin, $t ) )
+        {
+          $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
+        } else {
+          $patient->addMedecinsFavori($medecin);
+          $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
+               
+        }
+      
+
         $manager->persist($patient);
 
         $manager->flush();
@@ -1040,7 +1056,6 @@ class MeetMyDocController extends AbstractController
       public function afficherMedecinFavoris(DossierPatientRepository $repoDossier)
       {
         $patient = $this->getUser();
-
 
         $medecins = $this->getUser()->getMedecinsFavoris();
 
