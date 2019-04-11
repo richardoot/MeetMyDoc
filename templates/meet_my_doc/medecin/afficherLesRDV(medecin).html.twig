@@ -23,6 +23,8 @@
                         <p> Heure : {{creneau.heureDebut | date('H:i')}} </p>
                         <p> motif : {{creneau.motif}}</p>
                         <a class="btn btn-danger" href="#" onclick="demanderConfirmationAnnuler('{{creneau.patient.Prenom}} {{creneau.patient.nom}}', '{{creneau.id}}')"> Annuler </a>
+                        <a class="btn btn-primary" href="{{path('meet_my_doc_dossier_de_mes_patients',{'id': creneau.patient.id})}}">Voir dossier</a>
+                        
                       {% else %}
                         <p> Date : {{creneau.dateRDV | date('d/m/Y')}} <span style="color: red;">(expirée)</span> </p>
                         {#<a class="btn btn-danger" href="#" onclick="demanderSuppressionHistorique('{{creneau.medecin.Prenom}} {{creneau.medecin.nom}}', '{{creneau.id}}')"> Supprimer </a>#}
