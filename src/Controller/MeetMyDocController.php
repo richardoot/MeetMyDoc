@@ -488,7 +488,6 @@ class MeetMyDocController extends AbstractController
           $dossier = $repoDossierPatient->findOneBy(['patient' => $patient]);
 
           $ressources = $dossier->getRessourcesDossierPatient();
-          dump($dossier);
 
         //Renvoyer les donées à la vue
           return $this->render('meet_my_doc/patient/dossierPatient.html.twig',['patient' => $patient, "dossierPatient" => $dossier,"ressources" => $ressources]);
@@ -1220,4 +1219,63 @@ class MeetMyDocController extends AbstractController
       //Envoyer la page à la vue
         return $this->render('meet_my_doc/medecin/medecinAjouterRessourceDossier.html.twig',["formulaire" => $vueFormulaire]);
     }
+
+    /**
+      *@Route("/medecin/mes-rendezvous", name="meet_my_doc_medecin_afficher_rdv")
+      */
+      public function afficherLesRDVMedecin(CreneauRepository $repoCreneau)
+      {
+        //Récupérer le patient actuellement connecté
+          $medecin = $this->getUser();
+
+        //Récupérer le mail du patient actuellement connecté
+          $id = $medecin->getId();
+
+        //Récupérer les créneaux prix par le patient
+          $rdv = $repoCreneau->findRDVetPatientByMedecin($id);
+
+        //Récupérer la date d'aujourd'hui
+          $dateAJD = new \dateTime();
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->render('meet_my_doc/medecin/afficherLesRDV(medecin).html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "medecin" => $medecin]);
+      }
+
+      /**
+      *@Route("/medecin/annulerRDV-{id}", name="meet_my_doc_medecin_annuler_rdv")
+      */
+      public function annulerRdvMedecin(MedecinRepository $repoMedecin, CreneauRepository $repoCreneau, ObjectManager $manager, $id=null)
+      {
+        //Récupérer le créneau à supprimer
+          $creneau_a_annuler = $repoCreneau->findOneBy(['id' => $id]);
+
+        //Modifier le créneau
+          //Changer état du créneau
+            $creneau_a_annuler->setEtat('NON PRIS');
+
+          //Définnir le patient qui a pris le créneau
+            $creneau_a_annuler->setPatient(NULL);
+
+            $creneau_a_annuler->setMotif(NULL);
+
+        //Enregistrer le créneau annuler en BD
+          //Poser l'etiquette dessus
+            $manager->persist($creneau_a_annuler);
+
+          //Modifier le créneau en BD
+            $manager->flush();
+
+        //Récupérer le mail du patient actuellement connecté
+          $email = $this->getUser()->getEmail();
+
+        //Récupérer les créneaux prix par le patient
+          $rdv = $repoCreneau->findCreneauxByPatient($email);
+
+        //Récupérer la date d'aujourd'hui
+          $dateAJD = new \dateTime();
+
+
+        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
+          return $this->redirectToRoute('meet_my_doc_medecin_afficher_rdv');
+      }
 }

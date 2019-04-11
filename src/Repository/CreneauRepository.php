@@ -93,6 +93,25 @@ class CreneauRepository extends ServiceEntityRepository
         return $users;
     }
 
+    /**
+    * @return Creneau[] Returns an array of Creneau objects
+    */
+    public function findRDVetPatientByMedecin($id)
+    {
+        $query = $this->getEntityManager()->createQuery(
+          "SELECT c, m
+           FROM App\Entity\Creneau c
+           JOIN c.medecin m
+           WHERE m.id = :id
+           AND c.etat = 'PRIS'
+           ORDER BY c.dateRDV, c.heureDebut");
+
+
+        $query->setParameter('id', $id);
+        $users = $query->getResult();
+        return $users;
+    }
+
     /*
     public function findOneBySomeField($value): ?Creneau
     {
