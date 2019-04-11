@@ -486,10 +486,12 @@ class MeetMyDocController extends AbstractController
 
         //Récupérer le dossier patient
           $dossier = $repoDossierPatient->findOneBy(['patient' => $patient]);
+
+          $ressources = $dossier->getRessourcesDossierPatient();
           dump($dossier);
 
         //Renvoyer les donées à la vue
-          return $this->render('meet_my_doc/patient/dossierPatient.html.twig',['patient' => $patient, "dossierPatient" => $dossier]);
+          return $this->render('meet_my_doc/patient/dossierPatient.html.twig',['patient' => $patient, "dossierPatient" => $dossier,"ressources" => $ressources]);
       }
 
 
@@ -1158,7 +1160,6 @@ class MeetMyDocController extends AbstractController
         //Création du Formulaire permettant de saisir un patient
           $formulaireRessources = $this->createForm(ModifDossierPatientParMedecinType::class, $ressources);
 
-
         //Analyse la derniére requete html pour voir si le tableau post
         // contient les variables qui ont été rentrées, si c'est le cas
         // alors il hydrate l'objet user
@@ -1180,7 +1181,7 @@ class MeetMyDocController extends AbstractController
           $vueFormulaire = $formulaireRessources->createView();
 
         //Envoyer la page à la vue
-          return $this->render('meet_my_doc/patient/medecinModifierDossierPatient.html.twig',["formulaire" => $vueFormulaire]);
+          return $this->render('meet_my_doc/patient/medecinModifierDossierPatient.html.twig',["formulaire" => $vueFormulaire,"ressources" => $ressources]);
       }
 
       /**

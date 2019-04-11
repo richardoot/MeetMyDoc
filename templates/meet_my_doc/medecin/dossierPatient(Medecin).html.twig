@@ -46,8 +46,7 @@
                         <h4 class="card-title">Ressources ajoutées à votre dossier:</h4>
                           {% for ressource in ressources %}
                             <a href="{{ressource.urlRessource}}">{{ressource.typeRessourceDossierPatient.nom}}</a> - <a href="{{path('meet_my_doc_modifier_ressource',{'id': ressource.id})}}">Modifier</a>
-                            <h6>Ajouté par le docteur {{ressource.medecin.nom}} {{ressource.medecin.prenom}}</h6>
-                            
+                            <h6>Ajouté par le docteur {{ressource.medecin.nom}} {{ressource.medecin.prenom}}</h6>                           
                           {% else %}
                             <h6 class="text-muted card-subtitle mb-2">Aucune ressource ajoutée</h6>
                           {% endfor %}
