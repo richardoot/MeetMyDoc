@@ -4,6 +4,18 @@
 
 {% block body %}
 
+{% for message in app.flashes('success') %}
+  <div class="alert alert-success">
+    {{message}}
+  </div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+  <div class="alert alert-danger">
+    {{message}}
+  </div>
+{% endfor %}
+
 <div class="row">
             <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
             {% for medecin in medecins %}
