@@ -48,7 +48,7 @@ class MeetMyDocController extends AbstractController
 {
 
   //------------------------ TOUS LES UTILISATEURS ------------------------//
-    /**
+      /**
        *@Route("/", name="accueil")
        */
       public function index(MedecinRepository $repoMedecin,Request $request, ObjectManager $manager)
@@ -989,7 +989,7 @@ class MeetMyDocController extends AbstractController
       {
         //Récupérer le patient et le medecin
           $medecin = $this->getUser();
-          $patient = $repoPatient->findOneBy(['id' => $id]);
+          $patient = $repoPatient->findOneById($id);
         //Récupérer le dossier patient
           $dossierP = $repoDossierPatient->findOneByPatient($patient);
 
@@ -1197,8 +1197,6 @@ class MeetMyDocController extends AbstractController
 
         $patient = $dossierP->getPatient();
 
-        $ressources = $repoRessources->findByDossierPatient($dossierP);
-
         $id = $patient->getId();
 
         $formulaireModifierRessource = $this->createForm(RessourceDossierPatientType::class, $ressource);
@@ -1212,7 +1210,7 @@ class MeetMyDocController extends AbstractController
               $manager->flush();
 
             //Redirection vers la page de connexion
-              return $this->redirectToRoute('meet_my_doc_dossier_de_mes_patients',['id'=>$medecinId]);
+              return $this->redirectToRoute('meet_my_doc_dossier_de_mes_patients',['id'=>$id]);
           }
 
       //Générer la représentation graphique du formulaire
