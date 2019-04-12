@@ -10,14 +10,13 @@
                 <div class="card">
                     <div class="card-body">
                         <fieldset>
-                              <h4>Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>                      
+                              <h4>Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
                         <div style="text-align: center">
                           <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
                           <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a>
-                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'email': medecin.email}) }}">Partager Dossier</a>
                         </div>
                     </div>
                 </div>
