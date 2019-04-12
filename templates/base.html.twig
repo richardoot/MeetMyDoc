@@ -9,18 +9,13 @@
   <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/fonts/font-awesome.min.css') }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
-  <link rel="stylesheet" href="{{ asset('assets/css/Highlight-Blue.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/Highlight-Phone.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
-  <link rel="stylesheet" href="{{ asset('assets/css/Login-Form-Clean.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/Login-Form-Dark.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/Simple-Slider.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   {% block stylesheets %}{% endblock %}
 </head>
 
-<body>
+<body style="background-image: linear-gradient(-60deg, #2E9AFE, #9F81F7);background-repeat: no-repeat;height:100vh;background-attachment: fixed;">
 
   <!-- NAV BAR-->
   <nav class="navbar navbar-light navbar-expand-md fixed-top">
@@ -86,7 +81,7 @@
       <ul class="nav navbar-nav ml-auto">
         {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
         <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="color:white;"><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="color:#045FB4;"><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <a class="dropdown-item" role="presentation" href="#">Aide</a>
               <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
@@ -115,7 +110,7 @@
   {% block footer %}
     <div class="row">
     <div class="col col-xs-12 col-sm-10 offset-sm-1">
-    <div class="corpsConnexionResponsive">
+    <div class="corpsConnexionResponsive" style="background-color:white;">
             <h1>Envie de vous Inscrire ou vous Connecter ?</h1>
             <a href="{{path('app_login')}}" class="linkConnexion">Se connecter</a>
             <a class="btn btn-primary" href="{{path('meet_my_doc_inscription')}}">S&#39;inscrire</a>

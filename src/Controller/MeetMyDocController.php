@@ -772,6 +772,10 @@ class MeetMyDocController extends AbstractController
           return $this->RedirectToRoute('meet_my_doc_medecin_afficher_creneau',['debut' => $debut]);
         }
       //Récupérer uniquement les créneaux demandé
+      if($debut < 0){
+        $debut = 0;
+        $this->addFlash('error', 'Vous avez essayé de consulter une semaine passée, vous avez été redirigé vers la semaine actuelle');
+      }
           $fin = ($debut+1);
           //définir date du début de l'interval
             $intervalDebut = new \dateTime();
@@ -833,7 +837,7 @@ class MeetMyDocController extends AbstractController
               }
 
               if(sizeof($joursRef) == 0){
-                $this->addFlash('pas-de-creneau', 'Aucun créneau prévu pour cette semaine!');
+                $this->addFlash('success', 'Aucun créneau prévu pour cette semaine!');
               }
 
         $duree = 30;
