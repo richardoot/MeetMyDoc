@@ -9,19 +9,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class SupprimerCreneauType extends AbstractType
+class Creneau2Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //->add('etat')
-            ->add('dateRDV', DateType::class)
-            ->add('heureDebut', TimeType::class)
-            ->add('heureFin', TimeType::class)
-            ->add('duree', IntegerType::class, ['attr' => ['disabled' => 'disabled', 'value' => 30]])
-            //->add('medecin')
-            //->add('patient')
+            ->add('motif', TextareaType::class)
         ;
     }
 
@@ -32,3 +29,5 @@ class SupprimerCreneauType extends AbstractType
         ]);
     }
 }
+
+?>

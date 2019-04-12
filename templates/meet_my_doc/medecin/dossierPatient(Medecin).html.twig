@@ -12,39 +12,45 @@
 
   <div class="row">
             <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-                <h1>Mon profil</h1>
-                <h2>{{patient.nom}} {{patient.prenom}}</h2>
+                <h1>Dossier de {{patient.nom}} {{patient.prenom}}</h1>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Groupe sanguin:</h4>
                           {% if dossierPatient.groupeSanguin != null %}
-                            <h6 class="text-muted card-subtitle mb-2">{{dossierPatient.groupeSanguin.nom}}</h6>
+                            <h5 class="text-muted card-subtitle mb-2">{{dossierPatient.groupeSanguin.nom}}</h6>
                           {% else %}
-                          <h6 class="text-muted card-subtitle mb-2">Groupe sanguin non renseigner</h6>
+                            <h5 class="text-muted card-subtitle mb-2">Groupe sanguin non renseigner</h6>
                           {% endif %}
 
                         <h4 class="card-title">Allergies:</h4>
                           {% for allergie  in dossierPatient.allergies %}
-                            <h6 class="text-muted card-subtitle mb-2">{{allergie.nom}}</h6>
+                            <h5 class="text-muted card-subtitle mb-2">{{allergie.nom}}</h6>
                           {% else %}
-                            <h6 class="text-muted card-subtitle mb-2">Aucune allergie</h6>
+                            <h5 class="text-muted card-subtitle mb-2">Aucune allergie</h6>
                           {% endfor %}
 
                         <h4 class="card-title">Maladies graves:</h4>
                           {% for maladieGrave in dossierPatient.maladiesGraves %}
-                            <h6 class="text-muted card-subtitle mb-2">{{maladieGrave.nom}}</h6>
+                            <h5 class="text-muted card-subtitle mb-2">{{maladieGrave.nom}}</h6>
                           {% else %}
-                            <h6 class="text-muted card-subtitle mb-2">Aucune maladie</h6>
+                            <h5 class="text-muted card-subtitle mb-2">Aucune maladie</h6>
                           {% endfor %}
 
                         <h4 class="card-title">Vaccins:</h4>
                           {% for vaccin in dossierPatient.vaccins %}
-                            <h6 class="text-muted card-subtitle mb-2">{{vaccin.nom}}</h6>
+                            <h5 class="text-muted card-subtitle mb-2">{{vaccin.nom}}</h6>
                           {% else %}
-                            <h6 class="text-muted card-subtitle mb-2">Aucun Vaccin</h6>
+                            <h5 class="text-muted card-subtitle mb-2">Aucun Vaccin</h6>
                           {% endfor %}
 
-                        <!--a class="btn btn-primary" href="{{path('meet_my_doc_modifier_dossier_patient')}}">Modifier</a-->
+                        <h4 class="card-title">Ressources ajoutées à votre dossier:</h4>
+                          {% for ressource in ressources %}
+                            <a href="{{ressource.urlRessource}}">{{ressource.typeRessourceDossierPatient.nom}}</a> - <a href="{{path('meet_my_doc_modifier_ressource',{'id': ressource.id})}}">Modifier</a>
+                            <h6>Ajouté par le docteur {{ressource.medecin.nom}} {{ressource.medecin.prenom}}</h6>                           
+                          {% else %}
+                            <h6 class="text-muted card-subtitle mb-2">Aucune ressource ajoutée</h6>
+                          {% endfor %}
+                            <a class="btn btn-primary" href="{{path('meet_my_doc_medecin_ajouter_ressource_dossier_patient',{'id':idPatient})}}">Ajouter une ressource</a>
                     </div>
                 </div>
             </div>

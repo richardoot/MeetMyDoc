@@ -7,7 +7,7 @@
     <div class="row">
 
       <div class="col col-1 offset-2" style="padding:0px;">
-        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante - 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
+        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'id': medecin.id, 'debut' : semaineCourante - 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
           <i class="fa fa-chevron-left">
           </i>
         </a>
@@ -21,7 +21,7 @@
       </div>
 
       <div class="col col-1" style="padding: 0;">
-        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'email': medecin.email, debut : semaineCourante + 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
+        <a href="{{path('meet_my_doc_patient_afficher_creneaux',{'id': medecin.id, 'debut' : semaineCourante + 1 })}}" class="btn btn-primary chgmntSemaine" style="height:25px ;width: 25px; padding :0;margin-left:0; width: 100%;">
           <i class="fa fa-chevron-right">
           </i>
         </a>

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
+    {{form_start(formulaire)}}
+      <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+      <div class="date" >
+        <div class="row">
+            <div class="col-12">
+              <h1>Ajouter une ressource au dossier patient</h1>        
+              <label>Type de la ressource</label>
+                {{form_widget(formulaire.typeRessourceDossierPatient)}}
+          
+              <label>URL vers la ressource à ajouter dans le dossier patient</label>
+                {{form_widget(formulaire.urlRessource)}}
+            </div>
+
+      </div>       
+          <button type="submit" class="btn btn-primary" name="button">Valider</button>
+      </div> <!-- FERMETURE DE CADREFORM -->
+
+      {{form_end(formulaire)}}
+
+  </div> <!-- FERMETURE DE LA COL -->
+</div> <!-- FERMETURE DE LA ROW -->
+{% endblock %}

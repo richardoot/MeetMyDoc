@@ -6,7 +6,7 @@
 
   <div class="row">
             <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-                <h2>Patient : {{patient.nom}} {{patient.prenom}} </h2>
+                <h2>Profil du patient {{patient.nom}} {{patient.prenom}} </h2>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Date de naissance</h4>
@@ -25,6 +25,7 @@
                         <h6 class="text-muted card-subtitle mb-2">{{patient.codePostal}}</h6>
                         <h4 class="card-title">Ville</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{patient.ville}}</h6>
+                        <a class="btn btn-primary" href="{{path('meet_my_doc_dossier_de_mes_patients',{'id': patient.id})}}">Voir dossier</a>
                     </div>
                 </div>
             </div>

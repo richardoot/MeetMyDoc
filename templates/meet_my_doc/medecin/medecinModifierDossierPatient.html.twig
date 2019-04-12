@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} MeetMyDoc - Inscription {% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-3">
+        <div class="cadreForm" style="margin-top: 1rem; border: solid 1px; border-radius: 3px; border-color: #BDBDBD; padding: 1rem;">
+            <h1>Modifiez vos informations</h1>
+
+            <form method="post">
+                <div class="form-group">
+
+                  <!--fieldset-->
+
+                  {{form_start(formulaire)}}
+                    {{ form_row(formulaire.ressources) }}
+                <div class="buttons">
+                  <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Valider</button>
+                  {#<a href="{{path('meet_my_doc_dossier_de_mes_patients',{'id':})}}" class="btn btn-danger" style="margin-top:1rem;">Annuler</a>#}
+                </div>
+                  {{form_end(formulaire)}}
+                </div>
+            </form>
+        </div> <!-- FORM GROUP -->
+    </div> <!-- CADRE DU FORM -->
+</div> <!--ROW-->
+
+{% endblock %}
+{% block footer %}{% endblock %}

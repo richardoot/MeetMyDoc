@@ -53,6 +53,11 @@ class Creneau
      */
     private $dateRDV;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $motif;
+
 
     public function getId(): ?int
     {
@@ -140,6 +145,18 @@ class Creneau
     public function setDateRDV(\DateTimeInterface $dateRDV): self
     {
         $this->dateRDV = $dateRDV;
+
+        return $this;
+    }
+
+    public function getMotif(): ?string
+    {
+        return $this->motif;
+    }
+
+    public function setMotif(?string $motif): self
+    {
+        $this->motif = $motif;
 
         return $this;
     }

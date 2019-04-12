@@ -43,6 +43,15 @@
                             <h6 class="text-muted card-subtitle mb-2">Aucun Vaccin</h6>
                           {% endfor %}
 
+                        <h4 class="card-title">Ressources ajoutées à votre dossier:</h4>
+                          {% for ressource in ressources %}
+                            <a href="{{ressource.urlRessource}}">{{ressource.typeRessourceDossierPatient.nom}}</a>
+                            <h6>Ajouté par le docteur {{ressource.medecin.nom}} {{ressource.medecin.prenom}}</h6>
+                            
+                          {% else %}
+                            <h6 class="text-muted card-subtitle mb-2">Aucune ressource ajoutée</h6>
+                          {% endfor %}
+
                         <a class="btn btn-primary" href="{{path('meet_my_doc_modifier_dossier_patient')}}">Modifier</a>
                         <!--a class="btn btn-primary" href="{{path('meet_my_doc_modifier_dossier_patient')}}">Partager</a-->
                     </div>

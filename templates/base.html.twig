@@ -73,6 +73,7 @@
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_creneau',{debut: 0})}}">Voir mon Calendrier</a>
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_ajouter_creneau')}}">Ajouter Créneau</a>
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_supprimer_creneaux')}}">Supprimer Créneau</a>
+              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_rdv')}}">Mes rendez-vous</a>
             </div>
           </li>
         {% endif %}
@@ -87,7 +88,7 @@
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <a class="dropdown-item" role="presentation" href="#">Aide</a>
               <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
-              <a class="dropdown-item" href="{{path('app_logout')}}" style="color: white;">Deconnexion</a>
+              <a class="dropdown-item" href="{{path('app_logout')}}" style="color: red;">Deconnexion</a>
             </div>
           </li>
         {% else %}

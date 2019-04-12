@@ -13,6 +13,8 @@ use App\Entity\GroupeSanguin;
 use App\Entity\Allergie;
 use App\Entity\MaladieGrave;
 use App\Entity\Vaccin;
+use App\Entity\TypeRessourceDossierPatient;
+
 
 
 class DossierPatientType extends AbstractType

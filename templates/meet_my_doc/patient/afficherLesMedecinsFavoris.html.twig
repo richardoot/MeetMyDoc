@@ -4,6 +4,18 @@
 
 {% block body %}
 
+{% for message in app.flashes('success') %}
+  <div class="alert alert-success">
+    {{message}}
+  </div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+  <div class="alert alert-danger">
+    {{message}}
+  </div>
+{% endfor %}
+
 <div class="row">
             <div class="col col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 offset-md-1 offset-lg-3 offset-xl-3">
             {% for medecin in medecins %}
@@ -11,17 +23,17 @@
                     <div class="card-body">
                         <fieldset>
                           {% if medecin.isMedecinFavori(patient) == true %}
-                              <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{email: medecin.email})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
+                              <h4><a href="{{path('meet_my_doc_retirer_medecin_favoris',{'id': medecin.id})}}" style="color: yellow;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
                           {% else %}
-                              <h4><a href="{{path('meet_my_doc_afficher_medecin_favoris',{email: medecin.email})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
+                              <h4><a href="{{path('meet_my_doc_afficher_medecin_favoris',{'id': medecin.id})}}" style="color: black;"><i class="fa fa-star"></i></a> Dr. {{ medecin.nom }} {{ medecin.prenom }} ({{medecin.specialite.nom}})</h4>
                           {% endif %}
                         </fieldset>
                         <p>{{ medecin.adresse }}</p>
                         <p>{{ medecin.codePostal }} {{ medecin.ville }}</p>
                         <div style="text-align: center">
-                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{email: medecin.email})}}">Voir profil</a>
-                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'email': medecin.email, 'debut': 0 }) }}">Prendre RDV</a>
-                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'email': medecin.email}) }}">Partager Dossier</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{path('meet_my_doc_patient_afficher_profil_medecin',{'id': medecin.id})}}">Voir profil</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_afficher_creneaux', {'id': medecin.id, 'debut': 0 }) }}">Prendre RDV</a>
+                          <a class="btn btn-primary" style="width: 150px;" href="{{ path('meet_my_doc_patient_partager_dossier', {'id': medecin.id}) }}">Partager Dossier</a>
                         </div>
                     </div>
                 </div>

@@ -27,8 +27,8 @@ class CreneauRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->join('c.medecin', 'm')
-            ->andWhere('m.email = :email')
-            ->setParameter('email', $email)
+            ->andWhere('m.id = :id')
+            ->setParameter('id', $id)
             //->orderBy('c.date', 'ASC')
             //->setMaxResults(10)
             ->getQuery()
@@ -39,18 +39,18 @@ class CreneauRepository extends ServiceEntityRepository
     /**
      * @return Creneau[] Returns an array of Creneau objects
      */
-     public function findCreneauxByMedecin($email) //Non optimisé
+     public function findCreneauxByMedecin($id) //Non optimisé
      {
          $query = $this->getEntityManager()->createQuery(
            "SELECT c, m, s
             FROM App\Entity\Creneau c
             JOIN c.medecin m
             JOIN m.specialite s
-            WHERE m.email = :email
+            WHERE m.id = :id
             ORDER BY c.dateRDV, c.heureDebut");
 
 
-         $query->setParameter('email', $email);
+         $query->setParameter('id', $id);
          $users = $query->getResult();
          return $users;
      }
@@ -61,12 +61,12 @@ class CreneauRepository extends ServiceEntityRepository
      * @return Creneau[] Returns an array of Creneau objects
      */
 
-   public function findCreneauxByPatient2($email) //Non optimisé
+   public function findCreneauxByPatient2($id) //Non optimisé
    {
        return $this->createQueryBuilder('c')
            ->join('c.patient', 'p')
-           ->andWhere('p.email = :email')
-           ->setParameter('email', $email)
+           ->andWhere('p.id = :id')
+           ->setParameter('id', $id)
            //->orderBy('c.date', 'ASC')
            //->setMaxResults(10)
            ->getQuery()
@@ -78,17 +78,36 @@ class CreneauRepository extends ServiceEntityRepository
    /**
     * @return Creneau[] Returns an array of Creneau objects
     */
-    public function findCreneauxByPatient($email)
+    public function findCreneauxByPatient($id)
     {
         $query = $this->getEntityManager()->createQuery(
           "SELECT c, p
            FROM App\Entity\Creneau c
            JOIN c.patient p
-           WHERE p.email = :email
+           WHERE p.id = :id
            ORDER BY c.dateRDV, c.heureDebut");
 
 
-        $query->setParameter('email', $email);
+        $query->setParameter('id', $id);
+        $users = $query->getResult();
+        return $users;
+    }
+
+    /**
+    * @return Creneau[] Returns an array of Creneau objects
+    */
+    public function findRDVetPatientByMedecin($id)
+    {
+        $query = $this->getEntityManager()->createQuery(
+          "SELECT c, m
+           FROM App\Entity\Creneau c
+           JOIN c.medecin m
+           WHERE m.id = :id
+           AND c.etat = 'PRIS'
+           ORDER BY c.dateRDV, c.heureDebut");
+
+
+        $query->setParameter('id', $id);
         $users = $query->getResult();
         return $users;
     }

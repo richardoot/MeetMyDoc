@@ -54,12 +54,6 @@ class Medecin extends User
         $this->dossierPatient = new ArrayCollection();
     }
 
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIdNational(): ?string
     {
         return $this->idNational;
@@ -190,5 +184,11 @@ class Medecin extends User
             }
           }
           return false;
+    }
+
+    public function getId(): ?int
+    {
+        //return $this->id;
+        return parent::getId();
     }
 }
