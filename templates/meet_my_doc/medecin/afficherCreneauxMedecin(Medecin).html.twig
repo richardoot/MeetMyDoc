@@ -3,9 +3,21 @@
 
 {% block body %}
 
-<br>
+{% for message in app.flashes('success') %}
+  <div class="alert alert-success">
+    {{message}}
+  </div>
+{% endfor %}
+{% for message in app.flashes('success') %}
+  <div class="alert alert-danger">
+    {{message}}
+  </div>
+{% endfor %}
 
-  <div class="container">
+
+<br>
+<div class="corps" style="background-color:white;border: solid 1px;border-radius:3px;padding:5px;margin-bottom: 50px;border-color:white;">
+  <div class="container" style="width:95%;margin-top:3%">
       <div class="row">
 
           <div class="col col-1 offset-2" style="padding:0px;">
@@ -46,7 +58,7 @@
 <div class="container">
   <div class="row">
       <div class="col col-xs-12 col-sm-12">
-          <div class="table-responsive">
+          <div class="table-responsive" style="width=95%;overflow:hidden;">
               <table class="table">
                     {# Variable #}
                       {% set datePremierRDV = true %}
@@ -185,6 +197,7 @@
               </div>
           </div>
       </div>
+    </div>
     </div>
               {% else %}
                 {% for message in app.flashes('pas-de-creneau') %}

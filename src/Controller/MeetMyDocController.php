@@ -558,7 +558,7 @@ class MeetMyDocController extends AbstractController
               $dossier->addMedecin($medecin);
               $manager->persist($dossier);
               $manager->flush();
-              $this->addFlash('success-partage', 'Dossier patient correctement partagé avec le docteur '.$medecin->getNom().' '.$medecin->getPrenom());
+              $this->addFlash('success', 'Dossier patient correctement partagé avec le docteur '.$medecin->getNom().' '.$medecin->getPrenom());
               return $this->redirectToRoute('meet_my_doc_afficher_medecin_favoris');
             }
       }
@@ -768,10 +768,14 @@ class MeetMyDocController extends AbstractController
         //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
         if($debut < 0){
           $debut = 0;
-          $this->addFlash('fail','Vous avez été redirigé vers le calendrier de la semaine courant car vous avez essayé de consulté des dates passées');
+          $this->addFlash('fail','Vous avez été redirigé vers le calendrier de la semaine courante car vous avez essayé de consulté des dates passées');
           return $this->RedirectToRoute('meet_my_doc_medecin_afficher_creneau',['debut' => $debut]);
         }
       //Récupérer uniquement les créneaux demandé
+      if($debut < 0){
+        $debut = 0;
+        $this->addFlash('error', 'Vous avez essayé de consulter une semaine passée, vous avez été redirigé vers la semaine actuelle');
+      }
           $fin = ($debut+1);
           //définir date du début de l'interval
             $intervalDebut = new \dateTime();
@@ -833,7 +837,7 @@ class MeetMyDocController extends AbstractController
               }
 
               if(sizeof($joursRef) == 0){
-                $this->addFlash('pas-de-creneau', 'Aucun créneau prévu pour cette semaine!');
+                $this->addFlash('success', 'Aucun créneau prévu pour cette semaine!');
               }
 
         $duree = 30;
@@ -1019,7 +1023,7 @@ class MeetMyDocController extends AbstractController
 
         $medecin = $repoMedecin->findOneById($id);
 
-        foreach ($patient->getMedecinsFavoris() as $leMedecin){
+        /*foreach ($patient->getMedecinsFavoris() as $leMedecin){
         if($leMedecin == $medecin){
           $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
         } else { 
@@ -1027,6 +1031,22 @@ class MeetMyDocController extends AbstractController
                   $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
                }
         }
+        */
+        $t=[];
+        foreach ($patient->getMedecinsFavoris() as $leMedecin){
+          $t[]=$leMedecin;
+        }
+  
+        if(in_array($medecin, $t ) )
+        {
+          $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
+        } else {
+          $patient->addMedecinsFavori($medecin);
+          $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
+               
+        }
+      
+
         $manager->persist($patient);
 
         $manager->flush();
@@ -1040,7 +1060,6 @@ class MeetMyDocController extends AbstractController
       public function afficherMedecinFavoris(DossierPatientRepository $repoDossier)
       {
         $patient = $this->getUser();
-
 
         $medecins = $this->getUser()->getMedecinsFavoris();
 
