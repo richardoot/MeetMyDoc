@@ -128,10 +128,9 @@ class MeetMyDocController extends AbstractController
     */
     public function showProfilPatient(PatientRepository $repositoryPatient)
     {
-
-
       return $this->render('meet_my_doc/patient/profilPatient.html.twig');
     }
+
 
     /**
      * @Route("/modifierPatient", name="app_modifier_patient")
@@ -166,7 +165,6 @@ class MeetMyDocController extends AbstractController
       //Envoyer la page à la vue
         return $this->render('meet_my_doc/patient/modifierProfilPatient.html.twig',["formulaire" => $vueFormulaire]);
     }
-
 
 
     /**
@@ -285,14 +283,11 @@ class MeetMyDocController extends AbstractController
               $manager->persist($creneau_a_prendre);
 
               //Modifier le créneau en BD
-              $manager->flush(); 
-  
+              $manager->flush();
+
               //Redirection vers la page de connexion
               return $this->redirectToRoute('meet_my_doc_patient_afficher_rdv');
             }
-
-        
-
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/patient/afficherRecapitulatifRDV.html.twig',["creneau" => $creneau_a_prendre,'vueFormulaire'=>$formulaire->createView()]);
@@ -319,7 +314,6 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/patient/afficherLesRDV.html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "patient" => $patient]);
       }
-
 
 
       /**
@@ -377,6 +371,9 @@ class MeetMyDocController extends AbstractController
             //Définnir le patient qui a pris le créneau
               $creneau_a_modifier->setPatient(NULL);
 
+            //Effacer la raison du rdv
+              $creneau_a_modifier->setMotif(NULL);
+
 
           //Enregistrer le créneau annuler en BD
             //Poser l'etiquette dessus
@@ -410,6 +407,8 @@ class MeetMyDocController extends AbstractController
               $intervalFin = $intervalFin->format('Y-m-d');
 
             //Enlever les créneaux expirés
+              $creneaux = [];
+
               foreach ($tousLesCreneaux as $creneauCourant) {
                 if($creneauCourant->getDateRDV()->format('Y-m-d') >= $intervalDebut && $creneauCourant->getDateRDV()->format('Y-m-d') <= $intervalFin){
                   $creneaux[] = $creneauCourant;
@@ -456,9 +455,11 @@ class MeetMyDocController extends AbstractController
               }
 
 
+        //Redirection vers la page qui affiche les créneaux du médecin
+          return $this->redirectToRoute('meet_my_doc_patient_afficher_creneaux', ["creneaux" => $creneaux, "debut" => $debut,  "id" => $leMedecin->getId(), "medecin" => $leMedecin, "jours" => $jours, "joursRef" => $joursRef]);
 
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/patient/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "joursRef" => $joursRef]);
+          //return $this->render('meet_my_doc/patient/afficherCreneauxMedecin(Patient).html.twig',["creneaux" => $creneaux, "semaineCourante" => $debut, "medecin" => $leMedecin, "joursRef" => $joursRef]);
       }
 
 
@@ -566,7 +567,6 @@ class MeetMyDocController extends AbstractController
 
     //----------------------------- MEDECIN -----------------------------//
 
-
     /**
     *@Route("/medecin/profil", name="meet_my_doc_medecin_profil")
     */
@@ -644,8 +644,6 @@ class MeetMyDocController extends AbstractController
     }
 
 
-
-
     /**
     *@Route("/medecin/supprimerCreneaux", name="meet_my_doc_medecin_supprimer_creneaux")
     */
@@ -708,7 +706,6 @@ class MeetMyDocController extends AbstractController
     }
 
 
-
     /**
      * @Route("/medecin/modifierMedecin", name="app_modifier_medecin")
      */
@@ -748,7 +745,6 @@ class MeetMyDocController extends AbstractController
 
       //Envoyer la page à la vue
       return $this->RedirectToRoute('meet_my_doc_patient_afficher_creneaux',["creneaux" => $creneaux, "semaineCourante" => $debut,"semaineCourante" => $debut, "id" => $medecin->getId(), "medecin"=> $medecin, "joursRef" => $joursRef,"debut" => $debut,]);
-
 
     }
 
@@ -846,7 +842,6 @@ class MeetMyDocController extends AbstractController
     }
 
 
-
     /**
     *@Route("/medecin/supprimerCreneau-{id}", name="meet_my_doc_medecin_supprimer_creneau")
     */
@@ -939,11 +934,9 @@ class MeetMyDocController extends AbstractController
                   }
               }
 
-
-
       //Envoyer la page à la vue
         return $this->redirectToRoute('meet_my_doc_medecin_afficher_creneau',["debut"=>0]);
-        }
+      }
 
 
       /**
@@ -957,21 +950,6 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/medecin/afficherProfilPatient(Medecin).html.twig',["patient" => $patient]);
       }
-
-
-//      /**
-//      *@Route("/medecin/mes-patients2", name="meet_my_doc_mes_patients2")
-//      */
-      /*public function rechercherMesPatients(PatientRepository $repoPatient, ObjectManager $manager)
-      {
-        //-----------------SUPPRESSION DU RDV -----------------//
-            $medecin = $this->getUser();
-          //Récupérer le créneau à modifier
-            $patients = $repoPatient->findMesPatients($medecin);
-
-        //Envoyer les données du créneau à la vue pour afficher le récapitulatif
-          return $this->render('meet_my_doc/medecin/afficherMesPatients.html.twig',["patients" => $patients]);
-      }*/
 
 
       /**
@@ -1026,7 +1004,7 @@ class MeetMyDocController extends AbstractController
         /*foreach ($patient->getMedecinsFavoris() as $leMedecin){
         if($leMedecin == $medecin){
           $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
-        } else { 
+        } else {
                   $patient->addMedecinsFavori($medecin);
                   $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
                }
@@ -1036,16 +1014,16 @@ class MeetMyDocController extends AbstractController
         foreach ($patient->getMedecinsFavoris() as $leMedecin){
           $t[]=$leMedecin;
         }
-  
+
         if(in_array($medecin, $t ) )
         {
           $this->addFlash('error','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' fait déjà parti de vos médecins favoris');
         } else {
           $patient->addMedecinsFavori($medecin);
           $this->addFlash('success','Le médecin '.$medecin->getNom().' '.$medecin->getPrenom().' a bien été ajouté à vos médecins favoris');
-               
+
         }
-      
+
 
         $manager->persist($patient);
 
@@ -1053,6 +1031,7 @@ class MeetMyDocController extends AbstractController
 
         return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
+
 
       /**
       * @Route("/patient/medecins-favoris", name="meet_my_doc_afficher_medecin_favoris")
@@ -1065,7 +1044,6 @@ class MeetMyDocController extends AbstractController
 
         return $this->Render('meet_my_doc/patient/afficherLesMedecinsFavoris.html.twig', ['medecins' => $medecins, 'patient' => $patient]);
       }
-
 
 
       /**
@@ -1085,6 +1063,52 @@ class MeetMyDocController extends AbstractController
 
         return $this->RedirectToRoute('meet_my_doc_afficher_medecin_favoris');
       }
+
+
+  // PARTIE DES RESSOURCES DU DOSSIER PATIENT //
+
+      /**
+      * @Route("/medecin/dossier-patient/{id}/ajouterRessource", name="meet_my_doc_medecin_ajouter_ressource_dossier_patient")
+      */
+      public function ajouterRessourceDossierPatient(ObjectManager $manager, Request $request, $id, PatientRepository $repoPatient, DossierPatientRepository $repoDossier)
+      {
+        // On récupère le patient dont il faut ajouter une ressource dans son dossier patient
+        $patient = $repoPatient->findOneById($id);
+
+        // Instancier une nouvelle ressource pour le dossier patient en question
+        $ressourceDossierPatient = new RessourceDossierPatient();
+
+        // On récupère le dossier patient
+        $dossier = $repoDossier->findOneByPatient($patient);
+
+        //Création du Formulaire permettant d'ajouter une ressource au dossier du patient
+        $formulaireRessource = $this->createForm(RessourceDossierPatientType::class, $ressourceDossierPatient);
+
+        $formulaireRessource->handleRequest($request);
+
+      //Vérifier que le formulaire a été soumis
+        if($formulaireRessource->isSubmitted()){
+
+              $ressourceDossierPatient->setMedecin($this->getUser());
+
+              $ressourceDossierPatient->setDossierPatient($dossier);
+
+              //Enregistrer les donnée en BD
+              $manager->persist($ressourceDossierPatient);
+              $manager->flush();
+
+              //Redirection vers la page de connexion
+              return $this->redirectToRoute('meet_my_doc_dossier_de_mes_patients',['id' => $id]);
+          }
+
+      //Générer la représentation graphique du formulaire
+        $vueFormulaire = $formulaireRessource->createView();
+
+      //Envoyer la page à la vue
+        return $this->render('meet_my_doc/medecin/medecinAjouterRessourceDossier.html.twig',["formulaire" => $vueFormulaire]);
+      }
+
+
 
 //----------------------------- ADMIN -----------------------------//
 
@@ -1117,53 +1141,11 @@ class MeetMyDocController extends AbstractController
         return $this->RedirectToRoute('accueil');
       }
 
-      // PARTIE DES RESSOURCES DU DOSSIER PATIENT //
-      /**
-      * @Route("/medecin/dossier-patient/{id}/ajouterRessource", name="meet_my_doc_medecin_ajouter_ressource_dossier_patient")
-      */
-      public function ajouterRessourceDossierPatient(ObjectManager $manager, Request $request, $id, PatientRepository $repoPatient, DossierPatientRepository $repoDossier)
-      {
-        // On récupère le patient dont il faut ajouter une ressource dans son dossier patient
-        $patient = $repoPatient->findOneById($id);
 
-        // Instancier une nouvelle ressource pour le dossier patient en question
-        $ressourceDossierPatient = new RessourceDossierPatient();
-
-        // On récupère le dossier patient
-        $dossier = $repoDossier->findOneByPatient($patient);
-
-        //Création du Formulaire permettant d'ajouter une ressource au dossier du patient
-        $formulaireRessource = $this->createForm(RessourceDossierPatientType::class, $ressourceDossierPatient);
-
-        $formulaireRessource->handleRequest($request);
-  
-      //Vérifier que le formulaire a été soumis
-        if($formulaireRessource->isSubmitted()){
-
-              $ressourceDossierPatient->setMedecin($this->getUser());
-
-              $ressourceDossierPatient->setDossierPatient($dossier);
-
-              //Enregistrer les donnée en BD
-              $manager->persist($ressourceDossierPatient);
-              $manager->flush();
-
-              //Redirection vers la page de connexion
-              return $this->redirectToRoute('meet_my_doc_dossier_de_mes_patients',['id' => $id]);
-          }
-
-      //Générer la représentation graphique du formulaire
-        $vueFormulaire = $formulaireRessource->createView();
-
-      //Envoyer la page à la vue
-        return $this->render('meet_my_doc/medecin/medecinAjouterRessourceDossier.html.twig',["formulaire" => $vueFormulaire]);   
-      }
-
-
-      // NE MARCHE PAS : A TERMINER
-       /**
-       * @Route("/medecin/modifierDossier/{id}", name="meet_my_doc_medecin_modifier_dossier_patient")
-       */
+      //-------------------------- NE MARCHE PAS : A TERMINER --------------------------//
+     /**
+     * @Route("/medecin/modifierDossier/{id}", name="meet_my_doc_medecin_modifier_dossier_patient")
+     */
       public function medecinModifierDossierPatient(Request $request, ObjectManager $manager,PatientRepository $repoPatient, DossierPatientRepository $repoDossierPatient,$id)
       {
         //Récupérer le patient actuelle
@@ -1202,9 +1184,10 @@ class MeetMyDocController extends AbstractController
           return $this->render('meet_my_doc/patient/medecinModifierDossierPatient.html.twig',["formulaire" => $vueFormulaire,"ressources" => $ressources]);
       }
 
-      /**
-     * @Route("/medecin/modifierRessource/{id}", name="meet_my_doc_modifier_ressource")
-     */
+
+    /**
+   * @Route("/medecin/modifierRessource/{id}", name="meet_my_doc_modifier_ressource")
+   */
     public function modifierRessource(Request $request, ObjectManager $manager,RessourceDossierPatientRepository $repoRessources, $id)
     {
         $medecin=$this->getUser();
@@ -1239,7 +1222,8 @@ class MeetMyDocController extends AbstractController
         return $this->render('meet_my_doc/medecin/medecinAjouterRessourceDossier.html.twig',["formulaire" => $vueFormulaire]);
     }
 
-    /**
+
+      /**
       *@Route("/medecin/mes-rendezvous", name="meet_my_doc_medecin_afficher_rdv")
       */
       public function afficherLesRDVMedecin(CreneauRepository $repoCreneau)
@@ -1259,6 +1243,7 @@ class MeetMyDocController extends AbstractController
         //Envoyer les données du créneau à la vue pour afficher le récapitulatif
           return $this->render('meet_my_doc/medecin/afficherLesRDV(medecin).html.twig',["creneaux" => $rdv, "dateAJD" => $dateAJD, "medecin" => $medecin]);
       }
+
 
       /**
       *@Route("/medecin/annulerRDV-{id}", name="meet_my_doc_medecin_annuler_rdv")

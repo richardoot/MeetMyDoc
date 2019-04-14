@@ -3,6 +3,8 @@
 
 {% block body %}
 
+<br>
+<div class="corps" style="background-color:white;border: solid 1px;border-radius:3px;padding:5px;margin-bottom: 50px;border-color:white;">
 <div class="container">
     <div class="row">
 
@@ -35,7 +37,7 @@
 <div class="container">
   <div class="row">
       <div class="col col-xs-12 col-sm-12">
-          <div class="table-responsive">
+          <div class="table-responsive"style="width=95%;overflow:hidden;">
               <table class="table">
                     {# Variable #}
                       {% set datePremierRDV = true %}
@@ -170,9 +172,10 @@
                         {% endfor %}
 
                   <!--/tbody-->
-              </table>
-          </div>
+          </table>
+        </div>
       </div>
+    </div>
   </div>
 </div>
 
