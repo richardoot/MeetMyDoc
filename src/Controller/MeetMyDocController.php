@@ -768,7 +768,7 @@ class MeetMyDocController extends AbstractController
         //$creneaux = $repoCreneau->findByMedecin(['id' => $medecin->getId()]);
         if($debut < 0){
           $debut = 0;
-          $this->addFlash('fail','Vous avez été redirigé vers le calendrier de la semaine courant car vous avez essayé de consulté des dates passées');
+          $this->addFlash('fail','Vous avez été redirigé vers le calendrier de la semaine courante car vous avez essayé de consulté des dates passées');
           return $this->RedirectToRoute('meet_my_doc_medecin_afficher_creneau',['debut' => $debut]);
         }
       //Récupérer uniquement les créneaux demandé

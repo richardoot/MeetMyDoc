@@ -68,10 +68,8 @@
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_creneau',{debut: 0})}}">Voir mon Calendrier</a>
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_ajouter_creneau')}}">Ajouter Créneau</a>
               <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_supprimer_creneaux')}}">Supprimer Créneau</a>
+              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_rdv')}}">Mes rendez-vous</a>
             </div>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" role="presentation" href="{{path('meet_my_doc_medecin_afficher_rdv')}}">Mes rendez-vous</a>
           </li>
         {% endif %}
       </ul>
@@ -100,7 +98,6 @@
     </div>
   </div>
   </nav>
-
   <div class="container" style="margin-top:50px;">
   {% block body %}{% endblock %}
   {# Affichage du menu de connexion sur les petits écrans #}
