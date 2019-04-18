@@ -12,117 +12,128 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
   <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ asset('assets/css/simplebar.css') }}" />
   {% block stylesheets %}{% endblock %}
 </head>
 
-<body style="background-image: linear-gradient(-60deg, #2E9AFE, #9F81F7);background-repeat: no-repeat;height:100vh;background-attachment: fixed;">
+<body>
 
-  <!-- NAV BAR-->
-  <nav class="navbar navbar-light navbar-expand-md fixed-top">
-  <!--Container pour la mise en forme du menu -->
-  <div class="container">
+  <div id="site-main">
 
-    <a class="navbar-brand" href="{{path('accueil')}}">MEETMYDOC</a>
+      <div id="site-header">
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="fa fa-bars burgerMenu" style="font-size: 25px;"></i>
-      <span class="sr-only">Toggle navigation</span>
-    </button>
+        <!-- NAV BAR-->
+        <nav class="navbar navbar-light navbar-expand-md fixed-top">
 
-    <div class="collapse navbar-collapse" id="navbarColor03">
+          <a class="navbar-brand" href="{{path('accueil')}}">MEETMYDOC</a>
 
-      <!--Partie gauche du menu-->
-      <ul class="nav navbar-nav mr-auto">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <i id="icon-burgerMenu" class="fa fa-bars burgerMenu"></i>
+            <span class="sr-only">Toggle navigation</span>
+          </button>
 
-        {% if is_granted('ROLE_PATIENT') %}
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_profil')}}">Voir Profil</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_afficher_medecin_favoris')}}">Mes Médecins favoris</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mes Rendez-vous</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="{{path('accueil')}}">Prendre Rendez-vous</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_afficher_rdv')}}">Voir mes Rendez-vous</a>
-            </div>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" role="presentation" href="{{path('meet_my_doc_patient_afficher_dossier')}}">Mon Dossier</a>
-          </li>
+          <div class="collapse navbar-collapse" id="navbarColor03">
 
-        {% elseif is_granted('ROLE_MEDECIN') %} {# S'il s'agit d'un médecin #}
+            <!--Partie gauche du menu-->
+            <ul class="nav navbar-nav mr-auto">
 
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_profil')}}">Voir Profil</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_mes_patients')}}">Mes Patients</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Calendrier</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_creneau',{debut: 0})}}">Voir mon Calendrier</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_ajouter_creneau')}}">Ajouter Créneau</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_supprimer_creneaux')}}">Supprimer Créneau</a>
-              <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_rdv')}}">Mes rendez-vous</a>
-            </div>
-          </li>
-        {% endif %}
-      </ul>
+              {% if is_granted('ROLE_PATIENT') %}
+                <li class="nav-item dropdown">
+                  <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_profil')}}">Voir Profil</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_afficher_medecin_favoris')}}">Mes Médecins favoris</a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mes Rendez-vous</a>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item" role="presentation" href="{{path('accueil')}}">Prendre Rendez-vous</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_patient_afficher_rdv')}}">Voir mes Rendez-vous</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" role="presentation" href="{{path('meet_my_doc_patient_afficher_dossier')}}">Mon Dossier</a>
+                </li>
+
+              {% elseif is_granted('ROLE_MEDECIN') %} {# S'il s'agit d'un médecin #}
+
+                <li class="nav-item dropdown">
+                  <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Profil</a>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_profil')}}">Voir Profil</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_mes_patients')}}">Mes Patients</a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Mon Calendrier</a>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_creneau',{debut: 0})}}">Voir mon Calendrier</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_ajouter_creneau')}}">Ajouter Créneau</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_supprimer_creneaux')}}">Supprimer Créneau</a>
+                    <a class="dropdown-item" role="presentation" href="{{path('meet_my_doc_medecin_afficher_rdv')}}">Mes rendez-vous</a>
+                  </div>
+                </li>
+              {% endif %}
+            </ul>
 
 
-      <!--Partie droite du menu -->
-      <ul class="nav navbar-nav ml-auto">
-        {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
-        <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="color:#045FB4;"><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <a class="dropdown-item" role="presentation" href="#">Aide</a>
-              <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
-              <a class="dropdown-item" href="{{path('app_logout')}}" style="color: red;">Deconnexion</a>
-            </div>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{path('meet_my_doc_inscription')}}" >S'inscrire</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-  </nav>
-  <div class="container" style="margin-top:50px;">
-  {% block body %}{% endblock %}
-  {# Affichage du menu de connexion sur les petits écrans #}
-  {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté ou sur la page de connexion #}
-  {% else %} {# Affiche le petit menu de connexion si l'utilisateur n'est pas connecté #}
+            <!--Partie droite du menu -->
+            <ul class="nav navbar-nav ml-auto">
+              {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté #}
+              <li class="nav-item dropdown">
+                  <a id="name-user" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><i class="fas fa-user"></i> {{ app.user.nom }} {{ app.user.prenom}}</a>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item" role="presentation" href="#">Aide</a>
+                    <a class="dropdown-item" role="presentation" href="#">Paramètres</a>
+                    <a id="item-deconnexion" class="dropdown-item" href="{{path('app_logout')}}">Deconnexion</a>
+                  </div>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{path('meet_my_doc_inscription')}}" >S'inscrire</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
 
-  {% block footer %}
-    <div class="row">
-    <div class="col col-xs-12 col-sm-10 offset-sm-1">
-    <div class="corpsConnexionResponsive" style="background-color:white;">
-            <h1>Envie de vous Inscrire ou vous Connecter ?</h1>
-            <a href="{{path('app_login')}}" class="linkConnexion">Se connecter</a>
-            <a class="btn btn-primary" href="{{path('meet_my_doc_inscription')}}">S&#39;inscrire</a>
-    </div>
-    </div>
-  </div>
-  {% endblock %}
+      </div> <!--Site Header -->
 
-  {% endif %} {# Fin du code gérant l'affichage #}
-</div> <!-- CONTAINER -->
+
+      <div id="site-content" class="container" data-simplebar>
+        {% block body %}{% endblock %}
+        {# Affichage du menu de connexion sur les petits écrans #}
+        {% if is_granted('ROLE_PATIENT') or is_granted('ROLE_MEDECIN') %} {# Vérifier que l'utilisateur est connecté ou sur la page de connexion #}
+        {% else %} {# Affiche le petit menu de connexion si l'utilisateur n'est pas connecté #}
+
+        {% block footer %}
+          <div class="row">
+          <div class="col col-xs-12 col-sm-10 offset-sm-1">
+          <div class="corpsConnexionResponsive">
+                  <h1>Envie de vous Inscrire ou vous Connecter ?</h1>
+                  <a href="{{path('app_login')}}" class="linkConnexion">Se connecter</a>
+                  <a class="btn btn-primary" href="{{path('meet_my_doc_inscription')}}">S&#39;inscrire</a>
+          </div>
+          </div>
+        </div>
+        {% endblock %}
+
+        {% endif %} {# Fin du code gérant l'affichage #}
+      </div> <!-- Site Content -->
+
+  </div> <!-- Site main -->
+
+  <!-- Scripts -->
   {% block javascripts %}{% endblock %}
   <script src="{{ asset('assets/js/jquery.min.js')}}"></script>
   <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
   <script src="{{ asset('assets/js/Simple-Slider.js')}}"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
 </body>
 
 </html>
